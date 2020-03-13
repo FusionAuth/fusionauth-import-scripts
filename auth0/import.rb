@@ -104,7 +104,6 @@ f1.close
 f2 = File.open(users_file, 'r')
 f2.each_line { |line|
   u_hash = JSON.parse(line)
-  # auth0|<id> -> <id>
   id = u_hash['Id'][6..-1]
   auth0_users[id] = u_hash
 }
