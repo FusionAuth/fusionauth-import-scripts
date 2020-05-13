@@ -40,8 +40,12 @@ def map_user(csv_user)
   # Register the user to an application
   user['registrations'] = [{
     'applicationId': $fusionauth_application_id,
-    'username': csv_user['LOGIN'],
-    'roles': ['user']
+    'insertInstant':  Date.parse(csv_user['REGISTRATION_DATE']).strftime("%Q"),
+    'lastLoginInstant':  Date.parse(csv_user['LASTACTIVITY_DATE']).strftime("%Q"),
+    # Add any roles you would like added to this user, adding 'user' as an example.
+    'roles': [
+      'user'
+    ]
   }]
 
   # Import the password, with specified encryption scheme, factor and salt
@@ -49,6 +53,7 @@ def map_user(csv_user)
   user['factor'] = 10_000
   user['salt'] = csv_user['PASSWORD_SALT']
   user['password'] = csv_user['PASSWORD']
+  user['verified'] = true
 
   return user
 end
