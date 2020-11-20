@@ -1,6 +1,6 @@
 ## FusionAuth Import Scripts
 
-We're building out import scripts for any and all third party Identity Providers. Feel free to submit a PR with your specific use of the Import API in whatever language you have. 
+We're building out import scripts for any and all third party Identity Providers. Feel free to submit a PR with your specific use of the Import API in whatever language you have.
 
 ### Importers
 
@@ -55,6 +55,39 @@ Finally, execute the Import script.
 ruby ./import.rb
 ```
 
+#### Generate Test Users
+
+This script will use the Import API to bulk create users for load testing FusionAuth.
+
+To begin, modify the section that begins with `BEGIN Modify these variables for your Import`. Once you have provided an API key, Application Id, Tenant Id and FusionAuth URL you may execute the script.
+
+The following gems are required to run this import script.
+
+```ruby
+require 'rubygems'
+require 'json'
+require 'net/http'
+require 'openssl'
+```
+
+
+Example usage:
+
+The default behavior will be to import 1 million users.
+```bash
+ruby ../generate_import.rb
+```
+
+Generate 100,000 users.
+```bash
+ruby ../generate_import.rb 100000
+```
+
+Generate 100,000 users with an offset of 100,000. This would allow you to import an additional 100k users after the first 100k.
+```bash
+ruby ../generate_import.rb 100000 100000
+```
+
 ### Project Layout
 
 ```
@@ -63,4 +96,6 @@ auth0
 csv
 ├── import.rb
 ├── example_users.csv
+testing
+|── generate_import.rb
 ```
