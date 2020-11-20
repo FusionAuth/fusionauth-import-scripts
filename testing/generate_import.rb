@@ -10,7 +10,7 @@ require 'openssl'
 # Create an API key, an application and a tenant for this configuration.
 # - You may use the default default or create a new one. Fill out these values
 #   to match your configuration.
-$api_key = 'bf69486b-4733-4470-a592-f1bfce7af580'
+$api_key = '<YOUR API KEY>'
 $application_id = 'c9f111d6-a24e-4091-8411-12460c995953'
 $tenant_id = 'a8800e97-8230-4cd8-9608-3b3db8169f36'
 $fusionauth_url = 'http://localhost:9011'
