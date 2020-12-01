@@ -67,25 +67,26 @@ The following gems are required to run this import script.
 require 'rubygems'
 require 'json'
 require 'net/http'
+require 'getoptlong'
 require 'openssl'
 ```
 
 
 Example usage:
 
-The default behavior will be to import 1 million users.
+Import 1 million users
 ```bash
-ruby ./generate_import.rb
+ruby generate_import.rb --apiKey <API Key> --applicationId <Application Id> --tenantId <TenantId> --url http://localhost:9011 --total 1000000 
 ```
 
 Generate 100,000 users.
 ```bash
-ruby ./generate_import.rb 100000
+ruby generate_import.rb --apiKey <API Key> --applicationId <Application Id> --tenantId <TenantId> --url http://localhost:9011 --total 100000 
 ```
 
 Generate 100,000 users with an offset of 100,000. This would allow you to import an additional 100k users after the first 100k.
 ```bash
-ruby ./generate_import.rb 100000 100000
+ruby generate_import.rb --apiKey <API Key> --applicationId <Application Id> --tenantId <TenantId> --url http://localhost:9011 --total 100000 --ofset 100000
 ```
 
 ### Project Layout
