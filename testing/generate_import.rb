@@ -3,81 +3,146 @@
 require 'rubygems'
 require 'json'
 require 'net/http'
+require 'getoptlong'
 require 'openssl'
 
-# BEGIN Modify these variables for your Import
+opts = GetoptLong.new(
+  [ '--help', '-h', GetoptLong::NO_ARGUMENT ],
+  [ '--apiKey', '-k', GetoptLong::REQUIRED_ARGUMENT ],
+  [ '--applicationId', GetoptLong::REQUIRED_ARGUMENT ],
+  [ '--tenantId', GetoptLong::REQUIRED_ARGUMENT ],
+  [ '--url', GetoptLong::REQUIRED_ARGUMENT ],
+  [ '--batch', GetoptLong::OPTIONAL_ARGUMENT ],
+  [ '--offset', GetoptLong::OPTIONAL_ARGUMENT ],
+  [ '--total', GetoptLong::OPTIONAL_ARGUMENT ]
+)
 
-# Create an API key, an application and a tenant for this configuration.
-# - You may use the default default or create a new one. Fill out these values
-#   to match your configuration.
-$api_key = '<YOUR API KEY>'
-$application_id = 'c9f111d6-a24e-4091-8411-12460c995953'
-$tenant_id = 'a8800e97-8230-4cd8-9608-3b3db8169f36'
-$fusionauth_url = 'http://localhost:9011'
+argv_length = ARGV.length
+api_key = nil
+application_id = nil
+tenant_id = nil
+url = nil
+batch = 10_000
+offset = 0
+total = 1_000_000
 
-# Defaults
+opts.each do |opt, arg|
+  case opt
+    when '--help'
+      puts <<-EOF
 
-# The total number of users to import
-$total = 1_000_000
+-h, --help:
+   show help
 
-# The offset into this set. This will be 0 unless you want to run this import again against the same tenant.
-# - For example, if you already imported 1M users, you would want to set the offset to 1_000_000 so that the
-#   numbering begins at 1M.
-$offset = 0
+--apiKey [apiKey]:
+   The API key used in the Authorization header to authorize the Import API.
 
-# The batch size to import. This should be adequate, you can increase or decrease this value if you like, it will not affect
-# the total number of users being imported. This will just cause the import requests to be broken up into small chunks.
-# - Running this between 100k and 250k is generally just fine, the limiting factors will be the RAM available on the target system
-#   and the timeout configurations between this system and the target system.
-$batch = 100_000
+   Required.
 
-# END Modify these variables for your Import
+--applicationId [applicationId]:
+   The unique Id of the application used for the import request.
 
-# Allow the total users to be set using the first argument
-if ARGV.length > 0
-  $total = ARGV[0].to_i
+   Required.
+
+--tenantId [tenantId]:
+   The unique Id of the tenant used for the import request.
+
+   Required.
+
+--url [url]:
+  The base URL to reach FusionAuth/
+
+  Required.
+
+--batch [batch]:
+  The number of users to import in a batch.
+
+  Default value is 10,000.
+
+--offset [offset]:
+  The offset to use when generating unique email addresses for the import. Use
+  this value when importing more than once to the same tenant with this script
+  to avoid email collisions.
+
+  Default value is 0.
+
+--total [total]:
+  The total number of users to import.
+
+  Default value is 1,000,000.
+
+      EOF
+    when '--apiKey'
+      api_key = arg
+    when '--applicationId'
+      application_id = arg
+    when '--tenantId'
+      tenant_id = arg
+    when '--url'
+      url = arg
+    # The batch size to import. This should be adequate, you can increase or decrease this value if you like, it will not affect
+    # the total number of users being imported. This will just cause the import requests to be broken up into small chunks.
+    # - Running this between 100k and 250k is generally just fine, the limiting factors will be the RAM available on the target system
+    #   and the timeout configurations between this system and the target system.
+    when '--batch'
+      if arg != ''
+        batch = arg.to_i
+      end
+    # The offset into this set. This will be 0 unless you want to run this import again against the same tenant.
+    # - For example, if you already imported 1M users, you would want to set the offset to 1_000_000 so that the
+    #   numbering begins at 1M.
+    when '--offset'
+      if arg != ''
+        offset = arg.to_i
+      end
+    # The total number of users to import
+    when '--total'
+      if arg != ''
+        total = arg.to_i
+      end
+  end
 end
 
-# Allow the offset number to be set using the second argument
-if ARGV.length > 1
-  $offset = ARGV[1].to_i
+if argv_length == 0
+  puts "generate_import: try 'generate_import --help' for more information."
+  exit 0
 end
 
-# Allow the batch to be set using the third argument
-if ARGV.length > 2
-  $batch = ARGV[2].to_i
+if argv_length < 3
+  puts "Usage: generate_import.rb --apiKey <API Key> --applicationId <Application Id> --tenantId <Tenant Id> --url <URL>"
+  exit 0
 end
 
 # The total number of users processed so far towards the total
-$count = 0
+count = 0
 
 # The expected number of iterations to reach the total count
-$total_iterations = $total / $batch
+total_iterations = [1, (total / batch)].max.to_i
 
 # The current iteration count
-$iteration_count = 0
+iteration_count = 0
 
 # The start of this request
-$start = Time.new
+start = Time.new
 
 puts "FusionAuth Importer : Generate Test Users"
-puts " > Total users: #{$total}"
-puts " > Offset: #{$offset}"
-puts " > Batch: #{$batch}"
-puts " > Expected iterations: #{$total_iterations}"
+puts " > Total users: #{total}"
+puts " > Offset: #{offset}"
+puts " > Batch: #{batch}"
+puts " > Expected iterations: #{total_iterations}"
 puts ""
 
 # Iterate in batch sizes until we reach the total
-while $count < $total
+while count < total
 
-  $iteration_count = $iteration_count + 1
+  iteration_count = iteration_count + 1
   users = []
-  limit = [$batch, ($total - $count)].min.to_i
+  limit = [batch, (total - count)].min.to_i
 
-  puts "[#{$iteration_count} of #{$total_iterations}] [#{Time.new.strftime("%a %m/%d %y %H:%M:%S")}] Import User request. Generate JSON for users [#{$count}] to #{$count + limit}]"
+  puts "[#{iteration_count} of #{total_iterations}] [#{Time.new.strftime("%a %m/%d %y %H:%M:%S")}] Import User request. Generate JSON for users [#{count}] to #{count + limit}]"
   limit.times do |i|
     # Offset
-    index = i + $count +  $offset + 1
+    index = i + count +  offset + 1
 
     # This user can be customized to better replicate your production configuration.
     user = {}
@@ -94,28 +159,29 @@ while $count < $total
     # Add a single registration with the 'user' role.
     user['registrations'] = []
     user['registrations'][0] = {}
-    user['registrations'][0]['applicationId'] = $application_id
+    user['registrations'][0]['applicationId'] = application_id
     user['registrations'][0]['roles'] = ['user']
     users[i] = user
   end
 
   # Perform the import request
-  uri = URI($fusionauth_url)
+  uri = URI(url)
   http = Net::HTTP.new(uri.hostname, uri.port)
   # https://ruby-doc.org/stdlib-2.7.2/libdoc/net/http/rdoc/Net/HTTP.html
-  http.open_timeout = 60       # In seconds (60 is default)
-  http.read_timeout = 600      # In seconds (60 is default)
-  http.write_timeout = 60      # In seconds (60 is default)
-  http.keep_alive_timeout = 10 # In seconds (2 is default)
+  http.open_timeout = 120       # In seconds (60 is default)
+  http.read_timeout = 600       # In seconds (60 is default)
+  http.write_timeout = 120      # In seconds (60 is default)
+  http.keep_alive_timeout = 30  # In seconds (2 is default)
   if uri.scheme.eql? 'https'
     http.use_ssl = true
     # If you are using as self signed certificate, you may need to set this to VERIFY_NONE
-    # http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+    http.verify_mode = OpenSSL::SSL::VERIFY_NONE
   end
-  req = Net::HTTP::Post.new($fusionauth_url + '/api/user/import')
+
+  req = Net::HTTP::Post.new(url + "/api/user/import")
   req['Content-Type'] = 'application/json'
-  req['Authorization'] = $api_key
-  req['X-FusionAuth-TenantId'] = $tenant_id
+  req['Authorization'] = api_key
+  req['X-FusionAuth-TenantId'] = tenant_id
 
   # If you want to perform Db constraint validation, un-comment the second
   # line of the request body. This will dramatically slow down the import
@@ -137,8 +203,8 @@ while $count < $total
   end
 
   # Increment our counter
-  $count = $count + limit
+  count = count + limit
 end
 
 puts ""
-puts "Completed in [#{Time.new - $start}] seconds"
+puts "Completed in [#{Time.new - start}] seconds"
