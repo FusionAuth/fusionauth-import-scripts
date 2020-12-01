@@ -148,7 +148,7 @@ while count < total
     user = {}
     user['active'] = true
     user['email'] = "imported-user-#{index}@fusionauth.io"
-    user['verified'] =true
+    user['verified'] = true
 
     # Password is 'password', using the default FusionAuth hashing scheme
     user['password'] = "jHsm+KgtcleCjG/jyC7SuY088G2n/2eiZyNYYEianwU="
