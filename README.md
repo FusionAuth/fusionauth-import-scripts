@@ -59,8 +59,6 @@ ruby ./import.rb
 
 This script will use the Import API to bulk create users for load testing FusionAuth.
 
-To begin, modify the section that begins with `BEGIN Modify these variables for your Import`. Once you have provided an API key, Application Id, Tenant Id and FusionAuth URL you may execute the script.
-
 The following gems are required to run this import script.
 
 ```ruby
