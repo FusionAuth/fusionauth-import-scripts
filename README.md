@@ -69,6 +69,7 @@ require 'getoptlong'
 require 'openssl'
 ```
 
+Make sure you set up an application with a `user` role into which to import users. The FusionAuth URL must have no trailing slash. The API key must have at least the `POST` permissions on the `/api/user/import` endpoint. Users will be imported with a password of `password`.
 
 Example usage:
 
