@@ -88,6 +88,27 @@ Generate 100,000 users with an offset of 100,000. This would allow you to import
 ruby generate_import.rb --apiKey <API Key> --applicationId <Application Id> --tenantId <TenantId> --url http://localhost:9011 --total 100000 --ofset 100000
 ```
 
+#### Generate Applications
+
+This script will use the Application API to create applications.
+
+The following gems are required to run this import script.
+
+```ruby
+require 'rubygems'
+require 'json'
+require 'net/http'
+require 'getoptlong'
+require 'openssl'
+```
+
+Example usage:
+Generate 3,000 applications
+```bash
+ruby generate_applications.rb --apiKey <API Key> --tenantId <TenantId> --url http://localhost:9011 --total 3000 
+```
+
+
 ### Project Layout
 
 ```
@@ -97,5 +118,6 @@ csv
 ├── import.rb
 ├── example_users.csv
 testing
+|── generate_applications.rb
 |── generate_import.rb
 ```
