@@ -131,10 +131,6 @@ while count < total
   req['Authorization'] = api_key
   req['X-FusionAuth-TenantId'] = tenant_id
 
-  # If you want to perform Db constraint validation, un-comment the second
-  # line of the request body. This will dramatically slow down the import
-  # but it will allow you to receive a JSON error response indicating
-  # why the import may be failing due to db constraint violations.
   request = {
       'application' => application
   }
