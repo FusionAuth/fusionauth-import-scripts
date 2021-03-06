@@ -1,0 +1,20 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    date (3.1.1)
+    fusionauth_client (1.24.0)
+    json (2.5.1)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  date
+  fusionauth_client
+  json
+
+RUBY VERSION
+   ruby 2.7.1p83
+
+BUNDLED WITH
+   2.1.4
