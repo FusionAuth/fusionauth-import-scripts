@@ -40,7 +40,7 @@ def map_user(id, auth_secret, auth_user)
   user['username'] = auth_secret['username']
 
   # Incoming format is '2017-08-08T08:31:19.483Z', convert to epoch milli
-  user['insertInstant'] = Date.parse(auth_user['Created At']).strftime("%Q")
+  user['insertInstant'] = Date.parse(auth_user['created_at']).strftime("%Q")
 
   # Optionally we could grab the last login instant
 
@@ -56,6 +56,14 @@ def map_user(id, auth_secret, auth_user)
   user['data']['auth0'] = {}
   user['data']['auth0']['id'] = id
   user['data']['auth0']['tenant'] = auth_secret['tenant']
+
+  # Uncomment and modify to add a Registration
+  # user['registrations'] = []
+  # application_registration = {
+    # applicationId: '6b72ba2d-679a-41dd-adb3-9f3e75e7cd1f'
+  # }
+  # user['registrations'].push(application_registration)
+
   return user
 end
 
@@ -94,6 +102,8 @@ duplicate_count = 0
 # Map the Auth0 secrets, id -> hash
 f1 = File.open(secrets_file, 'r')
 f1.each_line { |line|
+  line.chomp!
+  next if line.empty?
   s_hash = JSON.parse(line)
   id = s_hash['_id']['$oid']
   auth0_secrets[id] = s_hash
@@ -103,8 +113,10 @@ f1.close
 # Map the Auth0 users, id -> hash
 f2 = File.open(users_file, 'r')
 f2.each_line { |line|
+  line.chomp!
+  next if line.empty?
   u_hash = JSON.parse(line)
-  id = u_hash['Id'][6..-1]
+  id = u_hash['user_id'][6..-1]
   auth0_users[id] = u_hash
 }
 f2.close
