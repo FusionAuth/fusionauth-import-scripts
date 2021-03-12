@@ -19,7 +19,6 @@ require 'fusionauth/fusionauth_client'
 If you are familiar with Ruby you can optionally build a build file, or simply install these gems prior to running the script. The `date` and `json` gems are likely already available in your Ruby environment.
 
 You can run `bundle install` if you have bundler installed, or you can install the gems manually: `sudo gem install fusionauth_client`
-```
 
 Finally, execute the Import script.
 
