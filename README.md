@@ -11,7 +11,7 @@ Gather the following:
 * Your Auth0 user data export file
 * Your Auth0 secrets export file
 * Your FusionAuth instance URL
-* A FusionAuth API key. This key must have at least the `/api/user/import` permission to import normal users, and the additional permission of `/api/identity-provider/link` to import social users.
+* A FusionAuth API key. This key must have at least the `/api/user/import` permission to import normal users, and the additional permissions of `/api/identity-provider/link` and `/api/user/search` to import social users.
 
 The following gems are required to run this import script.
 
@@ -19,11 +19,13 @@ The following gems are required to run this import script.
 require 'date'
 require 'json'
 require 'fusionauth/fusionauth_client'
+require 'optparse'
+require 'securerandom'
 ```
 
-If you are familiar with Ruby you can optionally build a build file, or simply install these gems prior to running the script. The `date` and `json` gems are likely already available in your Ruby environment.
+If you are familiar with Ruby you can optionally build a build file, or simply install these gems prior to running the script. The `date`, `optparse`, `securerandom` and `json` gems are likely already available in your Ruby environment.
 
-You can run `bundle install` if you have bundler installed, or you can install the gems manually: `sudo gem install fusionauth_client`
+You can run `bundle install` if you have bundler installed, or you can install the gems manually: `sudo gem install fusionauth_client`, etc.
 
 Finally, execute the Import script:
 
@@ -36,7 +38,13 @@ You can see all the options:
 ruby ./import.rb -h
 ```
 
+##### Social providers
+
 This script supports loading users from social providers such as LinkedIn or Google if you are running FusionAuth >= 1.28. Otherwise it does not support importing such users.
+
+If you are importing users with social providers, ensure that the Identity Provider is created in FusionAuth before importing the social users. See https://fusionauth.io/docs/v1/tech/identity-providers/ for more.
+
+You can find additional social provider identity provider ids: https://github.com/FusionAuth/fusionauth-java-client/blob/master/src/main/java/io/fusionauth/domain/provider/IdentityProviderType.java and you may need to update the `idp_identifiers_to_auth0_type` variable with additional mappings between what Auth0 calls a social provider and the Id FusionAuth user. 
 
 #### CSV
 
