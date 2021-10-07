@@ -4,52 +4,54 @@ require 'date'
 require 'json'
 require 'fusionauth/fusionauth_client'
 require 'optparse'
+require 'securerandom'
+
 
 # option handling
-$options = {}
+options = {}
 
 # default options
-$options[:userfile] = "users.json"
-$options[:secretsfile] = "secrets.json"
-$options[:fusionauthurl] = "http://localhost:9011"
+options[:usersfile] = "users.json"
+options[:secretsfile] = "secrets.json"
+options[:fusionauthurl] = "http://localhost:9011"
 
 OptionParser.new do |opts|
   opts.banner = "Usage: import.rb [options]"
 
   opts.on("-l", "--link-social-accounts", "Link social accounts, if present, after import. This operation is slower than an import.") do |linksocial|
-    $options[:linksocial] = true
+    options[:linksocial] = true
   end
 
   opts.on("-r", "--register-users APPLICATION_IDS", "A comma separated list of existing applications Ids. All users will be registered for these applications.") do |appids|
-    $options[:appids] = appids
+    options[:appids] = appids
   end
 
   opts.on("-o", "--only-link-social-accounts", "Link social accounts with no import.") do |siteurl|
-    $options[:onlylinksocial] = true
+    options[:onlylinksocial] = true
   end
 
   opts.on("-u", "--users-file USERS_FILE", "The exported JSON user data file from Auth0. Defaults to users.json.") do |file|
-    $options[:usersfile] = file
+    options[:usersfile] = file
   end
 
   opts.on("-f", "--fusionauth-url FUSIONAUTH_URL", "The location of the FusionAuth instance. Defaults to http://localhost:9011.") do |fusionauthurl|
-    $options[:fusionauthurl] = fusionauthurl
+    options[:fusionauthurl] = fusionauthurl
   end
 
   opts.on("-k", "--fusionauth-api-key API_KEY", "The FusionAuth API key.") do |fusionauthapikey|
-    $options[:fusionauthapikey] = fusionauthapikey
+    options[:fusionauthapikey] = fusionauthapikey
   end
 
   opts.on("-t", "--fusionauth-tenant-id TENANT_ID", "The FusionAuth tenant id. Required if more than one tenant exists.") do |tenantid|
-    $options[:tenantid] = tenantid
+    options[:tenantid] = tenantid
   end
 
   opts.on("-s", "--secrets-file SECRETS_FILE", "The exported JSON secrets file from Auth0. Defaults to secrets.json.") do |file|
-    $options[:secretsfile] = file
+    options[:secretsfile] = file
   end
 
   opts.on("-m", "--map-auth0-id", "Whether to map the auth0 id for normal imported users to the FusionAuth user id.") do |mapids|
-    $options[:mapids] = mapids
+    options[:mapids] = mapids
   end
 
   opts.on("-h", "--help", "Prints this help.") do
@@ -58,18 +60,18 @@ OptionParser.new do |opts|
   end
 end.parse!
 
-users_file = $options[:userfile]
-secrets_file = $options[:secretsfile]
+users_file = options[:usersfile]
+secrets_file = options[:secretsfile]
 
-$fusionauth_url = $options[:fusionauthurl]
-$fusionauth_api_key = $options[:fusionauthapikey]
+$fusionauth_url = options[:fusionauthurl]
+$fusionauth_api_key = options[:fusionauthapikey]
 
 # Optionally specify the target tenant. If only one tenant exists this is optional and the users
 # will be imported to the default tenant. When more than one tenant exists in FusionAuth this is required.
-$fusionauth_tenant_id = $options[:tenantid]
+$fusionauth_tenant_id = options[:tenantid]
 
 # Map Auth0 userId to the FusionAuth User Id as a UUID
-$map_auth0_user_id = !$options[:mapids].nil?
+$map_auth0_user_id = !options[:mapids].nil?
 
 puts "FusionAuth Importer : Auth0"
 puts " > User file: #{users_file}"
@@ -89,7 +91,7 @@ idp_identifiers_to_auth0_type = {
 #create a link between the identity provider and the user
 
 # Map an Auth0 user to a FusionAuth user
-def map_user(id, auth_secret, auth_user)
+def map_user(id, auth_secret, auth_user, options)
   user = {}
   is_auth0_user = auth_user['auth0_user_type'] == 'auth0'
   is_idp_user = auth_user['auth0_user_type'] != 'auth0'
@@ -137,8 +139,8 @@ def map_user(id, auth_secret, auth_user)
     user['data']['auth0']['idpid'] = auth_user['auth0_user_type'] + "|" + id
   end
 
-  if $options[:appids]
-    regids = $options[:appids].split(',')
+  if options[:appids]
+    regids = options[:appids].split(',')
     user['registrations'] = []
     regids.each do |rid|
       application_registration = {
@@ -151,10 +153,36 @@ def map_user(id, auth_secret, auth_user)
   return user
 end
 
-def import(users)
+def find_user_id(client, u)
+  querystring = nil
+  if u['email']
+    querystring = u['email']
+  elsif u['username']
+    querystring = u['username']
+  end
+  results = client.search_users_by_query({search: {queryString: querystring } } )
+  if results && results.success_response
+    users = results.success_response.users
+    if users.length > 1
+      puts "> Found multiple users matching " + querystring + ". Not linking."
+      return nil
+    end
+    return users[0].id
+  else
+    puts "> Couldn't find " + querystring + ". Have they been imported?"
+  end
+
+  return "abcd"
+end
+
+def import(users, options)
+
+  if options[:onlylinksocial]
+    # no importing
+    return
+  end
 
   puts " > Call FusionAuth to import users"
-  return # for debugging, TODO remove
 
   import_request = {}
   import_request['users'] = users
@@ -163,7 +191,9 @@ def import(users)
   # FusionAuth Import API
   # https://fusionauth.io/docs/v1/tech/apis/users#import-users
   client = FusionAuth::FusionAuthClient.new($fusionauth_api_key, $fusionauth_url)
-  client.set_tenant_id($fusionauth_tenant_id)
+  if $fusionauth_tenant_id
+    client.set_tenant_id($fusionauth_tenant_id)
+  end
   response = client.import_users(import_request)
   if response.was_successful
     puts " > Import success"
@@ -207,13 +237,14 @@ f2.each_line { |line|
   type = user_id.split('|')[0]
   id = user_id.split('|')[1]
   u_hash['auth0_user_type'] = type
+  u_hash['auth0_user_id'] = id
   auth0_users[id] = u_hash
 }
 f2.close
 
 # process users with passwords
 auth0_users.length > 0 && auth0_users.each_key do |id|
-  u = map_user(id, auth0_secrets[id], auth0_users[id])
+  u = map_user(id, auth0_secrets[id], auth0_users[id], options)
 
   unless u['email'].nil?
     unless emails.include? u['email']
@@ -245,35 +276,45 @@ auth0_users.length > 0 && auth0_users.each_key do |id|
 
   # In chunks of 10k, request a bulk insert
   if count % 10_000 == 0
-    import(users)
+    import(users, options)
     users = []
   end
 end
 
 # Complete the import for anything that did not make the 10k threshold
 if users.length > 0
-  import(users)
+  import(users, options)
   users = []
 end
 
-# this is going to be much much slower
-# FusionAuth Link API
-# https://fusionauth.io/docs/v1/tech/apis/identity-providers/links/
-link_client = FusionAuth::FusionAuthClient.new($fusionauth_api_key, $fusionauth_url)
-idp_users_needing_link.length > 0 && idp_users_needing_link.each do |u|
-  link_request = {}
-  link_request['identityProviderId'] = idp_identifiers_to_auth0_type[u['auth0_user_type']]
-  link_request['identityProviderUserId'] = u['id']
-  link_request['userId'] = TODO need to get this
-  puts link_request
 
-  next
-  client.set_tenant_id($fusionauth_tenant_id)
-  response = client.create_user_link(link_request)
-  if response.was_successful
-    puts " > Link success"
-  else
-    puts " > Link failed for user id: "+link_request['userId']+". Status code #{response.status}. Error response:\n #{response.error_response}"
+if options[:linksocial] || options[:onlylinksocial]
+  puts "Linking "+ (idp_users_needing_link.length.to_s) +" social accounts"
+
+  client = FusionAuth::FusionAuthClient.new($fusionauth_api_key, $fusionauth_url)
+  if $fusionauth_tenant_id
+    client.set_tenant_id($fusionauth_tenant_id)
+  end
+
+  # https://fusionauth.io/docs/v1/tech/apis/identity-providers/links/
+  idp_users_needing_link.length > 0 && idp_users_needing_link.each do |u|
+    link_request = {}
+    link_request['identityProviderId'] = idp_identifiers_to_auth0_type[u['auth0_user_type']]
+    link_request['identityProviderUserId'] = u['auth0_user_id']
+
+    user_id_in_fusionauth = find_user_id(client, u)
+    unless user_id_in_fusionauth
+      # couldn't find user?
+      next
+    end
+    link_request['userId'] = user_id_in_fusionauth
+
+    response = client.create_user_link(link_request)
+    if response.was_successful
+      puts " > Link success"
+    else
+      puts " > Link failed for user id: "+link_request['userId']+". Status code #{response.status}. Error response:\n #{response.error_response}"
+    end
   end
 end
 
