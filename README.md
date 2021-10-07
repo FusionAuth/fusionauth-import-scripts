@@ -6,7 +6,12 @@ We're building out import scripts for any and all third party Identity Providers
 
 #### Auth0
 
-To begin, modify the section that begins with ` BEGIN Modify these variables for your Import`. Once you have provided a URL and API key, and the location of the exported Auth0 files, you may execute the import script.
+Gather the following:
+
+* Your Auth0 user data export file
+* Your Auth0 secrets export file
+* Your FusionAuth instance URL
+* A FusionAuth API key. This key must have at least the `/api/user/import` permission to import normal users, and the additional permission of `/api/identity-provider/link` to import social users.
 
 The following gems are required to run this import script.
 
@@ -20,11 +25,18 @@ If you are familiar with Ruby you can optionally build a build file, or simply i
 
 You can run `bundle install` if you have bundler installed, or you can install the gems manually: `sudo gem install fusionauth_client`
 
-Finally, execute the Import script.
+Finally, execute the Import script:
 
 ```bash
-ruby ./import.rb
+ruby ./import.rb -u users.json -s secrets.json -f https://local.fusionauth.io -r 80492376-0ce2-4e9b-afa6-c093b78e57e5,3f282a4b-ef92-4c46-82d2-5eca8fa38293 
+
+You can see all the options:
+
+```bash
+ruby ./import.rb -h
 ```
+
+This script supports loading users from social providers such as LinkedIn or Google if you are running FusionAuth >= 1.28. Otherwise it does not support importing such users.
 
 #### CSV
 

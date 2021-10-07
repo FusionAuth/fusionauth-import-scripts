@@ -3,22 +3,73 @@
 require 'date'
 require 'json'
 require 'fusionauth/fusionauth_client'
+require 'optparse'
 
-# BEGIN Modify these variables for your Import
-users_file = 'users.json'
-secrets_file = 'secrets.json'
+# option handling
+options = {}
 
-$fusionauth_url = 'http://localhost:9011'
-$fusionauth_api_key = 'bf69486b-4733-4470-a592-f1bfce7af580'
+# default options
+options[:userfile] = "users.json"
+options[:secretsfile] = "secrets.json"
+options[:fusionauthurl] = "http://localhost:9011"
+
+OptionParser.new do |opts|
+  opts.banner = "Usage: import.rb [options]"
+
+  opts.on("-l", "--link-social-accounts", "Link social accounts, if present, after import. This operation is slower than an import.") do |linksocial|
+    options[:linksocial] = true
+  end
+
+  opts.on("-r", "--register-users APPLICATION_IDS", "A comma separated list of existing applications Ids. All users will be registered for these applications.") do |appids|
+    options[:appids] = appids
+  end
+
+  opts.on("-o", "--only-link-social-accounts", "Link social accounts with no import.") do |siteurl|
+    options[:onlylinksocial] = true
+  end
+
+  opts.on("-u", "--users-file USERS_FILE", "The exported JSON user data file from Auth0. Defaults to users.json.") do |file|
+    options[:usersfile] = file
+  end
+
+  opts.on("-f", "--fusionauth-url FUSIONAUTH_URL", "The location of the FusionAuth instance. Defaults to http://localhost:9011.") do |fusionauthurl|
+    options[:fusionauthurl] = fusionauthurl
+  end
+
+  opts.on("-k", "--fusionauth-api-key API_KEY", "The FusionAuth API key.") do |fusionauthapikey|
+    options[:fusionauthapikey] = fusionauthapikey
+  end
+
+  opts.on("-t", "--fusionauth-tenant-id TENANT_ID", "The FusionAuth tenant id. Required if more than one tenant exists.") do |tenantid|
+    options[:tenantid] = tenantid
+  end
+
+  opts.on("-s", "--secrets-file SECRETS_FILE", "The exported JSON secrets file from Auth0. Defaults to secrets.json.") do |file|
+    options[:secretsfile] = file
+  end
+
+  opts.on("-m", "--map-auth0-id", "The exported JSON secrets file from Auth0. Defaults to secrets.json") do |mapids|
+    options[:secretsfile] = mapids
+  end
+
+  opts.on("-h", "--help", "Prints this help.") do
+    puts opts
+    exit
+  end
+end.parse!
+
+users_file = options[:userfile]
+secrets_file = options[:secretsfile]
+
+$fusionauth_url = options[:fusionauthurl]
+$fusionauth_api_key = options[:fusionauthapikey]
 
 # Optionally specify the target tenant. If only one tenant exists this is optional and the users
 # will be imported to the default tenant. When more than one tenant exists in FusionAuth this is required.
-$fusionauth_tenant_id = '16970284-4680-4b3c-8a7e-424644ed1090'
+$fusionauth_tenant_id = options[:tenantid]
 
 # Map Auth0 userId to the FusionAuth User Id as a UUID
-$map_auth0_user_id = false
-
-# END Modify these variables for your Import
+$map_auth0_user_id = !options[:mapids].nil?
 
 puts "FusionAuth Importer : Auth0"
 puts " > User file: #{users_file}"
@@ -57,12 +108,16 @@ def map_user(id, auth_secret, auth_user)
   user['data']['auth0']['id'] = id
   user['data']['auth0']['tenant'] = auth_secret['tenant']
 
-  # Uncomment and modify to add a Registration
-  # user['registrations'] = []
-  # application_registration = {
-    # applicationId: '6b72ba2d-679a-41dd-adb3-9f3e75e7cd1f'
-  # }
-  # user['registrations'].push(application_registration)
+  if options[:appids]
+    regids = options[:appids].split(',')
+    user['registrations'] = []
+    regids.each do |rid|
+      application_registration = {
+        applicationId: rid
+      }
+      user['registrations'].push(application_registration)
+    end
+  end
 
   return user
 end
