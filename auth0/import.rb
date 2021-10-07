@@ -6,50 +6,50 @@ require 'fusionauth/fusionauth_client'
 require 'optparse'
 
 # option handling
-options = {}
+$options = {}
 
 # default options
-options[:userfile] = "users.json"
-options[:secretsfile] = "secrets.json"
-options[:fusionauthurl] = "http://localhost:9011"
+$options[:userfile] = "users.json"
+$options[:secretsfile] = "secrets.json"
+$options[:fusionauthurl] = "http://localhost:9011"
 
 OptionParser.new do |opts|
   opts.banner = "Usage: import.rb [options]"
 
   opts.on("-l", "--link-social-accounts", "Link social accounts, if present, after import. This operation is slower than an import.") do |linksocial|
-    options[:linksocial] = true
+    $options[:linksocial] = true
   end
 
   opts.on("-r", "--register-users APPLICATION_IDS", "A comma separated list of existing applications Ids. All users will be registered for these applications.") do |appids|
-    options[:appids] = appids
+    $options[:appids] = appids
   end
 
   opts.on("-o", "--only-link-social-accounts", "Link social accounts with no import.") do |siteurl|
-    options[:onlylinksocial] = true
+    $options[:onlylinksocial] = true
   end
 
   opts.on("-u", "--users-file USERS_FILE", "The exported JSON user data file from Auth0. Defaults to users.json.") do |file|
-    options[:usersfile] = file
+    $options[:usersfile] = file
   end
 
   opts.on("-f", "--fusionauth-url FUSIONAUTH_URL", "The location of the FusionAuth instance. Defaults to http://localhost:9011.") do |fusionauthurl|
-    options[:fusionauthurl] = fusionauthurl
+    $options[:fusionauthurl] = fusionauthurl
   end
 
   opts.on("-k", "--fusionauth-api-key API_KEY", "The FusionAuth API key.") do |fusionauthapikey|
-    options[:fusionauthapikey] = fusionauthapikey
+    $options[:fusionauthapikey] = fusionauthapikey
   end
 
   opts.on("-t", "--fusionauth-tenant-id TENANT_ID", "The FusionAuth tenant id. Required if more than one tenant exists.") do |tenantid|
-    options[:tenantid] = tenantid
+    $options[:tenantid] = tenantid
   end
 
   opts.on("-s", "--secrets-file SECRETS_FILE", "The exported JSON secrets file from Auth0. Defaults to secrets.json.") do |file|
-    options[:secretsfile] = file
+    $options[:secretsfile] = file
   end
 
-  opts.on("-m", "--map-auth0-id", "The exported JSON secrets file from Auth0. Defaults to secrets.json") do |mapids|
-    options[:secretsfile] = mapids
+  opts.on("-m", "--map-auth0-id", "Whether to map the auth0 id for normal imported users to the FusionAuth user id.") do |mapids|
+    $options[:mapids] = mapids
   end
 
   opts.on("-h", "--help", "Prints this help.") do
@@ -58,62 +58,91 @@ OptionParser.new do |opts|
   end
 end.parse!
 
-users_file = options[:userfile]
-secrets_file = options[:secretsfile]
+users_file = $options[:userfile]
+secrets_file = $options[:secretsfile]
 
-$fusionauth_url = options[:fusionauthurl]
-$fusionauth_api_key = options[:fusionauthapikey]
+$fusionauth_url = $options[:fusionauthurl]
+$fusionauth_api_key = $options[:fusionauthapikey]
 
 # Optionally specify the target tenant. If only one tenant exists this is optional and the users
 # will be imported to the default tenant. When more than one tenant exists in FusionAuth this is required.
-$fusionauth_tenant_id = options[:tenantid]
+$fusionauth_tenant_id = $options[:tenantid]
 
 # Map Auth0 userId to the FusionAuth User Id as a UUID
-$map_auth0_user_id = !options[:mapids].nil?
+$map_auth0_user_id = !$options[:mapids].nil?
 
 puts "FusionAuth Importer : Auth0"
 puts " > User file: #{users_file}"
 puts " > User secrets file: #{secrets_file}"
 
+# ids pulled from https://github.com/FusionAuth/fusionauth-java-client/blob/master/src/main/java/io/fusionauth/domain/provider/IdentityProviderType.java
+idp_identifiers_to_auth0_type = {
+  "linkedin" => "6177c09d-3f0e-4d53-9504-3600b1b23f46",
+  "google-oauth2" => "82339786-3dff-42a6-aac6-1f1ceecb6c46",
+# add others as we have test data.
+}
+
+
+# process users with identity providers
+#load the users, set a garbage password
+#find which identity provider they are associated with
+#create a link between the identity provider and the user
+
 # Map an Auth0 user to a FusionAuth user
 def map_user(id, auth_secret, auth_user)
   user = {}
+  is_auth0_user = auth_user['auth0_user_type'] == 'auth0'
+  is_idp_user = auth_user['auth0_user_type'] != 'auth0'
 
-  # Optionally convert Auth0 user_id to a UUID for FusionAuth
-  if $map_auth0_user_id
-    _id = id.ljust(32, '0')
-    user['id'] = "#{_id[0, 8]}-#{_id[8, 4]}-#{_id[12, 4]}-#{_id[16, 4]}-#{_id[20, 12]}"
+  if is_auth0_user
+    # Optionally convert Auth0 user_id to a UUID for FusionAuth
+    if $map_auth0_user_id
+      _id = id.ljust(32, '0')
+      user['id'] = "#{_id[0, 8]}-#{_id[8, 4]}-#{_id[12, 4]}-#{_id[16, 4]}-#{_id[20, 12]}"
+    end
   end
 
   user['active'] = true
-  user['email'] = auth_secret['email']
-  user['verified'] = auth_secret['email_verified']
-  user['username'] = auth_secret['username']
+  user['email'] = auth_user['email']
+  user['verified'] = auth_user['email_verified']
+  user['username'] = auth_user['username']
 
   # Incoming format is '2017-08-08T08:31:19.483Z', convert to epoch milli
   user['insertInstant'] = Date.parse(auth_user['created_at']).strftime("%Q")
 
   # Optionally we could grab the last login instant
 
-  pw_hash = auth_secret['passwordHash'].split('$')
-  # [version][factor][hash [0 - 21 salt][22 - password]]
-  user['encryptionScheme'] = 'bcrypt'
-  user['factor'] = pw_hash[2].to_i
-  user['salt'] = pw_hash[3][0, 22]
-  user['password'] = pw_hash[3][22..-1]
+  if is_auth0_user
+    pw_hash = auth_secret['passwordHash'].split('$')
+    # [version][factor][hash [0 - 21 salt][22 - password]]
+    user['encryptionScheme'] = 'bcrypt'
+    user['factor'] = pw_hash[2].to_i
+    user['salt'] = pw_hash[3][0, 22]
+    user['password'] = pw_hash[3][22..-1]
 
-  # Preserve the Auth0 Unique Id
-  user['data'] = {}
-  user['data']['auth0'] = {}
-  user['data']['auth0']['id'] = id
-  user['data']['auth0']['tenant'] = auth_secret['tenant']
+    # Preserve the Auth0 Unique Id
+    user['data'] = {}
+    user['data']['auth0'] = {}
+    user['data']['auth0']['id'] = id
+    user['data']['auth0']['tenant'] = auth_secret['tenant']
+  end
 
-  if options[:appids]
-    regids = options[:appids].split(',')
+  if is_idp_user
+    # random string, we don't care as users won't use it
+    user['password'] = SecureRandom.hex
+
+    # preserve idp id provided by auth0
+    user['data'] = {}
+    user['data']['auth0'] = {}
+    user['data']['auth0']['idpid'] = auth_user['auth0_user_type'] + "|" + id
+  end
+
+  if $options[:appids]
+    regids = $options[:appids].split(',')
     user['registrations'] = []
     regids.each do |rid|
       application_registration = {
-        applicationId: rid
+        applicationId: rid.strip()
       }
       user['registrations'].push(application_registration)
     end
@@ -123,7 +152,9 @@ def map_user(id, auth_secret, auth_user)
 end
 
 def import(users)
+
   puts " > Call FusionAuth to import users"
+  return # for debugging, TODO remove
 
   import_request = {}
   import_request['users'] = users
@@ -148,6 +179,7 @@ auth0_users = {}
 users = []
 emails = []
 user_names = []
+idp_users_needing_link = []
 duplicate_emails = []
 duplicate_user_names = []
 
@@ -171,12 +203,16 @@ f2.each_line { |line|
   line.chomp!
   next if line.empty?
   u_hash = JSON.parse(line)
-  id = u_hash['user_id'][6..-1]
+  user_id = u_hash['user_id']
+  type = user_id.split('|')[0]
+  id = user_id.split('|')[1]
+  u_hash['auth0_user_type'] = type
   auth0_users[id] = u_hash
 }
 f2.close
 
-auth0_secrets.each_key do |id|
+# process users with passwords
+auth0_users.length > 0 && auth0_users.each_key do |id|
   u = map_user(id, auth0_secrets[id], auth0_users[id])
 
   unless u['email'].nil?
@@ -200,6 +236,9 @@ auth0_secrets.each_key do |id|
   unless duplicate
     count = count + 1
     users.push u
+    if auth0_users[id]['auth0_user_type'] != 'auth0'
+      idp_users_needing_link.push auth0_users[id]
+    end
   else
     duplicate_count = duplicate_count + 1
   end
@@ -217,6 +256,27 @@ if users.length > 0
   users = []
 end
 
+# this is going to be much much slower
+# FusionAuth Link API
+# https://fusionauth.io/docs/v1/tech/apis/identity-providers/links/
+link_client = FusionAuth::FusionAuthClient.new($fusionauth_api_key, $fusionauth_url)
+idp_users_needing_link.length > 0 && idp_users_needing_link.each do |u|
+  link_request = {}
+  link_request['identityProviderId'] = idp_identifiers_to_auth0_type[u['auth0_user_type']]
+  link_request['identityProviderUserId'] = u['id']
+  link_request['userId'] = TODO need to get this
+  puts link_request
+
+  next
+  client.set_tenant_id($fusionauth_tenant_id)
+  response = client.create_user_link(link_request)
+  if response.was_successful
+    puts " > Link success"
+  else
+    puts " > Link failed for user id: "+link_request['userId']+". Status code #{response.status}. Error response:\n #{response.error_response}"
+  end
+end
+
 puts "Duplicate users #{duplicate_count}"
 unless duplicate_emails.size == 0
   duplicate_emails.each { |email| puts " > #{email}" }
@@ -225,3 +285,4 @@ unless duplicate_user_names.size == 0
   duplicate_user_names.each { |user_name| puts " > #{user_name}" }
 end
 puts "Import complete. #{count} users imported."
+
