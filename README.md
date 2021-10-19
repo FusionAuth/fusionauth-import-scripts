@@ -2,9 +2,9 @@
 
 We're building out import scripts for any and all third party Identity Providers. Feel free to submit a PR with your specific use of the Import API in whatever language you have.
 
-### Importers
+## Importers
 
-#### Auth0
+### Auth0
 
 Gather the following:
 
@@ -38,7 +38,7 @@ You can see all the options:
 ruby ./import.rb -h
 ```
 
-##### Social providers
+#### Social providers
 
 This script supports loading users from social providers such as LinkedIn or Google if you are running FusionAuth >= 1.28. Otherwise it does not support importing such users.
 
@@ -46,7 +46,7 @@ If you are importing users with social providers, ensure that the Identity Provi
 
 You can find additional social provider identity provider ids: https://github.com/FusionAuth/fusionauth-java-client/blob/master/src/main/java/io/fusionauth/domain/provider/IdentityProviderType.java and you may need to update the `idp_identifiers_to_auth0_type` variable with additional mappings between what Auth0 calls a social provider and the Id FusionAuth user. 
 
-#### CSV
+### CSV
 
 The example [CSV import script](./csv/import.rb) provides a starting point for importing users from a CSV into FusionAuth.  This example maps the CSV fields by header from [the example CSV](./csv/example_users.csv) onto FusionAuth users within the `map_user` function.  You will likely need to update `map_user` to map the fields from your CSV accordingly.
 
@@ -73,7 +73,7 @@ Finally, execute the Import script.
 ruby ./import.rb
 ```
 
-#### Generate Test Users
+### Generate Test Users
 
 This script will use the Import API to bulk create users for load testing FusionAuth.
 
@@ -106,7 +106,7 @@ Generate 100,000 users with an offset of 100,000. This would allow you to import
 ruby generate_import.rb --apiKey <API Key> --applicationId <Application Id> --tenantId <TenantId> --url http://localhost:9011 --total 100000 --ofset 100000
 ```
 
-#### Generate Applications
+### Generate Applications
 
 This script will use the Application API to create applications.
 
@@ -127,7 +127,7 @@ ruby generate_applications.rb --apiKey <API Key> --tenantId <TenantId> --url htt
 ```
 
 
-### Project Layout
+## Project Layout
 
 ```
 auth0
