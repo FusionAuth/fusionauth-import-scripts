@@ -84,12 +84,6 @@ idp_identifiers_to_auth0_type = {
 # add others as we have test data.
 }
 
-
-# process users with identity providers
-#load the users, set a garbage password
-#find which identity provider they are associated with
-#create a link between the identity provider and the user
-
 # Map an Auth0 user to a FusionAuth user
 def map_user(id, auth_secret, auth_user, options)
   user = {}
@@ -172,7 +166,7 @@ def find_user_id(client, u)
     puts "> Couldn't find " + querystring + ". Have they been imported?"
   end
 
-  return "abcd"
+  return nil
 end
 
 def import(users, options)
