@@ -7,5 +7,5 @@ gem 'optparse'
 gem 'date'
 gem 'json'
 gem 'fusionauth_client'
-
+gem 'securerandom'
 
