@@ -30,7 +30,7 @@ You can run `bundle install` if you have bundler installed, or you can install t
 Finally, execute the Import script:
 
 ```bash
-ruby ./import.rb -u users.json -s secrets.json -f https://local.fusionauth.io -r 80492376-0ce2-4e9b-afa6-c093b78e57e5,3f282a4b-ef92-4c46-82d2-5eca8fa38293 
+ruby ./import.rb -k fusionauth-api-key -u users.json -s secrets.json -f https://local.fusionauth.io -r 80492376-0ce2-4e9b-afa6-c093b78e57e5,3f282a4b-ef92-4c46-82d2-5eca8fa38293 
 
 You can see all the options:
 
@@ -71,6 +71,72 @@ Finally, execute the Import script.
 
 ```bash
 ruby ./import.rb
+```
+
+### Keycloak
+
+Gather the following:
+
+* Your Keycloak database credentials
+* The Id of each realm you want to import.
+* Your FusionAuth instance URL
+* A FusionAuth API key. This key must have at least the `/api/user/import` permission to import users.
+
+#### Install the plugin
+
+Keycloak by default uses a password hashing algorithm that doesn't ship with FusionAuth. However, there is an example password hashing plugin available here:
+
+Install the plugin. By default, it installs the plugin with the name `example-keycloak`. You can use a different name, but if you do, you'll need to modify the `map_hashing_algorithm` method in the import script. 
+
+Here are the installation instructions: https://fusionauth.io/docs/v1/tech/plugins/writing-a-plugin/#install-the-plugin
+
+If you used a different hashing algorithm, build a plugin that uses that algorithm and install it.
+
+#### Retrieve the user data
+
+Run the SQL query in `keycloak/keycloak-export.sql` to retrieve the needed data for each realm.
+
+Edit that file to replace `RealmID` with the value of the realm. You can find that in the admin screen, it is the `Name` field of the realm. You'll want a separate output file for each realm. Realms in Keycloak map to Tenants in FusionAuth.
+
+Output the results of this query to a CSV file. How you do so depends on the database. Assuming the SQL above is stored in `keycloak-export.sql`, the database username is `USER`, the database password is `password`, and the keycloak database is `keycloak`, the export command might be: 
+
+* mysql: `cat keycloak-export.sql | mysql -u USER -ppassword keycloak| sed 's/\t/,/g' > out.csv`. You may have to remove the header line.
+* postgresql: `psql -W -h localhost -p5433 -U postgres -d fusionauth -c "Copy (CONTENTS OF SQL FILE) To STDOUT With CSV HEADER DELIMITER ',';" > out.csv`
+
+In any event, you'll end up with a file that looks like this:
+
+```
+FIRST_NAME,LAST_NAME,EMAIL,USERNAME,EMAIL_VERIFIED,ID,SECRET_DATA,CREDENTIAL_DATA,CREATED_TIMESTAMP,REALM_ID
+Test,Example,test@example.com,test,\0,f35a58e2-0247-4c38-aa39-93405e09c677,{"value":"T6S/56cQy0ahQKohXe61aMOhvFr/PHEPfQbILKMLZKrdfOSo8wc+S6HCYomSJwTgYmdPy2gKh+oQW9UbeCmEwQ==","salt":"eYcTxcZhBV+GU9BQRt8Ypw==","additionalParameters":{}},{"hashIterations":27500,"algorithm":"pbkdf2-sha256","additionalParameters":{}},1634670076567,Test
+Test,Example2,test2@example.com,test2,,1709a278-12a5-4126-9542-02f6809a349e,{"value":"LjFqvhPuUHJdQvWIwVQfqxjeujAWqG/DVQRFoOv62/cTznl9ob4jwWwY6i1RrwGviu5iNPU5VIp03SxDyetyfw==","salt":"jVqbuA9k2Mlo37OWXBMKLw==","additionalParameters":{}},{"hashIterations":27500,"algorithm":"pbkdf2-sha256","additionalParameters":{}},1634670197972,Test
+```
+
+You can tweak this SQL file to, for example, only retrieve enabled users or those created after a certain date. The main tables you are interested in are `USER_ENTITY` and `CREDENTIAL`.
+
+#### Import the data
+
+The following gems are required to run this import script.
+
+```ruby
+require 'date'
+require 'json'
+require 'fusionauth/fusionauth_client'
+require 'optparse'
+```
+
+If you are familiar with Ruby you can optionally build a build file, or simply install these gems prior to running the script. The `date`, `optparse` and `json` gems are likely already available in your Ruby environment.
+
+You can run `bundle install` if you have bundler installed, or you can install the gems manually: `sudo gem install fusionauth_client`, etc.
+
+Finally, execute the import script. This command imports into an instance running at local.fusionauth.io, into the `80492376-0ce2-4e9b-afa6-c093b78e57e5` tenant, from the `import.csv` file:
+
+```bash
+ruby ./import.rb -u import.csv -f https://local.fusionauth.io -t 80492376-0ce2-4e9b-afa6-c093b78e57e5 -k apikeyapikey
+
+You can see all the options:
+
+```bash
+ruby ./import.rb -h
 ```
 
 ### Generate Test Users
