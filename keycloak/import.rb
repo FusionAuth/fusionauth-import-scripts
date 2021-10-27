@@ -150,8 +150,7 @@ end
 
 def map_hashing_algorithm(keycloak_algorithm_name)
   if keycloak_algorithm_name == "pbkdf2-sha256"
-    #return "example-keycloak"
-    return "example-hash"
+    return "example-keycloak"
   end
   raise "unsupported algorithm: " + keycloak_algorithm_name
 end
