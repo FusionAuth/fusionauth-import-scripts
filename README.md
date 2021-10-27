@@ -101,7 +101,7 @@ Edit that file to replace `RealmID` with the value of the realm. You can find th
 Output the results of this query to a CSV file. How you do so depends on the database. Assuming the SQL above is stored in `keycloak-export.sql`, the database username is `USER`, the database password is `password`, and the keycloak database is `keycloak`, the export command might be: 
 
 * mysql: `cat keycloak-export.sql | mysql -u USER -ppassword keycloak| sed 's/\t/,/g' > out.csv`. You may have to remove the header line.
-* postgresql: `psql -W -h localhost -p5433 -U postgres -d fusionauth -c "Copy (CONTENTS OF SQL FILE) To STDOUT With CSV HEADER DELIMITER ',';" > out.csv`
+* postgresql: `psql -W -h localhost -p5433 -U USER -d fusionauth -c "Copy (CONTENTS OF SQL FILE) To STDOUT With CSV HEADER DELIMITER ',';" > out.csv`
 
 In any event, you'll end up with a file that looks like this:
 
