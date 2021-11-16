@@ -1,10 +1,11 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    date (3.1.1)
+    date (3.1.2)
     fusionauth_client (1.30.0)
     json (2.5.1)
     optparse (0.1.1)
+    securerandom (0.1.1)
 
 PLATFORMS
   ruby
@@ -14,6 +15,7 @@ DEPENDENCIES
   fusionauth_client
   json
   optparse
+  securerandom
 
 RUBY VERSION
    ruby 2.7.1p83
