@@ -139,6 +139,14 @@ You can see all the options:
 ruby ./import.rb -h
 ```
 
+### Firebase
+
+Please see https://fusionauth.io/docs/v1/tech/migration-guide/firebase for full instructions.
+
+### Azure AD B2C
+
+Please see https://fusionauth.io/docs/v1/tech/migration-guide/azureadb2c for full instructions.
+
 ### Generate Test Users
 
 This script will use the Import API to bulk create users for load testing FusionAuth.
