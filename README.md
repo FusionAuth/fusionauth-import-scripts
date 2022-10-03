@@ -193,15 +193,3 @@ ruby generate_applications.rb --apiKey <API Key> --tenantId <TenantId> --url htt
 ```
 
 
-## Project Layout
-
-```
-auth0
-├── import.rb
-csv
-├── import.rb
-├── example_users.csv
-testing
-|── generate_applications.rb
-|── generate_import.rb
-```
