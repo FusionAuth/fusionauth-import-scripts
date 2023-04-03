@@ -1,0 +1,100 @@
+{
+  "users": [
+    {
+      "active": true,
+      "birthDate": null,
+      "insertInstance": 1680463413000,
+      "data": {
+        "migrated": true,
+        "favoriteColors": "red"
+      },
+      "email": "AliceSmith@email.com",
+      "expiry": null,
+      "firstName": "",
+      "fullName": "",
+      "id": "004eba25-8f8a-4571-ac02-d4d618fa0e28",
+      "lastLoginInstant": 0,
+      "lastName": "",
+      "middleName": "",
+      "mobilePhone": "",
+      "password": "kYvylojznO+rLOZm+Y0r3q52aFrtIwJucApZY8HF/wk=",
+      "salt": "dFilBnTpkMaB5NnPGEaBTg==",
+      "factor": 10000,
+      "encryptionScheme": "salted-pbkdf2-hmac-sha256",
+      "passwordChangeRequired": false,
+      "passwordLastUpdateInstant": 0,
+      "preferredLanguages": [
+        "en"
+      ],
+      "identityProviders": {},
+      "timezone": null,
+      "twoFactorEnabled": false,
+      "username": "alice",
+      "verified": true
+    },
+    {
+      "active": true,
+      "birthDate": null,
+      "insertInstance": 1680463413000,
+      "data": {
+        "migrated": true
+      },
+      "email": "bradley@indri.co.za",
+      "expiry": null,
+      "firstName": "",
+      "fullName": "",
+      "id": "cde3a3e3-1e34-438b-b135-6a56c442d4c3",
+      "lastLoginInstant": 0,
+      "lastName": "",
+      "middleName": "",
+      "mobilePhone": "",
+      "password": null,
+      "salt": null,
+      "factor": 0,
+      "encryptionScheme": null,
+      "passwordChangeRequired": false,
+      "passwordLastUpdateInstant": 0,
+      "preferredLanguages": [
+        "en"
+      ],
+      "identityProviders": {
+        "google": "108424841857347725303"
+      },
+      "timezone": null,
+      "twoFactorEnabled": false,
+      "username": "cde3a3e3-1e34-438b-b135-6a56c442d4c3",
+      "verified": false
+    },
+    {
+      "active": true,
+      "birthDate": null,
+      "insertInstance": 1680463413000,
+      "data": {
+        "migrated": true
+      },
+      "email": "BobSmith@email.com",
+      "expiry": null,
+      "firstName": "",
+      "fullName": "",
+      "id": "fd36901d-c110-4d65-b7ca-28252ddf4c20",
+      "lastLoginInstant": 0,
+      "lastName": "",
+      "middleName": "",
+      "mobilePhone": "",
+      "password": "XdvJrd7M59L6EZUkW7Xxc0mEQJiOdPs2F1Ptn/utSMk=",
+      "salt": "Gx67HwSiqvxaFZA+8akA0Q==",
+      "factor": 10000,
+      "encryptionScheme": "salted-pbkdf2-hmac-sha256",
+      "passwordChangeRequired": false,
+      "passwordLastUpdateInstant": 0,
+      "preferredLanguages": [
+        "en"
+      ],
+      "identityProviders": {},
+      "timezone": null,
+      "twoFactorEnabled": false,
+      "username": "bob",
+      "verified": true
+    }
+  ]
+}
