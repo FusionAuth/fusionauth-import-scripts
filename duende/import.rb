@@ -11,7 +11,7 @@ require "securerandom"
 options = {}
 
 # default options
-options[:usersfile] = "identityserver/users.json"
+options[:usersfile] = "users.json"
 options[:fusionauthurl] = "http://localhost:9011"
 
 
