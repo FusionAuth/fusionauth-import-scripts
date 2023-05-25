@@ -73,7 +73,7 @@ $fusionauth_tenant_id = options[:tenantid]
 # Map Auth0 userId to the FusionAuth User Id as a UUID
 $map_auth0_user_id = !options[:mapids].nil?
 
-puts "FusionAuth Importer : Auth0"
+puts "FusionAuth Importer : Supabase"
 puts " > User file: #{users_file}"
 
 # ids pulled from https://github.com/FusionAuth/fusionauth-java-client/blob/master/src/main/java/io/fusionauth/domain/provider/IdentityProviderType.java
@@ -85,9 +85,6 @@ idp_identifiers_to_auth0_type = {
   "epicGames" => "1b932b19-61a8-47c7-9e81-27dbf9011dad",
   "hypr" => "778985b7-6fd8-414d-acf2-94f18fb7c7e0",
   "nintendo" => "b0ac2e16-d4af-483e-98c8-7f6693610665",
-  "openIDConnect" => null,
-  "SAMLv2" => null,
-  "SAMLv2IdPInitiated" => null,
   "sonyPSN" => "7764b5c7-165b-4e7e-94aa-02ebe2a0a5fb",
   "steam" => "e4f39345-7833-4b1d-b331-ca03bdc2c4be",
   "twitch" => "bf4cf83f-e824-42d7-b4a3-5b10847a66b2",
@@ -107,7 +104,7 @@ def map_user(id, auth_user, options)
 
 
   # Incoming format is '2017-08-08T08:31:19.483Z', convert to epoch milli
-  user['insertInstant'] = Date.parse(auth_user['created_at']).strftime("%Q")
+  # user['insertInstant'] = Date.parse(auth_user['created_at'].to_s).strftime("%Q")
 
   # Optionally we could grab the last login instant
 
@@ -122,7 +119,7 @@ def map_user(id, auth_user, options)
     user['data'] = {}
     user['data']['auth0'] = {}
     user['data']['auth0']['id'] = id
-    user['data']['auth0']['tenant'] = auth_user['tenant']
+    user['data']['auth0']['tenant'] = $fusionauth_tenant_id
   end
 
   if is_idp_user
@@ -171,7 +168,7 @@ def import(users, options)
 
   import_request = {}
   import_request['users'] = users
-  import_request['validateDbConstraints'] = false
+  import_request['validateDbConstraints'] = true
 
   # FusionAuth Import API
   # https://fusionauth.io/docs/v1/tech/apis/users#import-users
@@ -201,33 +198,19 @@ duplicate_user_names = []
 count = 0
 duplicate_count = 0
 
+# Map the Auth0 users, id -> hash
 file = File.read(users_file)
 data_hash = JSON.parse(file)
 
-data_hash.each { |u_hash| 
+data_hash.each { |u_hash|
 
-    user_id = u_hash['user_id']   
-    type = user_id.split('|')[0]
-    id = user_id.split('|')[1]
-    u_hash['auth0_user_type'] = type   # create a function sql to get all idp_identifiers_to_auth0_type
-    u_hash['auth0_user_id'] = id
-    auth0_users[id] = u_hash
-}
-
-# Map the Auth0 users, id -> hash
-f2 = File.open(users_file, 'r')
-f2.each_line { |line|
-  line.chomp!
-  next if line.empty?
-  u_hash = JSON.parse(line)
-  user_id = u_hash['user_id']   
+  user_id = u_hash['user_id']
   type = user_id.split('|')[0]
   id = user_id.split('|')[1]
-  u_hash['auth0_user_type'] = type   # create a function sql to get all idp_identifiers_to_auth0_type
+  u_hash['auth0_user_type'] = type
   u_hash['auth0_user_id'] = id
   auth0_users[id] = u_hash
 }
-f2.close
 
 # process users with passwords
 auth0_users.length > 0 && auth0_users.each_key do |id|
