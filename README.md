@@ -147,6 +147,14 @@ Please see https://fusionauth.io/docs/v1/tech/migration-guide/firebase for full 
 
 Please see https://fusionauth.io/docs/v1/tech/migration-guide/azureadb2c for full instructions.
 
+### Duende Identity Server
+
+Please see https://fusionauth.io/docs/v1/tech/migration-guide/duende for full instructions.
+
+### Amazon Cognito
+
+Please see https://fusionauth.io/docs/v1/tech/migration-guide/cognito for full instructions.
+
 ### Generate Test Users
 
 This script will use the Import API to bulk create users for load testing FusionAuth.
