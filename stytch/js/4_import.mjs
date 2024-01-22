@@ -9,12 +9,13 @@ import util from 'util'
 
 const apiKey = '33052c8a-c283-4e96-9d2a-eb1215c69f8f-not-for-prod';
 const fusionauthUrl = 'http://localhost:9011';
+const filename = 'users.json';
 const fa = new FusionAuthClient(apiKey, fusionauthUrl);
 
 processUsers();
 
 async function processUsers() {
-  const stytchUsers = new Chain([fs.createReadStream('users.json'), parser(), new StreamArray(),]);
+  const stytchUsers = new Chain([fs.createReadStream(filename), parser(), new StreamArray(),]);
   for await (const { value: stytchUser } of stytchUsers) {
     const faUser = getFaUserFromStytchUser(stytchUser);
     await importUser(faUser, stytchUser);
