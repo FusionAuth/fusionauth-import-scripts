@@ -1,14 +1,4 @@
-# Stytch user data and password hash export and FusionAuth import
-
-## Directory contents
-
-This directory contains the following files:
-
-- `exampleData` — All data files used in the export/import process: password hashes, user data, encryption keys, intermediate data
-  - `export.json`
-  - `hash.csv`
-- js —
--
+# Stytch to FusionAuth user migration data and scripts
 
 ## How to use these scripts
 
