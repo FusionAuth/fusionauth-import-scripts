@@ -14,7 +14,7 @@ const fa = new FusionAuthClient(apiKey, fusionauthUrl);
 processUsers();
 
 async function processUsers() {
-  const stytchUsers = new Chain([fs.createReadStream('export.json'), parser(), new StreamArray(),]);
+  const stytchUsers = new Chain([fs.createReadStream('users.json'), parser(), new StreamArray(),]);
   for await (const { value: stytchUser } of stytchUsers) {
     const faUser = getFaUserFromStytchUser(stytchUser);
     await importUser(faUser, stytchUser);
