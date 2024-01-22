@@ -4,3 +4,4 @@ Gemfile.lock
 .vscode/
 fusionauth-import-scripts.code-workspace
 **/node_modules
+**/package-lock.json
