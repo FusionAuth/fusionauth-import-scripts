@@ -1,0 +1,31 @@
+{
+  "result": [
+    {
+      "_id": "b8fb2d96-2cfe-492c-924c-fd365bdb8f69",
+      "_rev": "afba2c3c-2f7e-4416-8f3f-2de234a3021b-145868",
+      "favoriteColor": "red",
+      "telephoneNumber": null,
+      "mail": "testuser1@example.com",
+      "password": "{PBKDF2-HMAC-SHA256}10:NnfLb4gwMj31YdtATz8824xGQrJylmwCNm2LQqy0wixtuWvU+vMKMpZ7mye04Jfp",
+      "sn": "User1",
+      "givenName": "Test1",
+      "userName": "testuser1"
+    },
+    {
+      "_id": "be0d0fb2-1634-4e14-9fe4-5ac8775cf6b0",
+      "_rev": "afba2c3c-2f7e-4416-8f3f-2de234a3021b-145875",
+      "favoriteColor": "blue",
+      "telephoneNumber": null,
+      "mail": "testuser2@example.com",
+      "password": "{PBKDF2-HMAC-SHA256}10:8c7nLGEIXeZf45YQ92A2MD+v8olvKKl6iWXGQZoluJ/awqZnHwFvslIOx7xOZ9AV",
+      "sn": "User2",
+      "givenName": "Test2",
+      "userName": "testuser2"
+    }
+  ],
+  "resultCount": 2,
+  "pagedResultsCookie": null,
+  "totalPagedResultsPolicy": "NONE",
+  "totalPagedResults": -1,
+  "remainingPagedResults": -1
+}
