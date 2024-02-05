@@ -40,7 +40,7 @@ OptionParser.new do |opts|
     options[:forgerockuserpassword] = password
   end
 
-  opts.on("-c", "--client-id CLIENT_ID", "The client id of the applicaiton to use for the authenticaton.") do |clientid|
+  opts.on("-c", "--client-id CLIENT_ID", "The client id of the application to use for the authentication.") do |clientid|
     options[:forgerockclientid] = clientid
   end
 
