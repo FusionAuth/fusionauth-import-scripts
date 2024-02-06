@@ -18,7 +18,7 @@ options[:forgerockclientid] = "postmanAdminClient"
 options[:forgerockclientsecret] = "Password1234!"
 
 OptionParser.new do |opts|
-  opts.banner = "Usage: import.rb [options]"
+  opts.banner = "Usage: forgerock-export.rb [options]"
 
   opts.on("-o", "--output-file OUTPUT_FILE", "The name and location of the output file to write.") do |outputfile|
     options[:outputfile] = outputfile
