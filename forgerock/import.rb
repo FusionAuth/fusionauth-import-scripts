@@ -20,7 +20,7 @@ OptionParser.new do |opts|
     options[:appids] = appids
   end
 
-  opts.on("-u", "--users-file USERS_FILE", "The exported json user data file from Forgerock. Defaults to out.csv.") do |file|
+  opts.on("-u", "--users-file USERS_FILE", "The exported json user data file from Forgerock. Defaults to samplefiles/forgerock-user-export.json.") do |file|
     options[:usersfile] = file
   end
 
