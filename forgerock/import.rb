@@ -62,7 +62,7 @@ puts "FusionAuth Importer : Forgerock"
 puts " > Working Directory: " + File.basename(Dir.getwd)
 puts " > User file: #{users_file}"
 
-
+#tag::ForgerockPasswordHash[]
 #Structure for storing parts from the password hash
 Password_info = Struct.new(:encryption_scheme,:password_hash,:salt_hash,:itterations)
 
@@ -86,6 +86,7 @@ def get_password_info_from_forgerock(hashstring)
 
 return Password_info.new(encryption_scheme.to_s,hash_encode,salt_encode,itterations.to_s)
 end
+#end::ForgerockPasswordHash[]
 
 # Map an Forgerock user to a FusionAuth user
 def map_user(forgerock_user, options)
