@@ -14,7 +14,7 @@ access_token = "ADD YOUR ACCESS TOKEN"
 base_url = f'{apiPath}/environments/{envID}/'
 
 
-# This method can be enhance to add more or less data from the main export i.e. Custom Attributes
+# This method can be enhanced to add more or less data from the main export i.e. Custom Attributes
 def transform_json(input_json):
     transformed_users = []
 
@@ -58,8 +58,6 @@ def transform_json(input_json):
 
 def main():
     url = base_url + method_call
-    data = {}
-
     headers = {
         'Authorization': 'Bearer ' +access_token,
     }

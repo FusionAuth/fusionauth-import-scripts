@@ -57,25 +57,25 @@ def transform_json_user(input_json):
     userId = dataJson["_embedded"]['user']['id']
     dataJson =  readUserInfo(userId)
     transformed_user = {
-    "active": dataJson.get("enabled", False),
-    "birthDate": None,
-    "data": {
-        "migrated": True,
-    },
-    "email": dataJson.get("email", ""),
-    "expiry": None,
-    "firstName": dataJson["name"].get("given", ""),
-    "fullName": "",  # user["name"]["formatted"],
-    "id": dataJson.get("id", ""),
-    "lastLoginInstant": 0,
-    "lastName": dataJson["name"].get("family", ""),
-    "middleName": "",
-    "passwordChangeRequired": False,
-    "passwordLastUpdateInstant": 0,
-    "preferredLanguages": ["en"],
-    "timezone": None,
-    "username": dataJson.get("username", ""),
-    "verified": dataJson.get("verifyStatus", False)==True,
+        "active": dataJson.get("enabled", False),
+        "birthDate": None,
+        "data": {
+            "migrated": True,
+        },
+        "email": dataJson.get("email", ""),
+        "expiry": None,
+        "firstName": dataJson["name"].get("given", ""),
+        "fullName": "",  # user["name"]["formatted"],
+        "id": dataJson.get("id", ""),
+        "lastLoginInstant": 0,
+        "lastName": dataJson["name"].get("family", ""),
+        "middleName": "",
+        "passwordChangeRequired": False,
+        "passwordLastUpdateInstant": 0,
+        "preferredLanguages": ["en"],
+        "timezone": None,
+        "username": dataJson.get("username", ""),
+        "verified": dataJson.get("verifyStatus", False)==True,
    }
 
     result_json = {"user": transformed_user}
@@ -83,9 +83,7 @@ def transform_json_user(input_json):
 
 def readUserInfo(userId):
     url =f'{apiPath}/environments/{envID}/users/{userId}?expand=population'
-    data = {}
     headers = {'Authorization': 'Bearer ' +accessToken }
-
     response = requests.get(url,headers=headers,timeout=30)
 
     if response.status_code!=200:
