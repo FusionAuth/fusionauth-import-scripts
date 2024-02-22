@@ -61,7 +61,6 @@ def transform_json_user(input_json):
     "birthDate": None,
     "data": {
         "migrated": True,
-
     },
     "email": dataJson.get("email", ""),
     "expiry": None,
@@ -79,12 +78,11 @@ def transform_json_user(input_json):
     "verified": dataJson.get("verifyStatus", False)==True,
    }
 
-
     result_json = {"user": transformed_user}
     return result_json
 
 def readUserInfo(userId):
-    url =F'{apiPath}/environments/{envID}/users/{userId}?expand=population'
+    url =f'{apiPath}/environments/{envID}/users/{userId}?expand=population'
     data = {}
     headers = {'Authorization': 'Bearer ' +accessToken }
 
@@ -116,10 +114,10 @@ def rocp_proxy():
     password = data['password']
 
     response_data = TestCredentialLogin(appId,login_id,password)
-    #print(json.dumps(response_data,indent=3))
+    # print(json.dumps(response_data,indent=3))
     return response_data
 
-def TestCredentialLogin(appId,usename,password):
+def TestCredentialLogin(appId,username,password):
     print("--> Send auth request")
     flowId =sentAuthRequest(appId)
     print(flowId)
@@ -127,10 +125,10 @@ def TestCredentialLogin(appId,usename,password):
     flowId2=getFlowId(flowId)
     print(flowId2)
     print("--> Validating Credentials")
-    result = submitCredentials(flowId2,usename,password)
+    result = submitCredentials(flowId2,username,password)
     print("--> Done")
     return result
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000,debug=True)
+    app.run(host='0.0.0.0', port=5001,debug=True)

@@ -6,12 +6,12 @@ import requests
 from requests.auth import HTTPDigestAuth
 import json
 
-apiPath ='https://api.pingone.com/v1'
+apiPath = 'https://api.pingone.com/v1'
 
 method_call = 'users'
-envID ='ADD YOUR ENVIRONMENT ID'
+envID = 'ADD YOUR ENVIRONMENT ID'
 access_token = "ADD YOUR ACCESS TOKEN"
-base_url =F'{apiPath}/environments/{envID}/'
+base_url = f'{apiPath}/environments/{envID}/'
 
 
 # This method can be enhance to add more or less data from the main export i.e. Custom Attributes
