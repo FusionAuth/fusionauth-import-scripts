@@ -1,3 +1,16 @@
+function isSerializedPhp(value) {
+    if (typeof value !== 'string') {
+        return false;
+    }
+    const trimmedValue = value.trim();
+    return (
+        (trimmedValue.startsWith('a:') || trimmedValue.startsWith('O:')) &&
+        trimmedValue.endsWith('}') &&
+        trimmedValue.includes('{')
+    );
+}
+
+
 // npm install bcryptjs stytch;
 
 import * as stytch from "stytch";
