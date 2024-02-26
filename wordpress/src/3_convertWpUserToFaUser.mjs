@@ -1,85 +1,132 @@
+import { promises as fs } from 'fs';
+import * as fs from 'fs';
+import util from 'util';
+import {FusionAuthClient} from '@fusionauth/typescript-client';
+import parser from 'stream-json';
+import StreamArray from 'stream-json/streamers/StreamArray.js';
+import Chain from 'stream-chain';
+import * as phpunserialize from 'phpunserialize';
+
+const inputFilename = 'users.json';
+const outputFilename = 'faUsers.json';
+
+processUsers();
+
+async function processUsers() {
+  await fs.writeFile(outputFilename, '[\n', 'utf8');
+  const inputUsers = new Chain([fs.createReadStream(inputFilename), parser(), new StreamArray(),]);
+  let isFirstLine = true;
+  for await (const { value: user } of inputUsers) {
+    if (!isFirstLine)
+        await fs.appendFile(outputFilename, ',\n', 'utf8');
+    isFirstLine = false;
+    const faUser = getFaUserFromUser(user);
+    await fs.appendFile(outputFilename, JSON.stringify(faUser), 'utf8');
+  }
+  await fs.appendFile(outputFilename, '\n]', 'utf8');
+}
+
 function isSerializedPhp(value) {
-    if (typeof value !== 'string') {
-        return false;
-    }
-    const trimmedValue = value.trim();
-    return (
-        (trimmedValue.startsWith('a:') || trimmedValue.startsWith('O:')) &&
-        trimmedValue.endsWith('}') &&
-        trimmedValue.includes('{')
-    );
+  if (typeof value !== 'string')
+    return false;
+  const trimmedValue = value.trim();
+  return (
+    (trimmedValue.startsWith('a:') || trimmedValue.startsWith('O:')) &&
+    trimmedValue.endsWith('}') &&
+    trimmedValue.includes('{')
+  );
 }
 
+function getFaUserFromUser(user) {
+  const faUser = {};
 
-// npm install bcryptjs stytch;
+  // SecureIdentity fields ------
+  if (!user.user_pass.startsWith('$P'))
+    throw new Error("Handle hash algorithms other than Phpass by searching for this error message and adding a new encryptionScheme.");
+  faUser.password = user.user_pass;
+  faUser.salt = user.user_pass;
+  faUser.encryptionScheme = 'example-wordpress-phpass';
 
-import * as stytch from "stytch";
-import * as bcrypt from 'bcryptjs';
-import * as crypto from 'crypto';
+  TODO HERE
 
-const client = new stytch.Client({
-    project_id: "project-test-36510638-652a-4d3d-9a94-f0a7106582fc",
-    secret: "secret-test-m89L26ZKZgDm_Ox_IukmvE-pAID9_zPBROI=",
-});
+  // faUser.breachedPasswordLastCheckedInstant = number;
+  // faUser.breachedPasswordStatus = BreachedPasswordStatus;
+  // faUser.connectorId = UUID;
 
-await createUser({ email: "user1@example.com", phone_number: '+272223334444',  first_name: 'A', last_name: 'Example', password: "averylongandunguessablepasswordwithlotsofrandominfooofisjoafasnr;,n1", algorithm: 'bcrypt'});
-await createUser({ email: "user2@example.com", phone_number: '+272223334445',  first_name: 'B', last_name: 'Example', password: "averylongandunguessablepasswordwithlotsofrandominfooofisjoafasnr;,n2", algorithm: 'md_5'});
-await createUser({ email: "user3@example.com", phone_number: '+272223334446',  first_name: 'C', last_name: 'Example', password: "averylongandunguessablepasswordwithlotsofrandominfooofisjoafasnr;,n3", algorithm: 'sha_1'});
+  faUser.factor = 8;
+  faUser.id = getNullOrUUIDFromUserId(stytchUser.user_id);
+  // faUser.lastLoginInstant = number;
+  faUser.passwordChangeRequired = stytchUser.password?.requires_reset;
+  if (faUser.passwordChangeRequired)
+    faUser.passwordChangeReason = "Requested by Stytch on import";
+  // faUser.passwordLastUpdateInstant = number;
+  faUser.uniqueUsername = stytchUser.user_id;
+  faUser.username = stytchUser.user_id;
+  // faUser.usernameStatus = ContentStatus;
+  faUser.verified = false;
+  if (stytchUser.emails && stytchUser.emails.some(e => e.verified === true)) {
+    faUser.verified = true;
+    faUser.email = stytchUser.emails.find(e => e.verified).email;
+  }
+  else if (stytchUser.emails && stytchUser.emails.length > 0)
+    faUser.email = stytchUser.emails[0].email;
+  // faUser.verifiedInstant = number;
 
-// await client.users.delete({user_id: 'user-test-REPLACE'});
-// await client.users.delete({user_id: 'user-test-REPLACE'});
-// await client.users.delete({user_id: 'user-test-REPLACE'});
-// process.exit();
+  // User fields ------
+  faUser.active = (stytchUser.status == "active");
+  // faUser.birthDate = string;
+  // faUser.cleanSpeakId = UUID;
+  // faUser.expiry = number;
+  if (stytchUser.name?.first_name)
+    faUser.firstName = stytchUser.name?.first_name;
+  faUser.fullName = [stytchUser.name?.first_name, stytchUser.name?.middle_name, stytchUser.name?.last_name]
+    .filter(name => name !== null && name !== undefined && name !== '')
+    .join(' ');
+  // faUser.imageUrl = string;
+  // faUser.insertInstant = number;
+  if (stytchUser.name?.last_name)
+    faUser.lastName = stytchUser.name?.last_name;
+  // faUser.lastUpdateInstant = number;
+  // faUser.memberships = Array<GroupMember>;
+  if (stytchUser.name?.middle_name)
+    faUser.middleName = stytchUser.name?.middle_name;
+  // faUser.mobilePhone = string;
+  if (stytchUser.phone_numbers?.length > 0)
+    faUser.mobilePhone = stytchUser.phone_numbers[0].phone_number;
+  // faUser.parentEmail = string;
+  // faUser.preferredLanguages = Array<string>;
+  // faUser.registrations = Array<UserRegistration>;
+  // faUser.tenantId = UUID;
+  // faUser.timezone = string;
+  // faUser.twoFactor = UserTwoFactorConfiguration;
+  faUser.data = {}
+  if (stytchUser.biometric_registrations?.length > 0)
+    faUser.data.stytch_biometric_registrations = stytchUser.biometric_registrations;
+  faUser.data.stytch_created_at = stytchUser.created_at;
+  if (stytchUser.crypto_wallets?.length > 0)
+    faUser.data.stytch_crypto_wallets = stytchUser.crypto_wallets;
+  if (stytchUser.emails?.length > 1)
+    faUser.data.stytch_emails = stytchUser.emails.filter(e => e.email != faUser.email);
+  if (stytchUser.phone_numbers?.length > 1)
+    faUser.data.stytch_phone_numbers = stytchUser.phone_numbers.filter(e => e.phone_number != faUser.mobilePhone);
+  if (stytchUser.providers?.length > 0)
+    faUser.data.stytch_providers = stytchUser.providers;
+  if (stytchUser.trusted_metadata && Object.keys(stytchUser.trusted_metadata).length > 0)
+    faUser.data.stytch_trusted_metadata = stytchUser.trusted_metadata;
+    if (stytchUser.untrusted_metadata && Object.keys(stytchUser.untrusted_metadata).length > 0)
+    faUser.data.stytch_untrusted_metadata = stytchUser.untrusted_metadata;
+  faUser.data.stytch_user_id = stytchUser.user_id;
+  if (stytchUser.webauthn_registrations?.length > 0)
+    faUser.data.stytch_webauthn_registrations = stytchUser.webauthn_registrations;
+  faUser.data.stytch_export_request_id = stytchUser.request_id;
 
-async function createUser(p) {
-    console.log(`Creating user: ${p.email}`);
-    await client.users.create({ email: p.email, phone_number: p.phone_number,  name:{first_name: p.first_name, last_name: p.last_name}});
-    console.log(`Setting password using: ${p.algorithm}`);
-    if (p.algorithm == 'bcrypt') {
-        const hash = await bcrypt.default.hash(p.password, 0);
-        await client.passwords.migrate({
-            email: p.email,
-            hash: hash,
-            hash_type: "bcrypt"
-        });
-        console.log(`Hash: ${hash}`);
-    }
-    if (p.algorithm == 'sha_1') {
-        const { salt, hash } = hashPasswordSHA1(p.password);
-        await client.passwords.migrate({
-            email: p.email,
-            "hash": hash,
-            hash_type: "sha_1",
-            sha_1_config: {prepend_salt: salt}
-        });
-        console.log(`Salt: ${salt}`);
-        console.log(`Hash: ${hash}`);
-    }
-    if (p.algorithm == 'md_5') {
-        const { salt, hash } = hashPasswordMd5(p.password);
-        await client.passwords.migrate({
-            email: p.email,
-            "hash": hash,
-            hash_type: "md_5",
-            md_5_config: {prepend_salt: salt}
-        });
-        console.log(`Salt: ${salt}`);
-        console.log(`Hash: ${hash}`);
-    }
-    console.log(`Verifying email and password`);
-    const a = await client.passwords.authenticate({ email: p.email, password: p.password });
-    console.log('Done');
-    console.log('');
+  return faUser;
 }
 
-function hashPasswordMd5(password) {
-    const salt = crypto.randomBytes(16).toString('hex');
-    const hash = crypto.createHash('md5').update(salt + password).digest('hex');
-    return { salt, hash };
-}
-
-function hashPasswordSHA1(password) {
-    const salt = crypto.randomBytes(16).toString('hex');
-    const hash = crypto.createHash('sha1').update(salt + password).digest('hex');
-    return { salt, hash };
+function getNullOrUUIDFromUserId(id) {
+  const uuidRegex = /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i; // "user_id": "user-test-178d8ee5-c458-4f48-a482-8fefa30a1a87",
+  const match = id.match(uuidRegex);
+  if (match)
+    return match[0];
+  return null;
 }
