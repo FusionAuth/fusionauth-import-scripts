@@ -22,22 +22,10 @@ FROM
             JSON_ARRAYAGG(JSON_OBJECT('meta_key', meta_key, 'meta_value', meta_value)) AS meta_json
         FROM
             wp_usermeta
+        WHERE
+            meta_value IS NOT NULL AND
+            meta_value <> ''
         GROUP BY
             user_id
     ) AS meta_data
         ON u.ID = meta_data.user_id;
-
-
-SELECT JSON_OBJECT(
-  'ID', ID,
-  'user_login', user_login,
-  'user_pass', user_pass,
-  'user_nicename', user_nicename,
-  'user_email', user_email,
-  'user_url', user_url,
-  'user_registered', user_registered,
-  'user_activation_key', user_activation_key,
-  'user_status', user_status,
-  'display_name', display_name
-) AS json_result
-FROM wp_users;
