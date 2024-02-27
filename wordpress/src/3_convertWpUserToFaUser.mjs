@@ -64,9 +64,10 @@ function getFaUserFromUser(user) {
   // faUser.imageUrl = string;
   // faUser.insertInstant = number;
   if (metaKeyExists('last_name', user.meta)) faUser.lastName = getMetaValue('last_name', user.meta);
-  faUser.fullName = [faUser.firstName, faUser.lastName]
-    .filter(name => name !== null && name !== undefined && name !== '')
-    .join(' ');
+  if (faUser.firstName || faUser.lastName)
+    faUser.fullName = [faUser.firstName, faUser.lastName]
+      .filter(name => name !== null && name !== undefined && name !== '')
+      .join(' ');
   // faUser.lastUpdateInstant = number;
   // faUser.memberships = Array<GroupMember>;
   // faUser.middleName = string;
@@ -81,10 +82,10 @@ function getFaUserFromUser(user) {
 
   faUser.data = {}
   faUser.data.WordPress_ID = user.ID;
-  faUser.data.WordPress_user_nicename = user.user_nicename;
-  faUser.data.WordPress_user_url = user.user_url;
+  if (user.user_nicename) faUser.data.WordPress_user_nicename = user.user_nicename;
+  if (user.user_url) faUser.data.WordPress_user_url = user.user_url;
   faUser.data.WordPress_user_registered = user.user_registered;
-  faUser.data.WordPress_display_name = user.display_name;
+  if (user.display_name) faUser.data.WordPress_display_name = user.display_name;
   user.meta.map(pair => addMetaData(pair, faUser.data));
   return faUser;
 }
