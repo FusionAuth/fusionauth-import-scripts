@@ -104,7 +104,7 @@ function addMetaData(pair, data) {
   if (dataToIgnore.includes(pair.meta_key)) return;
   data['WordPress_' + pair.meta_key] = pair.meta_value;
   if (isSerializedPhp(pair.meta_value))
-    data['WordPress_' + pair.meta_key] = JSON.stringify(phpunserialize(pair.meta_value));
+    data['WordPress_' + pair.meta_key] = phpunserialize(pair.meta_value);
 }
 
 function isSerializedPhp(value) {
