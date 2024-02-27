@@ -3,7 +3,7 @@ import * as fs from 'fs';
 import parser from 'stream-json';
 import StreamArray from 'stream-json/streamers/StreamArray.js';
 import Chain from 'stream-chain';
-import * as phpunserialize from 'phpunserialize';
+import phpunserialize from 'phpunserialize';
 
 const inputFilename = 'users.json';
 const outputFilename = 'faUsers.json';
@@ -51,9 +51,12 @@ function getFaUserFromUser(user) {
   // faUser.verifiedInstant = number;
 
   // User fields ------
-  const roles = phpunserialize(user.wp_capabilities);
-  const hasRole = (roles != null && Object.keys(roles).length > 0 && Object.values(roles).some(value => value === true));
-  faUser.active = hasRole;
+  faUser.active = false;
+  if (metaKeyExists('wp_capabilities', user.meta)) {
+    const roles = phpunserialize(getMetaValue('wp_capabilities', user.meta));
+    const hasRole = (roles != null && Object.keys(roles).length > 0 && Object.values(roles).some(value => value === true));
+    faUser.active = hasRole;
+  }
   // faUser.birthDate = string;
   // faUser.cleanSpeakId = UUID;
   // faUser.expiry = number;
