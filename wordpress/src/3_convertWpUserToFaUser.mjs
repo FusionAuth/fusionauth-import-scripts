@@ -1,4 +1,4 @@
-import { promises as fs } from 'fs';
+import { promises as fsp } from 'fs';
 import * as fs from 'fs';
 import parser from 'stream-json';
 import StreamArray from 'stream-json/streamers/StreamArray.js';
@@ -12,17 +12,17 @@ const dataToIgnore = ['first_name', 'last_name', 'rich_editing', 'syntax_highlig
 processUsers();
 
 async function processUsers() {
-  await fs.writeFile(outputFilename, '[\n', 'utf8');
+  await fsp.writeFile(outputFilename, '[\n', 'utf8');
   const inputUsers = new Chain([fs.createReadStream(inputFilename), parser(), new StreamArray(),]);
   let isFirstLine = true;
   for await (const { value: user } of inputUsers) {
     if (!isFirstLine)
-        await fs.appendFile(outputFilename, ',\n', 'utf8');
+        await fsp.appendFile(outputFilename, ',\n', 'utf8');
     isFirstLine = false;
     const faUser = getFaUserFromUser(user);
-    await fs.appendFile(outputFilename, JSON.stringify(faUser), 'utf8');
+    await fsp.appendFile(outputFilename, JSON.stringify(faUser), 'utf8');
   }
-  await fs.appendFile(outputFilename, '\n]', 'utf8');
+  await fsp.appendFile(outputFilename, '\n]', 'utf8');
 }
 
 function getFaUserFromUser(user) {
