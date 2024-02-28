@@ -39,11 +39,11 @@ function getFaUserFromUser(user) {
   faUser.factor = 8;
   //faUser.id =  UUID; wordpress uses an int
   // faUser.lastLoginInstant = number;
-  faUser.password = user.user_pass;
+  faUser.password = btoa(user.user_pass);
   // faUser.passwordChangeRequired = boolean;
   // faUser.passwordChangeReason = "Requested by WordPress on import";
   // faUser.passwordLastUpdateInstant = number;
-  faUser.salt = user.user_pass;
+  faUser.salt = btoa(user.user_pass);
   faUser.uniqueUsername = user.user_login;
   faUser.username = user.user_login;
   // faUser.usernameStatus = ContentStatus;
