@@ -52,18 +52,18 @@ function getFaUserFromUser(user) {
 
   // User fields ------
   faUser.active = false;
-  if (metaKeyExists('wp_capabilities', user.meta)) {
-    const roles = phpunserialize(getMetaValue('wp_capabilities', user.meta));
+  if (doesMetaKeyExistInUserMeta('wp_capabilities', user.meta)) {
+    const roles = phpunserialize(getMetaValueFromUserMeta('wp_capabilities', user.meta));
     const hasRole = (roles != null && Object.keys(roles).length > 0 && Object.values(roles).some(value => value === true));
     faUser.active = hasRole;
   }
   // faUser.birthDate = string;
   // faUser.cleanSpeakId = UUID;
   // faUser.expiry = number;
-  if (metaKeyExists('first_name', user.meta)) faUser.firstName = getMetaValue('first_name', user.meta);
+  if (doesMetaKeyExistInUserMeta('first_name', user.meta)) faUser.firstName = getMetaValueFromUserMeta('first_name', user.meta);
   // faUser.imageUrl = string;
   // faUser.insertInstant = number;
-  if (metaKeyExists('last_name', user.meta)) faUser.lastName = getMetaValue('last_name', user.meta);
+  if (doesMetaKeyExistInUserMeta('last_name', user.meta)) faUser.lastName = getMetaValueFromUserMeta('last_name', user.meta);
   if (faUser.firstName || faUser.lastName)
     faUser.fullName = [faUser.firstName, faUser.lastName]
       .filter(name => name !== null && name !== undefined && name !== '')
@@ -86,21 +86,21 @@ function getFaUserFromUser(user) {
   if (user.user_url) faUser.data.WordPress_user_url = user.user_url;
   faUser.data.WordPress_user_registered = user.user_registered;
   if (user.display_name) faUser.data.WordPress_display_name = user.display_name;
-  user.meta.map(pair => addMetaData(pair, faUser.data));
+  user.meta.map(pair => addMetaDataToFaUserData(pair, faUser.data));
   return faUser;
 }
 
-function metaKeyExists(key, meta) {
+function doesMetaKeyExistInUserMeta(key, meta) {
   if (!meta) return false;
   if (!meta.find(pair => pair.meta_key === key)) return false;
   return true;
 }
 
-function getMetaValue(key, meta) {
+function getMetaValueFromUserMeta(key, meta) {
   return meta.find(pair => pair.meta_key === key).meta_value;
 }
 
-function addMetaData(pair, data) {
+function addMetaDataToFaUserData(pair, data) {
   if (dataToIgnore.includes(pair.meta_key)) return;
   data['WordPress_' + pair.meta_key] = pair.meta_value;
   if (isSerializedPhp(pair.meta_value))
