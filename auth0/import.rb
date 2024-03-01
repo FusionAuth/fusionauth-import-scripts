@@ -54,15 +54,15 @@ OptionParser.new do |opts|
     options[:mapids] = mapids
   end
 
-  opts.on("-v", "--validate-db-constraints", "Defaults to false, for performance.  Set to true if you exploring errors on your import") do |validate_db_constraints|
+  opts.on("-v", "--validate-db-constraints", "Set to false, for performance.  Set to true if you exploring errors on your import") do |validate_db_constraints|
     options[:validate_db_constraints] = validate_db_constraints
   end
   
-  opts.on("-d", "--debug-mode", "Defaults to false. Allows a Repl `pry` session before user import. Only to be used during testing") do |debug_mode|
+  opts.on("-d", "--debug-mode", "Allows a Repl `pry` session before user import. Only to be used during testing") do |debug_mode|
     options[:debug_mode] = debug_mode
   end
   
-  opts.on("-p", "--pretty-import-statement", "Defaults to false. Only to be used for testing importing 10 or less users.  Prints the JSON of what is being imported") do |pretty_import_statement|
+  opts.on("-p", "--pretty-import-statement", "Only to be used for testing importing 10 or less users.  Prints the JSON of what is being imported") do |pretty_import_statement|
     options[:pretty_import_statement] = pretty_import_statement
   end
   
