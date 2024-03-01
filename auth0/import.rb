@@ -5,7 +5,7 @@ require 'json'
 require 'fusionauth/fusionauth_client'
 require 'optparse'
 require 'securerandom'
-
+require "pry"
 
 # option handling
 options = {}
@@ -54,6 +54,19 @@ OptionParser.new do |opts|
     options[:mapids] = mapids
   end
 
+  opts.on("-v", "--validate-db-constraints", "Defaults to false, for performance.  Set to true if you exploring errors on your import") do |validate_db_constraints|
+    options[:validate_db_constraints] = validate_db_constraints
+  end
+  
+  opts.on("-d", "--debug-mode", "Defaults to false. Allows a Repl `pry` session before user import. Only to be used during testing") do |debug_mode|
+    options[:debug_mode] = debug_mode
+  end
+  
+  opts.on("-p", "--pretty-import-statement", "Defaults to false. Only to be used for testing importing 10 or less users.  Prints the JSON of what is being imported") do |pretty_import_statement|
+    options[:pretty_import_statement] = pretty_import_statement
+  end
+  
+
   opts.on("-h", "--help", "Prints this help.") do
     puts opts
     exit
@@ -73,6 +86,15 @@ $fusionauth_tenant_id = options[:tenantid]
 # Map Auth0 userId to the FusionAuth User Id as a UUID
 $map_auth0_user_id = !options[:mapids].nil?
 
+# Should only be used if testing import, performance impact
+$validate_db_constraints = options[:validate_db_constraints]
+
+# Allows a Repl pry session before import. Only to be used during testing
+$debug_mode = options[:debug_mode]
+
+# Prints what is being imported in JSON.
+$pretty_import_statement = options[:pretty_import_statement]
+
 puts "FusionAuth Importer : Auth0"
 puts " > User file: #{users_file}"
 puts " > User secrets file: #{secrets_file}"
@@ -81,7 +103,7 @@ puts " > User secrets file: #{secrets_file}"
 idp_identifiers_to_auth0_type = {
   "linkedin" => "6177c09d-3f0e-4d53-9504-3600b1b23f46",
   "google-oauth2" => "82339786-3dff-42a6-aac6-1f1ceecb6c46",
-# add others as we have test data.
+  # add others as we have test data.
 }
 
 # Map an Auth0 user to a FusionAuth user
@@ -154,7 +176,7 @@ def find_user_id(client, u)
   elsif u['username']
     querystring = u['username']
   end
-  results = client.search_users_by_query({search: {queryString: querystring } } )
+  results = client.search_users_by_query({ search: { queryString: querystring } })
   if results && results.success_response
     users = results.success_response.users
     if users.length > 1
@@ -180,7 +202,7 @@ def import(users, options)
 
   import_request = {}
   import_request['users'] = users
-  import_request['validateDbConstraints'] = false
+  import_request['validateDbConstraints'] = $validate_db_constraints
 
   # FusionAuth Import API
   # https://fusionauth.io/docs/v1/tech/apis/users#import-users
@@ -188,11 +210,25 @@ def import(users, options)
   if $fusionauth_tenant_id
     client.set_tenant_id($fusionauth_tenant_id)
   end
+
+  if $pretty_import_statement
+    puts JSON.pretty_generate(import_request)
+  end
+
+  if $debug_mode
+    binding.pry
+  end
+
+  # This line calls our Import API
   response = client.import_users(import_request)
   if response.was_successful
+    puts " > *****************************************************************************************"
     puts " > Import success"
   else
-    puts " > Import failed. Status code #{response.status}. Error response:\n #{response.error_response}"
+    puts " > *****************************************************************************************"
+    puts " > Import failed. status code #{response.status}"
+    puts " > Error response:\n  #{response.error_response.nil? ? "blank - see exceptions too" : response.error_response}"
+    puts " > Exception response:\n #{response.exception.nil? ? "blank -- see error above too" : response.exception}"
     exit 1
   end
 end
@@ -281,9 +317,8 @@ if users.length > 0
   users = []
 end
 
-
 if options[:linksocial] || options[:onlylinksocial]
-  puts "Linking "+ (idp_users_needing_link.length.to_s) +" social accounts"
+  puts "Linking " + (idp_users_needing_link.length.to_s) + " social accounts"
 
   client = FusionAuth::FusionAuthClient.new($fusionauth_api_key, $fusionauth_url)
   if $fusionauth_tenant_id
@@ -307,7 +342,7 @@ if options[:linksocial] || options[:onlylinksocial]
     if response.was_successful
       puts " > Link success"
     else
-      puts " > Link failed for user id: "+link_request['userId']+". Status code #{response.status}. Error response:\n #{response.error_response}"
+      puts " > Link failed for user id: " + link_request['userId'] + ". Status code #{response.status}. Error response:\n #{response.error_response}"
     end
   end
 end
