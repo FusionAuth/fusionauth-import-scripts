@@ -9,8 +9,8 @@ const inputFilename = 'users.json';
 const outputFilename = 'faUsers.json';
 const dataToIgnore = ['first_name', 'last_name', 'rich_editing', 'syntax_highlighting', 'comment_shortcuts', 'admin_color', 'use_ssl', 'show_admin_bar_front', 'wp_user_level', 'show_welcome_panel', 'session_tokens', 'wp_dashboard_quick_press_last_post_id', 'community-events-location'];
 const applicationId = 'e9fdb985-9173-4e01-9d73-ac2d60d1dc8e';
-const subscriberRoleId = '635ef5c8-54c5-4605-ba0f-add6ad1578ce';
-const administratorRoleId = 'a1a9748d-b2cf-4af6-9773-f89c0ab58436';
+const subscriberRoleName = 'Subscriber';
+const administratorRoleName = 'Administrator';
 
 processUsers();
 
@@ -83,8 +83,8 @@ function getFaUserFromUser(user) {
   const isSubscriber = (roles != null && Object.keys(roles).length > 0 && roles['subscriber'] == true);
   const isAdministrator = (roles != null && Object.keys(roles).length > 0 && roles['administrator'] == true);
   const faRoles = [];
-  if (isAdministrator) faRoles.push(administratorRoleId);
-  if (isSubscriber) faRoles.push(subscriberRoleId);
+  if (isAdministrator) faRoles.push(administratorRoleName);
+  if (isSubscriber) faRoles.push(subscriberRoleName);
   faUser.registrations = [{
     'applicationId': applicationId,
     'roles': faRoles

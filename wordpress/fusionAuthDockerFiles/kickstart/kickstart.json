@@ -8,10 +8,7 @@
       "defaultTenantId": "d7d09513-a3f5-401c-9685-34ab6c552453",
       "adminEmail": "admin@example.com",
       "adminPassword": "password",
-      "adminUserId": "00000000-0000-0000-0000-000000000001",
-      "userEmail": "richard@example.com",
-      "userPassword": "password",
-      "userUserId": "00000000-0000-0000-0000-111111111111"
+      "adminUserId": "00000000-0000-0000-0000-000000000001"
     },
     "apiKeys": [
       {
@@ -27,7 +24,7 @@
         "body": {
           "key": {
             "algorithm": "RS256",
-            "name": "For exampleapp",
+            "name": "For Wordpress test import app",
             "length": 2048
           }
         }
@@ -38,12 +35,12 @@
         "tenantId": "#{defaultTenantId}",
         "body": {
           "application": {
-            "name": "ExampleNodeApp",
+            "name": "WordpressTestImportApp",
             "oauthConfiguration": {
               "authorizedRedirectURLs": [
-                "http://localhost:8080/oauth-redirect"
+                "http://example.com"
               ],
-              "logoutURL": "http://localhost:8080/oauth2/logout",
+              "logoutURL": "http://example.com",
               "clientSecret": "#{clientSecret}",
               "enabledGrants": [
                 "authorization_code",
@@ -80,28 +77,9 @@
               "favoriteColor": "chartreuse"
             },
             "email": "#{adminEmail}",
-            "firstName": "Dinesh",
-            "lastName": "Chugtai",
+            "firstName": "Erlich",
+            "lastName": "Bachman",
             "password": "#{adminPassword}"
-          }
-        }
-      },
-      {
-        "method": "POST",
-        "url": "/api/user/registration/#{userUserId}",
-        "body": {
-          "user": {
-            "birthDate": "1985-11-23",
-            "email": "#{userEmail}",
-            "firstName": "Fred",
-            "lastName": "Flintstone",
-            "password": "#{userPassword}"
-          },
-          "registration": {
-            "applicationId": "#{applicationId}",
-            "data": {
-              "favoriteColor": "turquoise"
-            }
           }
         }
       },
@@ -111,7 +89,7 @@
         "body": {
           "sourceThemeId": "75a068fd-e94b-451a-9aeb-3ddb9a3b5987",
           "theme": {
-            "name": "React theme"
+            "name": "Theme"
           }
         }
       },

@@ -1,5 +1,5 @@
 SELECT
-    u.ID,
+    -- u.ID,
     JSON_OBJECT(
         'ID', u.ID,
         'user_login', u.user_login,
