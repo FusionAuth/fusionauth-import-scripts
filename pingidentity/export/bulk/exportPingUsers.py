@@ -6,7 +6,7 @@ import requests
 from requests.auth import HTTPDigestAuth
 import json
 
-apiPath = 'https://api.pingone.com/v1'
+apiPath = 'https://api.pingone.com/v1' # change domain to the one for the region where your user data is stored
 
 method_call = 'users'
 envID = 'ADD YOUR ENVIRONMENT ID'

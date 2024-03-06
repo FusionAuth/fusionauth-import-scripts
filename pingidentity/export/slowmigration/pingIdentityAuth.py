@@ -1,13 +1,17 @@
+# python -m venv venv
+# source venv/bin/activate
+# pip install requests flask
+
 import requests
 import json
 from flask import Flask, render_template,  jsonify, request
 
 app = Flask(__name__)
 
-authPath = 'https://auth.pingone.com'
-apiPath ='https://api.pingone.com/v1'
+authPath = 'https://auth.pingone.com' # change domain to the one for the region where your user data is stored
+apiPath ='https://api.pingone.com/v1' # change domain to the one for the region where your user data is stored
 envID = 'YOUR ENVIRONMENT ID'
-appId = 'YOUR PING IDENTITY APP ID'
+appId = 'YOUR PING IDENTITY OIDC APP CLIENT ID' 
 accessToken = "YOUR ACCESS TOKEN"
 
 

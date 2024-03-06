@@ -209,3 +209,7 @@ ruby generate_applications.rb --apiKey <API Key> --tenantId <TenantId> --url htt
 ```
 
 
+### Ping Identity
+
+Please see https://fusionauth.io/docs/lifecycle/migrate-users/bulk/pingone for full instructions 
+
