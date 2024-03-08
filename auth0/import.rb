@@ -106,6 +106,16 @@ idp_identifiers_to_auth0_type = {
   # add others as we have test data.
 }
 
+def user_field_or_metadata(auth0_user, field, metadata_path)
+  if auth0_user[field].nil? && auth0_user['user_metadata'].is_a?(Hash)
+    # Use metadata if user field is not set
+    metadata_path.split('.').reduce(auth0_user['user_metadata']) { |hash, key| hash[key] if hash.is_a?(Hash) }
+  else
+    # Use user field if set
+    auth0_user[field]
+  end
+end
+
 # Map an Auth0 user to a FusionAuth user
 def map_user(id, auth_secret, auth_user, options)
   user = {}
@@ -143,6 +153,10 @@ def map_user(id, auth_secret, auth_user, options)
     user['data']['auth0'] = {}
     user['data']['auth0']['id'] = id
     user['data']['auth0']['tenant'] = auth_secret['tenant']
+
+    # Viam-specific import logic
+    user['firstName'] = user_field_or_metadata(auth_user, 'firstName', 'user_metadata.given_name')
+    user['lastName'] = user_field_or_metadata(auth_user, 'lastName', 'user_metadata.family_name')
   end
 
   if is_idp_user

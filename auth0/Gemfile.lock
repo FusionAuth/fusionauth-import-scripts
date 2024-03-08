@@ -18,7 +18,11 @@ DEPENDENCIES
   securerandom
 
 RUBY VERSION
+<<<<<<< Updated upstream
    ruby 2.7.5p203
+=======
+   ruby 2.7.8p225
+>>>>>>> Stashed changes
 
 BUNDLED WITH
    2.2.5
