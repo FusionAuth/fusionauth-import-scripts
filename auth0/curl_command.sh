@@ -11,9 +11,14 @@ if [ "$APPLICATION_ID" = "" ]; then
     exit
 fi
 
+if [ "$HOSTNAME" = "" ]; then
+    echo "Must set env variable \$HOSTNAME. Exiting."
+    exit
+fi
+
 QUERY='{ "bool" : { "must" : [ [ { "nested" : { "path" : "registrations", "query" : { "bool" : { "must" : [ { "match" : { "registrations.applicationId" : "'"$APPLICATION_ID"'" } } ] } } } } ] ] } }'
 ENC_QUERY=$(python3 -c "import urllib.parse; print(urllib.parse.quote('''$QUERY'''))")
-CURL_RESP=$(curl -s -H "Authorization: $API_KEY" "https://viam.fusionauth.io/api/user/search?query=$ENC_QUERY")
+CURL_RESP=$(curl -s -H "Authorization: $API_KEY" "$HOSTNAME/api/user/search?query=$ENC_QUERY")
 
 echo $CURL_RESP
 
