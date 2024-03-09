@@ -118,6 +118,8 @@ end
 
 # Map an Auth0 user to a FusionAuth user
 def map_user(id, auth_secret, auth_user, options)
+  puts "Mapping user: #{auth_user}"
+
   user = {}
   is_auth0_user = auth_user['auth0_user_type'] == 'auth0'
   is_idp_user = auth_user['auth0_user_type'] != 'auth0'
