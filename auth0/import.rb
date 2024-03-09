@@ -118,8 +118,6 @@ end
 
 # Map an Auth0 user to a FusionAuth user
 def map_user(id, auth_secret, auth_user, options)
-  puts "Mapping user: #{auth_user}"
-
   user = {}
   is_auth0_user = auth_user['auth0_user_type'] == 'auth0'
   is_idp_user = auth_user['auth0_user_type'] != 'auth0'
@@ -290,6 +288,13 @@ f2.close
 
 # process users with passwords
 auth0_users.length > 0 && auth0_users.each_key do |id|
+  if auth0_secrets[id].nil?
+      puts "User #{auth0_users[id]} not found in secret file -- is your secrets file out of sync with your export file? Continuing."
+      next
+  end
+
+  puts "Mapping user: #{auth0_users[id]}"
+
   u = map_user(id, auth0_secrets[id], auth0_users[id], options)
 
   unless u['email'].nil?
