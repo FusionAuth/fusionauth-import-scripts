@@ -144,6 +144,7 @@ def map_user(id, auth_secret, auth_user, options)
   if is_auth0_user
     if auth_secret.nil?
         puts "User #{user[id]} not found in secret file -- is your secrets file out of sync with your export file? Continuing."
+        return nil
     else
         pw_hash = auth_secret['passwordHash'].split('$')
         # [version][factor][hash [0 - 21 salt][22 - password]]
@@ -158,6 +159,7 @@ def map_user(id, auth_secret, auth_user, options)
         user['data']['auth0']['id'] = id
         user['data']['auth0']['tenant'] = auth_secret['tenant']
 
+        # Viam-specific fields
         user['firstName'] = field_else_nested_field(auth_user, 'firstName', 'user_metadata', 'given_name')
         user['lastName'] = field_else_nested_field(auth_user, 'lastName', 'user_metadata', 'family_name')
     end
@@ -299,6 +301,10 @@ auth0_users.length > 0 && auth0_users.each_key do |id|
   puts "Mapping user: #{auth0_users[id]}"
 
   u = map_user(id, auth0_secrets[id], auth0_users[id], options)
+  if u.nil?
+    # user didn't have corresponding entry in password file
+    next
+  end
 
   unless u['email'].nil?
     unless emails.include? u['email']
