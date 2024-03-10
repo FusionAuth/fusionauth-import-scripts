@@ -103,16 +103,17 @@ puts " > User secrets file: #{secrets_file}"
 idp_identifiers_to_auth0_type = {
   "linkedin" => "6177c09d-3f0e-4d53-9504-3600b1b23f46",
   "google-oauth2" => "82339786-3dff-42a6-aac6-1f1ceecb6c46",
+  "apple" => "13d2a5db-7ef9-4d62-b909-0df58612e775",
   # add others as we have test data.
 }
 
-def user_field_or_metadata(auth0_user, field, metadata_path)
-  if auth0_user[field].nil? && auth0_user['user_metadata'].is_a?(Hash)
+def field_else_nested_field(auth0_user, field, metadata_path, metadata_value)
+  if auth0_user[field].nil?
     # Use metadata if user field is not set
-    metadata_path.split('.').reduce(auth0_user['user_metadata']) { |hash, key| hash[key] if hash.is_a?(Hash) }
+    return auth0_user.dig(metadata_path, metadata_value)
   else
     # Use user field if set
-    auth0_user[field]
+    return auth0_user[field]
   end
 end
 
@@ -141,22 +142,25 @@ def map_user(id, auth_secret, auth_user, options)
   # Optionally we could grab the last login instant
 
   if is_auth0_user
-    pw_hash = auth_secret['passwordHash'].split('$')
-    # [version][factor][hash [0 - 21 salt][22 - password]]
-    user['encryptionScheme'] = 'bcrypt'
-    user['factor'] = pw_hash[2].to_i
-    user['salt'] = pw_hash[3][0, 22]
-    user['password'] = pw_hash[3][22..-1]
+    if auth_secret.nil?
+        puts "User #{user[id]} not found in secret file -- is your secrets file out of sync with your export file? Continuing."
+    else
+        pw_hash = auth_secret['passwordHash'].split('$')
+        # [version][factor][hash [0 - 21 salt][22 - password]]
+        user['encryptionScheme'] = 'bcrypt'
+        user['factor'] = pw_hash[2].to_i
+        user['salt'] = pw_hash[3][0, 22]
+        user['password'] = pw_hash[3][22..-1]
 
-    # Preserve the Auth0 Unique Id
-    user['data'] = {}
-    user['data']['auth0'] = {}
-    user['data']['auth0']['id'] = id
-    user['data']['auth0']['tenant'] = auth_secret['tenant']
+        # Preserve the Auth0 Unique Id
+        user['data'] = {}
+        user['data']['auth0'] = {}
+        user['data']['auth0']['id'] = id
+        user['data']['auth0']['tenant'] = auth_secret['tenant']
 
-    # Viam-specific import logic
-    user['firstName'] = user_field_or_metadata(auth_user, 'firstName', 'user_metadata.given_name')
-    user['lastName'] = user_field_or_metadata(auth_user, 'lastName', 'user_metadata.family_name')
+        user['firstName'] = field_else_nested_field(auth_user, 'firstName', 'user_metadata', 'given_name')
+        user['lastName'] = field_else_nested_field(auth_user, 'lastName', 'user_metadata', 'family_name')
+    end
   end
 
   if is_idp_user
@@ -195,6 +199,10 @@ def find_user_id(client, u)
     users = results.success_response.users
     if users.length > 1
       puts "> Found multiple users matching " + querystring + ". Not linking."
+      return nil
+    end
+    if users.length == 0
+      puts "> No new users linked."
       return nil
     end
     return users[0].id
@@ -288,11 +296,6 @@ f2.close
 
 # process users with passwords
 auth0_users.length > 0 && auth0_users.each_key do |id|
-  if auth0_secrets[id].nil?
-      puts "User #{auth0_users[id]} not found in secret file -- is your secrets file out of sync with your export file? Continuing."
-      next
-  end
-
   puts "Mapping user: #{auth0_users[id]}"
 
   u = map_user(id, auth0_secrets[id], auth0_users[id], options)
@@ -361,7 +364,7 @@ if options[:linksocial] || options[:onlylinksocial]
 
     response = client.create_user_link(link_request)
     if response.was_successful
-      puts " > Link success"
+      puts " > Link success for " + link_request['userId']
     else
       puts " > Link failed for user id: " + link_request['userId'] + ". Status code #{response.status}. Error response:\n #{response.error_response}"
     end
