@@ -40,7 +40,7 @@ function getFaUserFromUser(user) {
   // faUser.lastLoginInstant = number;
   // faUser.password = bytes hash of password
   faUser.passwordChangeRequired = true;
-  faUser.passwordChangeReason = "Imported from FrontEgg";
+  faUser.passwordChangeReason = "Administrative";
   // faUser.passwordLastUpdateInstant = number;
   // faUser.salt = bytes
   faUser.uniqueUsername = user.email;
@@ -55,7 +55,7 @@ function getFaUserFromUser(user) {
   // faUser.cleanSpeakId = UUID;
   // faUser.expiry = number;
   // faUser.firstName = string;
-  faUser.imageUrl = profilePictureUrl;
+  faUser.imageUrl = user.profilePictureUrl;
   // faUser.insertInstant = number;
   // faUser.lastName = string;
   // faUser.lastUpdateInstant = number;
