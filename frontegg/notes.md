@@ -4,6 +4,9 @@ which has Users (people using your product)
 and Accounts (a digital "person" with permissions that different humans (users) can use to interact with your service).
 
 Entitlements - https://files.readme.io/0c6fed4-Screenshot_2023-07-05_at_15.55.19_1.png
+
+Unfortunately while `GetUser` in FrontEgg will return a users' tenants and role, it won't return their features. There doesn't appear me to be an API method to get them.
+
 Users - https://files.readme.io/10eb79c-Architecture_scheme_2.png
 
 Create a test environment in frontegg.
