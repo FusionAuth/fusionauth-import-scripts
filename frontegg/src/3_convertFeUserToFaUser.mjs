@@ -17,17 +17,19 @@ async function processUsers() {
   const inputUsers = new Chain([fs.createReadStream(inputFilename), parser(), new StreamArray(),]);
   let isFirstLine = true;
   for await (const { value: user } of inputUsers) {
-    if (!isFirstLine)
-      await fsp.appendFile(outputFilename, ',\n', 'utf8');
+    if (!isFirstLine) await fsp.appendFile(outputFilename, ',\n', 'utf8');
     isFirstLine = false;
-    const faUser = getFaUserFromUser(user);
-    await fsp.appendFile(outputFilename, JSON.stringify(faUser), 'utf8');
+    await fsp.appendFile(outputFilename, JSON.stringify(getFaUserFromUser(user)), 'utf8');
   }
   await fsp.appendFile(outputFilename, '\n]', 'utf8');
 }
 
+// Fields are detailed here: https://fusionauth.io/docs/apis/users#request-6
 function getFaUserFromUser(user) {
   const faUser = {};
+
+  set password to uuid to bytes
+  update migration api doc reference to mention this strategy
 
   // SecureIdentity fields ------
   // faUser.breachedPasswordLastCheckedInstant = number;
