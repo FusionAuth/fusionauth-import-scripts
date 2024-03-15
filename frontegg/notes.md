@@ -3,6 +3,9 @@ has Tenants (a group of users for a product, though you need only one Tenant if 
 which has Users (people using your product)
 and Accounts (a digital "person" with permissions that different humans (users) can use to interact with your service).
 
+Entitlements - https://files.readme.io/0c6fed4-Screenshot_2023-07-05_at_15.55.19_1.png
+Users - https://files.readme.io/10eb79c-Architecture_scheme_2.png
+
 Create a test environment in frontegg.
 In `Backoffice` - `Accounts` create an account called `a`.
 In `Backoffice` - `Users` create two users called `a` and `b` assigned to account `a`. For their email address, you can use most web email addresses with an alias. For instance, if you use Gmail or ProtonMail and you email is `me@gmail.com`, you could give the two new users `me+a@gmail.com` and `me+b@gmail.com`.
