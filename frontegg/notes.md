@@ -19,33 +19,3 @@ When you receive the welcome emails for these users in your mail, verify them by
 
 You're now down working on the FrontEgg web portal and have sample user data to test a migration.
 
-
-Questions:
-
-Tenants are called "Tenants" everywhere in the documentation but called "Accounts" in the web portal.
-
-- How do I manage users in Node.js? Your documentation is contradictory and confusing.
-
-https://www.npmjs.com/package/@frontegg/client says:
-
-```js
-const { FronteggContext } = require('@frontegg/client');
-
-FronteggContext.init({
-  FRONTEGG_CLIENT_ID: '<YOUR_CLIENT_ID>',
-  FRONTEGG_API_KEY: '<YOUR_API_KEY>',
-});
-```
-
-But doesn't say which object in the library I need to access users. I can see in the package `export { AuditsClient, FronteggContext, FronteggAuthenticator, withAuthentication, HttpClient, IdentityClient, EntitlementsClient, EventsClient, };` but none of them have any functions related to user management (creating, getting, updating).
-
-Your Node.js sample project - https://github.com/frontegg-samples/nodejs-sample - has code that doesn't even exist:
-
-```js
-ContextHolder.setContext({
-    FRONTEGG_CLIENT_ID: '<YOUR_CLIENT_ID>',
-    FRONTEGG_API_KEY: '<YOUR_API_KEY>',
-});
-```
-
-Your API documentation doesn't mention API keys and clients at all. It says you need to do vendor authentication to get a bearer token with
