@@ -3,7 +3,6 @@ import * as fs from 'fs';
 import parser from 'stream-json';
 import StreamArray from 'stream-json/streamers/StreamArray.js';
 import Chain from 'stream-chain';
-import phpunserialize from 'phpunserialize';
 
 const inputFilename = 'users.json';
 const outputFilename = 'faUsers.json';

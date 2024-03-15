@@ -11,14 +11,13 @@ await fa.createApplicationRole(applicationId, subscriberRoleId, { role: {
     id: subscriberRoleId,
     isDefault: false,
     isSuperRole: false,
-    name: 'Subscriber',
-    description: 'Subscriber'
+    name: 'ReadOnly',
+    description: 'ReadOnly from FrontEgg'
 } });
 await fa.createApplicationRole(applicationId, administratorRoleId, { role: {
     id: administratorRoleId,
     isDefault: false,
     isSuperRole: true,
     name: 'Administrator',
-    description: 'Administrator'
+    description: 'Administrator from FrontEgg'
 } });
-
