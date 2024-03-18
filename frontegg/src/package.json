@@ -2,6 +2,7 @@
   "dependencies": {
     "@frontegg/client": "^5.3.0",
     "@fusionauth/typescript-client": "^1.48.0",
-    "stream-json": "^1.8.0"
+    "stream-json": "^1.8.0",
+    "uuid": "^9.0.1"
   }
 }

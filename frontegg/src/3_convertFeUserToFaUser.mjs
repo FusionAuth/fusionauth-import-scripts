@@ -1,5 +1,6 @@
 import { promises as fsp } from 'fs';
 import * as fs from 'fs';
+import { v4 as uuidv4 } from 'uuid';
 import parser from 'stream-json';
 import StreamArray from 'stream-json/streamers/StreamArray.js';
 import Chain from 'stream-chain';
@@ -28,9 +29,6 @@ async function processUsers() {
 function getFaUserFromUser(user) {
   const faUser = {};
 
-  set password to uuid to bytes
-  update migration api doc reference to mention this strategy
-
   // SecureIdentity fields ------
   // faUser.breachedPasswordLastCheckedInstant = number;
   // faUser.breachedPasswordStatus = BreachedPasswordStatus;
@@ -40,7 +38,7 @@ function getFaUserFromUser(user) {
   //faUser.factor = int;
   faUser.id = user.id
   // faUser.lastLoginInstant = number;
-  // faUser.password = bytes hash of password
+  faUser.password = uuidv4(); // random plaintext password as user will change on login
   faUser.passwordChangeRequired = true;
   faUser.passwordChangeReason = "Administrative";
   // faUser.passwordLastUpdateInstant = number;

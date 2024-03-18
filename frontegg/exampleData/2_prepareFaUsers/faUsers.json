@@ -1,0 +1,54 @@
+[
+    {
+        "email": "myemailaddress+frontegguserb@simplelogin.com",
+        "id": "abba9622-0cd5-4580-9207-7b1cfb70d704",
+        "password": "fdcc63b2-e73c-42b8-81d0-a8ec81332db3",
+        "passwordChangeRequired": true,
+        "passwordChangeReason": "Administrative",
+        "uniqueUsername": "myemailaddress+frontegguserb@simplelogin.com",
+        "username": "b",
+        "verified": true,
+        "active": true,
+        "imageUrl": "https://www.gravatar.com/avatar/e06e94a089d196a81ba971138bced27b?d=https://ui-avatars.com/api/b/128/random",
+        "mobilePhone": null,
+        "registrations": [
+            {
+                "applicationId": "e9fdb985-9173-4e01-9d73-ac2d60d1dc8e",
+                "roles": [
+                    "ReadOnly"
+                ]
+            }
+        ],
+        "tenantId": "d7d09513-a3f5-401c-9685-34ab6c552453",
+        "twoFactor": false,
+        "data": {
+            "fronteggMetadata": "{\"color\": \"green\"}"
+        }
+    },
+    {
+        "email": "myemailaddress+fronteggusera@simplelogin.com",
+        "id": "e217b086-11bc-4f7a-a9da-43ea69a4428f",
+        "password": "6b5e0ffc-e675-40ec-aed4-cb41f1821d9f",
+        "passwordChangeRequired": true,
+        "passwordChangeReason": "Administrative",
+        "uniqueUsername": "myemailaddress+fronteggusera@simplelogin.com",
+        "username": "a",
+        "verified": true,
+        "active": true,
+        "imageUrl": "https://www.gravatar.com/avatar/188e371208e923d0337a29d23bbb1984?d=https://ui-avatars.com/api/a/128/random",
+        "mobilePhone": null,
+        "registrations": [
+            {
+                "applicationId": "e9fdb985-9173-4e01-9d73-ac2d60d1dc8e",
+                "roles": [
+                    "Administrator"
+                ]
+            }
+        ],
+        "tenantId": "d7d09513-a3f5-401c-9685-34ab6c552453",
+        "twoFactor": false,
+        "data": {
+            "fronteggMetadata": "{\"country\": \"france\"}"
+        }
+    }
+]
