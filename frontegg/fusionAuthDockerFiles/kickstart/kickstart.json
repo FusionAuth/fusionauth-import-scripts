@@ -24,7 +24,7 @@
         "body": {
           "key": {
             "algorithm": "RS256",
-            "name": "For Wordpress test import app",
+            "name": "Test",
             "length": 2048
           }
         }
