@@ -35,7 +35,7 @@
         "tenantId": "#{defaultTenantId}",
         "body": {
           "application": {
-            "name": "WordpressTestImportApp",
+            "name": "Test",
             "oauthConfiguration": {
               "authorizedRedirectURLs": [
                 "http://example.com"
