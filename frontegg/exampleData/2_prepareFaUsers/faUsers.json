@@ -5,7 +5,7 @@
         "password": "fdcc63b2-e73c-42b8-81d0-a8ec81332db3",
         "passwordChangeRequired": true,
         "passwordChangeReason": "Administrative",
-        "uniqueUsername": "myemailaddress+frontegguserb@simplelogin.com",
+        "uniqueUsername": "myemail+frontegguserb@simplelogin.com",
         "username": "b",
         "verified": true,
         "active": true,
@@ -26,12 +26,12 @@
         }
     },
     {
-        "email": "myemailaddress+fronteggusera@simplelogin.com",
+        "email": "myemail+fronteggusera@simplelogin.com",
         "id": "e217b086-11bc-4f7a-a9da-43ea69a4428f",
         "password": "6b5e0ffc-e675-40ec-aed4-cb41f1821d9f",
         "passwordChangeRequired": true,
         "passwordChangeReason": "Administrative",
-        "uniqueUsername": "myemailaddress+fronteggusera@simplelogin.com",
+        "uniqueUsername": "myemail+fronteggusera@simplelogin.com",
         "username": "a",
         "verified": true,
         "active": true,
