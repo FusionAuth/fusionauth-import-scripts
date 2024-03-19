@@ -44,6 +44,8 @@ services:
     volumes:
       - fusionauth_config:/usr/local/fusionauth/config
       - ./kickstart:/usr/local/fusionauth/kickstart
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
 networks:
   db_net:
