@@ -8,7 +8,7 @@ import * as egg from '@frontegg/client';
 const app = express();
 app.use(express.json());
 app.post('/', async (request, response) => {
-    console.log(request.body.loginId + " request received");
+    console.log("Request received");
     const isValid = await isLoginValid(request.body.loginId, request.body.password);
     if (isValid)
         return response.status(200).json({});
