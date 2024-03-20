@@ -15,7 +15,7 @@ app.post('/', async (request, response) => {
 });
 app.listen(6252);
 
-isLoginValid("myemailaddress+frontegguserc@simplelogin.com", "passwords");
+
 
 async function isLoginValid(id, password) {
     const authenticator = new egg.FronteggAuthenticator();
