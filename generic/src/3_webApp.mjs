@@ -5,10 +5,10 @@ import pg from "pg"
 
 const db = new pg.Pool({
     user: 'p',
-    host: 'localhost',
+    host: 'db', //service name, not localhost
     database: 'p',
     password: 'p',
-    port: 5432,
+    port: 5432, //internal container port
 });
 
 const app = express();
@@ -41,19 +41,32 @@ app.post('/', async (request, response) => {
     if (!email || !password)
         return response.status(400).send('Enter email and password');
     try {
-        const hash = await argon2.hash(password);
-        await db.query(
-            'INSERT INTO "user" (email, passwordhash) VALUES ($1, $2) RETURNING *;',
-            [email, hash]
-        );
-        request.session.userEmail = email;
-        response.redirect('/account');
+        const { rows } = await db.query('SELECT * FROM "user" WHERE email = $1;', [email]);
+        const emailExists = rows.length > 0;
+        if (emailExists) {
+            const user = rows[0];
+            if (await argon2.verify(user.passwordhash, password)) {
+                request.session.userEmail = email;
+                return response.redirect('/account');
+            }
+            else {
+                await request.session.destroy();
+                return response.status(400).send('Incorrect password');
+            }
+        }
+        else if (!emailExists) {
+            const hash = await argon2.hash(password);
+            await db.query('INSERT INTO "user" (email, passwordhash) VALUES ($1, $2) RETURNING *;', [email, hash]);
+            request.session.userEmail = email;
+            response.redirect('/account');
+        }
     }
     catch (error) {
         console.log(error);
-        response.status(500).send('Error saving user');
+        response.status(500).send('Error authenticating');
     }
 });
+
 
 app.get('/account', async (request, response) => {
     if (request.session.userEmail)
