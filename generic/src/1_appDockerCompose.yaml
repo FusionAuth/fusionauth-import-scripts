@@ -1,5 +1,5 @@
 # USAGE:
-# docker compose up --file 2_appDockerCompose.yaml
+# docker compose up --file 1_appDockerCompose.yaml
 # docker exec       --interactive --tty app sh;
 
 version: '1'
