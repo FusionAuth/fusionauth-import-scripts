@@ -1,6 +1,5 @@
 import { promises as fsp } from 'fs';
 import * as fs from 'fs';
-import { v4 as uuidv4 } from 'uuid';
 import parser from 'stream-json';
 import StreamArray from 'stream-json/streamers/StreamArray.js';
 import Chain from 'stream-chain';
@@ -8,8 +7,6 @@ import Chain from 'stream-chain';
 const inputFilename = 'users.json';
 const outputFilename = 'faUsers.json';
 const applicationId = 'e9fdb985-9173-4e01-9d73-ac2d60d1dc8e';
-const readonlyRoleName = 'ReadOnly';
-const administratorRoleName = 'Administrator';
 
 processUsers();
 
@@ -34,51 +31,45 @@ function getFaUserFromUser(user) {
   // faUser.breachedPasswordStatus = BreachedPasswordStatus;
   // faUser.connectorId = UUID;
   faUser.email = user.email;
-  // faUser.encryptionScheme = string;
-  // faUser.factor = int;
+  faUser.encryptionScheme = 'example-argon2id';
+  faUser.factor = 2;
   //faUser.id = uuid
   // faUser.lastLoginInstant = number;
-  faUser.password = uuidv4(); // random plaintext password as user will change on login
-  faUser.passwordChangeRequired = true;
-  faUser.passwordChangeReason = "Administrative";
+  faUser.password = user.passwordhash;
+  faUser.passwordChangeRequired = false;
+  // faUser.passwordChangeReason = "Administrative";
   // faUser.passwordLastUpdateInstant = number;
-  // faUser.salt = bytes
+  faUser.salt = btoa("");
   faUser.uniqueUsername = user.email;
-  faUser.username = user.name;
+  faUser.username = user.email;
   // faUser.usernameStatus = ContentStatus;
-  faUser.verified = user.verified;
+  // faUser.verified = user.verified;
   // faUser.verifiedInstant = number;
 
   // User fields ------
-  faUser.active = !user.isLocked;
+  faUser.active = true;
   // faUser.birthDate = string;
   // faUser.cleanSpeakId = UUID;
   // faUser.expiry = number;
   // faUser.firstName = string;
-  faUser.imageUrl = user.profilePictureUrl;
+  // faUser.imageUrl = user.profilePictureUrl;
   // faUser.insertInstant = number;
   // faUser.lastName = string;
   // faUser.lastUpdateInstant = number;
   // faUser.memberships = Array<GroupMember>;
   // faUser.middleName = string;
-  faUser.mobilePhone = user.phoneNumber;
-  // faUser.parentEmail = string;
+  // faUser.mobilePhone = user.phoneNumber;
+  // faUser.parentEmail = user.email;
   // faUser.preferredLanguages = Array<string>;
 
-  const isReadOnly = (user.tenants != null && user.tenants.length == 1 && user.tenants[0].roles != null && user.tenants[0].roles.find(r => r.key == "ReadOnly"));
-  const isAdministrator = (user.tenants != null && user.tenants.length == 1 && user.tenants[0].roles != null && user.tenants[0].roles.find(r => r.key == "Admin"));
-  const faRoles = [];
-  if (isAdministrator) faRoles.push(administratorRoleName);
-  if (isReadOnly) faRoles.push(readonlyRoleName);
   faUser.registrations = [{
     'applicationId': applicationId,
-    'roles': faRoles
+    'roles': []
   }];
-  faUser.tenantId = 'd7d09513-a3f5-401c-9685-34ab6c552453';  // TODO: user.TenantId and user.tenantIds
+  faUser.tenantId = 'd7d09513-a3f5-401c-9685-34ab6c552453';
   // faUser.timezone = string;
-  faUser.twoFactor = user.mfaEnrolled;
+  faUser.twoFactor = false;
 
-  faUser.data = {};
-  faUser.data.fronteggMetadata = user.metadata;
+  faUser.data = {"ImportedFromExpressJs": true};
   return faUser;
 }

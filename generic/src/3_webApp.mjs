@@ -8,7 +8,7 @@ const db = new pg.Pool({
     host: 'db', //container service name, not localhost
     database: 'p',
     password: 'p',
-    port: 5432, //internal container port
+    port: 7770, //internal container port
 });
 
 const app = express();
@@ -36,6 +36,13 @@ app.get('/', async (request, response) => {
     `);
 });
 
+app.get('/account', async (request, response) => {
+    if (request.session.userEmail)
+        response.send(`<html><body><h1>Account Details</h1><p>Hello ${request.session.userEmail}</p></body></html>`);
+    else
+        response.send(`<html><body><h1>Access Denied</h1></body></html>`);
+});
+
 app.post('/', async (request, response) => {
     const { email, password } = request.body;
     if (!email || !password)
@@ -55,7 +62,7 @@ app.post('/', async (request, response) => {
             }
         }
         else if (!emailExists) {
-            const hash = await argon2.hash(password);
+            const hash = await argon2.hash(password, { type: argon2.argon2id, memoryCost: 1024*64, parallelism: 1, timeCost: 2});
             await db.query('INSERT INTO "user" (email, passwordhash) VALUES ($1, $2) RETURNING *;', [email, hash]);
             request.session.userEmail = email;
             response.redirect('/account');
@@ -65,14 +72,6 @@ app.post('/', async (request, response) => {
         console.log(error);
         response.status(500).send('Error authenticating');
     }
-});
-
-
-app.get('/account', async (request, response) => {
-    if (request.session.userEmail)
-        response.send(`<html><body><h1>Account Details</h1><p>Hello ${request.session.userEmail}</p></body></html>`);
-    else
-        response.send(`<html><body><h1>Access Denied</h1></body></html>`);
 });
 
 app.listen(7771);
