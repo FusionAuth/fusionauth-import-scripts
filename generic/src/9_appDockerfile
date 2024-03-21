@@ -3,12 +3,13 @@ WORKDIR /workspace
 RUN     apk add go      nodejs npm vim
 RUN     cd /workspace
 
-# build and run the container:
+# USAGE:
 
 # docker build   --file 1_appDockerfile   --tag jsimage   .
 # docker rm jsbox
 # docker run   --interactive --tty --volume .:/workspace --name jsbox jsimage;
 # docker start --interactive --attach jsbox;
+# docker exec  --interactive --tty app;
 
 # get file ownership to edit locally:
 # sudo chown -R me:me code

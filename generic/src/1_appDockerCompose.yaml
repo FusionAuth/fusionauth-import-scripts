@@ -1,0 +1,35 @@
+# USAGE:
+# docker compose up --file 2_appDockerCompose.yaml
+# docker exec       --interactive --tty app bash;
+
+version: '1'
+
+services:
+  db:
+    image: 'postgres:16.2-alpine3.19'
+    container_name: 'app_db'
+    ports:
+      - '7770:5432'
+    environment:
+      POSTGRES_DB:       'p'
+      POSTGRES_PASSWORD: 'p'
+      POSTGRES_USER:     'p'
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: '5s'
+      timeout: '5s'
+      retries: '5'
+
+  app:
+    image: 'node:alpine3.19'
+    container_name: 'app'
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - 7771:7771
+    volumes:
+      - .:/workspace
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    command: ["sh", "-c", "tail -f /dev/null"]
