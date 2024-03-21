@@ -1,11 +1,11 @@
 import argon2 from 'argon2';
 import express from 'express';
 import session from 'express-session';
-import pg from "pg"
+import pg from 'pg';
 
 const db = new pg.Pool({
     user: 'p',
-    host: 'db', //service name, not localhost
+    host: 'db', //container service name, not localhost
     database: 'p',
     password: 'p',
     port: 5432, //internal container port

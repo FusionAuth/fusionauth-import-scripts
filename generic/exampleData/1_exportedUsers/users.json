@@ -1,0 +1,10 @@
+[
+    {
+        "email": "t@t.com",
+        "passwordhash": "$argon2id$v=19$m=65536,t=3,p=4$kmtmDSZfRa97ptmuZdwUfQ$rOebanB4JKlPbzD/61WAWLYD8LjW7xBrCL0jqYeDG1c"
+    },
+    {
+        "email": "t2@t.com",
+        "passwordhash": "$argon2id$v=19$m=65536,t=3,p=4$ITwYuY9C/yisVYDw9vDm4Q$xMiYyl7qtOwtmwTpOPp+bmq7oMULvHSBBh6SEUlld2M"
+    }
+]

@@ -35,8 +35,8 @@ function getFaUserFromUser(user) {
   // faUser.connectorId = UUID;
   faUser.email = user.email;
   // faUser.encryptionScheme = string;
-  //faUser.factor = int;
-  faUser.id = user.id
+  // faUser.factor = int;
+  //faUser.id = uuid
   // faUser.lastLoginInstant = number;
   faUser.password = uuidv4(); // random plaintext password as user will change on login
   faUser.passwordChangeRequired = true;
