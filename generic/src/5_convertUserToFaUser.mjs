@@ -31,7 +31,7 @@ function getFaUserFromUser(user) {
   // faUser.breachedPasswordStatus = BreachedPasswordStatus;
   // faUser.connectorId = UUID;
   faUser.email = user.email;
-  faUser.encryptionScheme = 'salted-sha256'; //'example-argon2id';
+  faUser.encryptionScheme = 'salted-sha256';
   faUser.factor = 20000;
   //faUser.id = uuid
   // faUser.lastLoginInstant = number;

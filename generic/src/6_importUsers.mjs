@@ -6,7 +6,7 @@ import * as fs from "fs";
 import util from 'util'
 
 const apiKey = '33052c8a-c283-4e96-9d2a-eb1215c69f8f-not-for-prod';
-const fusionauthUrl = 'http://host.docker.internal:9011'; //localhost
+const fusionauthUrl = 'http://host.docker.internal:9011';
 const filename = 'faUsers.json';
 const fa = new FusionAuthClient(apiKey, fusionauthUrl);
 
