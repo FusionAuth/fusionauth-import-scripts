@@ -1,0 +1,12 @@
+[
+    {
+        "email": "t@t.com",
+        "hash": "NF+m8S+f16RR3RhYkz90y2heRjC6SwFoVT9pFNby6/E=",
+        "salt": "2a93f674-b44e-4c99-b1d4-208117dd0134"
+    },
+    {
+        "email": "t2@t.com",
+        "hash": "pzxs+bm6s4wJNKp+D1RDFUa950q7xs8dqvgueL4VmU8=",
+        "salt": "f503d111-970e-437a-8111-82e01374b3c7"
+    }
+]

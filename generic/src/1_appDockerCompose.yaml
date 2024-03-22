@@ -1,6 +1,7 @@
 # USAGE:
 # docker compose up --file 1_appDockerCompose.yaml
 # docker exec       --interactive --tty app sh; cd /workspace;
+# sudo chown -R me:me .
 
 version: '1'
 

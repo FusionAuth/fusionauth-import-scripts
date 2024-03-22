@@ -1,0 +1,46 @@
+[
+    {
+        "email": "t@t.com",
+        "encryptionScheme": "salted-sha256",
+        "factor": 20000,
+        "password": "NF+m8S+f16RR3RhYkz90y2heRjC6SwFoVT9pFNby6/E=",
+        "passwordChangeRequired": false,
+        "salt": "MmE5M2Y2NzQtYjQ0ZS00Yzk5LWIxZDQtMjA4MTE3ZGQwMTM0",
+        "uniqueUsername": "t@t.com",
+        "username": "t@t.com",
+        "active": true,
+        "registrations": [
+            {
+                "applicationId": "e9fdb985-9173-4e01-9d73-ac2d60d1dc8e",
+                "roles": []
+            }
+        ],
+        "tenantId": "d7d09513-a3f5-401c-9685-34ab6c552453",
+        "twoFactor": false,
+        "data": {
+            "ImportedFromExpressJs": true
+        }
+    },
+    {
+        "email": "t2@t.com",
+        "encryptionScheme": "salted-sha256",
+        "factor": 20000,
+        "password": "pzxs+bm6s4wJNKp+D1RDFUa950q7xs8dqvgueL4VmU8=",
+        "passwordChangeRequired": false,
+        "salt": "ZjUwM2QxMTEtOTcwZS00MzdhLTgxMTEtODJlMDEzNzRiM2M3",
+        "uniqueUsername": "t2@t.com",
+        "username": "t2@t.com",
+        "active": true,
+        "registrations": [
+            {
+                "applicationId": "e9fdb985-9173-4e01-9d73-ac2d60d1dc8e",
+                "roles": []
+            }
+        ],
+        "tenantId": "d7d09513-a3f5-401c-9685-34ab6c552453",
+        "twoFactor": false,
+        "data": {
+            "ImportedFromExpressJs": true
+        }
+    }
+]
