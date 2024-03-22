@@ -9,7 +9,7 @@ const db = new pg.Pool({
     host: 'db', //container service name, not localhost
     database: 'p',
     password: 'p',
-    port: 7770, //internal container port
+    port: 7770,
 });
 
 const app = express();
