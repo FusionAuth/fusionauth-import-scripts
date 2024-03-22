@@ -10,6 +10,7 @@ const db = new pg.Pool({
 
 await db.query(`CREATE TABLE "user" (
     "email" VARCHAR(255) NOT NULL,
-    "passwordhash" VARCHAR(255) NOT NULL,
+    "hash" VARCHAR(255) NOT NULL,
+    "salt" VARCHAR(255) NOT NULL,
     PRIMARY KEY ("email")
 );`);

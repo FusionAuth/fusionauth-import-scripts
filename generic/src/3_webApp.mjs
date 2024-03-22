@@ -1,7 +1,9 @@
-import argon2 from 'argon2';
+//import argon2 from 'argon2';
+import {default as crypto} from 'crypto-js';
 import express from 'express';
 import session from 'express-session';
 import pg from 'pg';
+import {v4 as uuid} from 'uuid';
 
 const db = new pg.Pool({
     user: 'p',
@@ -52,7 +54,8 @@ app.post('/', async (request, response) => {
         const emailExists = rows.length > 0;
         if (emailExists) {
             const user = rows[0];
-            if (await argon2.verify(user.passwordhash, password)) {
+            //if (await argon2.verify(user.passwordhash, password)) {
+            if (getHash(password, rows[0].salt) == rows[0].hash) {
                 request.session.userEmail = email;
                 return response.redirect('/account');
             }
@@ -62,8 +65,10 @@ app.post('/', async (request, response) => {
             }
         }
         else if (!emailExists) {
-            const hash = await argon2.hash(password, { type: argon2.argon2id, memoryCost: 1024*64, parallelism: 1, timeCost: 2});
-            await db.query('INSERT INTO "user" (email, passwordhash) VALUES ($1, $2) RETURNING *;', [email, hash]);
+            // const hash = await argon2.hash(password, { type: argon2.argon2id, memoryCost: 1024*64, parallelism: 1, timeCost: 2});
+            const salt = uuid();
+            const hash = getHash(password, salt);
+            await db.query('INSERT INTO "user" (email, hash, salt) VALUES ($1, $2, $3) RETURNING *;', [email, hash, salt]);
             request.session.userEmail = email;
             response.redirect('/account');
         }
@@ -75,3 +80,10 @@ app.post('/', async (request, response) => {
 });
 
 app.listen(7771);
+
+function getHash(password, salt) {
+    let hash = crypto.enc.Utf8.parse(password).concat(crypto.enc.Base64.parse(salt));
+    for (let count = 0; count < 20000; count++)
+        hash = crypto.SHA256(hash);
+    return hash.toString(crypto.enc.Hex);
+}

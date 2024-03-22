@@ -31,15 +31,15 @@ function getFaUserFromUser(user) {
   // faUser.breachedPasswordStatus = BreachedPasswordStatus;
   // faUser.connectorId = UUID;
   faUser.email = user.email;
-  faUser.encryptionScheme = 'example-argon2id';
-  faUser.factor = 2;
+  faUser.encryptionScheme = 'salted-sha256'; //'example-argon2id';
+  faUser.factor = 20000;
   //faUser.id = uuid
   // faUser.lastLoginInstant = number;
-  faUser.password = user.passwordhash;
+  faUser.password = user.hash;
   faUser.passwordChangeRequired = false;
   // faUser.passwordChangeReason = "Administrative";
   // faUser.passwordLastUpdateInstant = number;
-  faUser.salt = btoa("");
+  faUser.salt = btoa(user.salt);
   faUser.uniqueUsername = user.email;
   faUser.username = user.email;
   // faUser.usernameStatus = ContentStatus;
@@ -70,6 +70,6 @@ function getFaUserFromUser(user) {
   // faUser.timezone = string;
   faUser.twoFactor = false;
 
-  faUser.data = {"ImportedFromExpressJs": true};
+  faUser.data = { "ImportedFromExpressJs": true };
   return faUser;
 }
