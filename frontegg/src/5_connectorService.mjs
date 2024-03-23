@@ -17,16 +17,13 @@ app.post('/', async (request, response) => {
     const password = request.body.password;
     const isValid = await isLoginValid(email, request.body.password);
     if (isValid) {
-        const idAndActive = await getUserDetailsFromFile(email);
-        if (idAndActive.length != 2)
-            return response.status(404).end();
+        const userDetails = await getUserDetailsFromFile(email);
+        if (Object.keys(userDetails).length === 0)
+            return response.status(404).end();    
         return response.status(200).json({
             user: {
-                'active': idAndActive[1],
-                'id': idAndActive[0],
-                'email': email,
-                'password': password,
-                'username': email
+                ...userDetails,
+                'password': password
             }
         });
     }
@@ -57,11 +54,10 @@ async function isLoginValid(id, password) {
 
 async function getUserDetailsFromFile(email) {
     const inputUsers = new Chain([fs.createReadStream('faUsers.json'), parser(), new StreamArray(),]);
-    const result = [];
+    let result = {};
     for await (const { value: user } of inputUsers) {
         if (user.email == email) {
-            result.push(user.id);
-            result.push(user.active);
+            result = user;
         }
     }
     return result;

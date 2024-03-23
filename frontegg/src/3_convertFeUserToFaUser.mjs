@@ -76,9 +76,9 @@ function getFaUserFromUser(user) {
   }];
   faUser.tenantId = 'd7d09513-a3f5-401c-9685-34ab6c552453';  // TODO: user.TenantId and user.tenantIds
   // faUser.timezone = string;
-  faUser.twoFactor = user.mfaEnrolled;
 
   faUser.data = {};
   faUser.data.fronteggMetadata = user.metadata;
+  faUser.data.mfaEnrolled = user.mfaEnrolled;
   return faUser;
 }
