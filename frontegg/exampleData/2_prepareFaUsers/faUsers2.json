@@ -2,9 +2,6 @@
     {
         "email": "myemail+frontegguserc@simplelogin.com",
         "id": "647978c5-01a0-49b8-8f4f-daab25e7ce63",
-        "password": "dbf99ecb-427e-4148-8a2d-952826853083",
-        "passwordChangeRequired": true,
-        "passwordChangeReason": "Administrative",
         "uniqueUsername": "myemailaddress+frontegguserc@simplelogin.com",
         "username": "ccc",
         "verified": true,
@@ -20,9 +17,9 @@
             }
         ],
         "tenantId": "d7d09513-a3f5-401c-9685-34ab6c552453",
-        "twoFactor": false,
         "data": {
-            "fronteggMetadata": null
+            "fronteggMetadata": null,
+            "mfaEnrolled": false
         }
     }
 ]
