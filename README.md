@@ -155,6 +155,11 @@ Please see https://fusionauth.io/docs/v1/tech/migration-guide/duende for full in
 
 Please see https://fusionauth.io/docs/v1/tech/migration-guide/cognito for full instructions.
 
+### Stytch 
+
+Please see https://fusionauth.io/docs/lifecycle/migrate-users/bulk/stytch for full instructions.
+
+
 ### Generate Test Users
 
 This script will use the Import API to bulk create users for load testing FusionAuth.
@@ -208,4 +213,8 @@ Generate 3,000 applications
 ruby generate_applications.rb --apiKey <API Key> --tenantId <TenantId> --url http://localhost:9011 --total 3000 
 ```
 
+
+### Ping Identity
+
+Please see https://fusionauth.io/docs/lifecycle/migrate-users/bulk/pingone for full instructions 
 
