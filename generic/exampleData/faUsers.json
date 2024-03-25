@@ -16,7 +16,6 @@
             }
         ],
         "tenantId": "d7d09513-a3f5-401c-9685-34ab6c552453",
-        "twoFactor": false,
         "data": {
             "ImportedFromExpressJs": true
         }
@@ -38,7 +37,6 @@
             }
         ],
         "tenantId": "d7d09513-a3f5-401c-9685-34ab6c552453",
-        "twoFactor": false,
         "data": {
             "ImportedFromExpressJs": true
         }

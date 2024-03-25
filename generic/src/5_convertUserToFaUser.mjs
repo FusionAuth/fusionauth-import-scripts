@@ -68,7 +68,6 @@ function getFaUserFromUser(user) {
   }];
   faUser.tenantId = 'd7d09513-a3f5-401c-9685-34ab6c552453';
   // faUser.timezone = string;
-  faUser.twoFactor = false;
 
   faUser.data = { "ImportedFromExpressJs": true };
   return faUser;
