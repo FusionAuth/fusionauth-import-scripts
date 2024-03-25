@@ -155,6 +155,10 @@ Please see https://fusionauth.io/docs/v1/tech/migration-guide/duende for full in
 
 Please see https://fusionauth.io/docs/v1/tech/migration-guide/cognito for full instructions.
 
+### WordPress 
+
+Please see https://fusionauth.io/docs/lifecycle/migrate-users/provider-specific/wordpress for full instructions.
+
 ### Generate Test Users
 
 This script will use the Import API to bulk create users for load testing FusionAuth.
