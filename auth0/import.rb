@@ -224,6 +224,8 @@ f1.each_line { |line|
   s_hash = JSON.parse(line)
   id = s_hash['_id']['$oid']
   auth0_secrets[id] = s_hash
+
+  # if user was imported to auth0, they will have a non uuid in the users file and an alt_id in the secrets file.
   alt_id = s_hash['alt_id']
   if alt_id
     auth0_secrets[alt_id] = s_hash
