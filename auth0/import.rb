@@ -225,7 +225,9 @@ f1.each_line { |line|
   id = s_hash['_id']['$oid']
   auth0_secrets[id] = s_hash
   alt_id = s_hash['alt_id']
-  auth0_secrets[alt_id] = s_hash
+  if alt_id
+    auth0_secrets[alt_id] = s_hash
+  end
 }
 f1.close
 
