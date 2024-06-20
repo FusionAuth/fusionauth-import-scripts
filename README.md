@@ -159,6 +159,9 @@ Please see https://fusionauth.io/docs/v1/tech/migration-guide/cognito for full i
 
 Please see https://fusionauth.io/docs/lifecycle/migrate-users/bulk/stytch for full instructions.
 
+### Custom Authentication System
+
+Please see https://fusionauth.io/docs/lifecycle/migrate-users/genericmigration for full instructions.
 
 ### Generate Test Users
 
