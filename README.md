@@ -157,7 +157,15 @@ Please see https://fusionauth.io/docs/v1/tech/migration-guide/cognito for full i
 
 ### Stytch 
 
-Please see https://fusionauth.io/docs/lifecycle/migrate-users/bulk/stytch for full instructions.
+Please see https://fusionauth.io/docs/lifecycle/migrate-users/provider-specific/stytch for full instructions.
+
+### Ping Identity
+
+Please see https://fusionauth.io/docs/lifecycle/migrate-users/provider-specific/pingone for full instructions
+
+### WordPress
+
+Please see https://fusionauth.io/docs/lifecycle/migrate-users/provider-specific/wordpress for full instructions.
 
 
 ### Generate Test Users
@@ -212,9 +220,3 @@ Generate 3,000 applications
 ```bash
 ruby generate_applications.rb --apiKey <API Key> --tenantId <TenantId> --url http://localhost:9011 --total 3000 
 ```
-
-
-### Ping Identity
-
-Please see https://fusionauth.io/docs/lifecycle/migrate-users/bulk/pingone for full instructions 
-
