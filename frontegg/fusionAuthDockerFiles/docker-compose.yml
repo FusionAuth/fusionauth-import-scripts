@@ -1,8 +1,6 @@
-
 services:
   db:
     image: postgres:16.0-bookworm
-    container_name: fa_db
     ports:
       - "5432:5432"
     environment:
@@ -21,7 +19,6 @@ services:
 
   fusionauth:
     image: fusionauth/fusionauth-app:latest
-    container_name: fa
     depends_on:
       db:
         condition: service_healthy
