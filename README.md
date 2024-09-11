@@ -167,6 +167,9 @@ Please see https://fusionauth.io/docs/lifecycle/migrate-users/provider-specific/
 
 Please see https://fusionauth.io/docs/lifecycle/migrate-users/provider-specific/wordpress for full instructions.
 
+### Frontegg
+
+Please see https://fusionauth.io/docs/lifecycle/migrate-users/provider-specific/frontegg for full instructions.
 
 ### Generate Test Users
 

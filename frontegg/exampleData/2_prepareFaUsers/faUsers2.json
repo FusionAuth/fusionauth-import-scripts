@@ -1,0 +1,25 @@
+[
+    {
+        "email": "myemail+frontegguserc@simplelogin.com",
+        "id": "647978c5-01a0-49b8-8f4f-daab25e7ce63",
+        "uniqueUsername": "myemailaddress+frontegguserc@simplelogin.com",
+        "username": "ccc",
+        "verified": true,
+        "active": true,
+        "imageUrl": "https://www.gravatar.com/avatar/7dd0b6b649201fa5fb7b12a5e4bf6101?d=https://ui-avatars.com/api/ccc/128/random",
+        "mobilePhone": null,
+        "registrations": [
+            {
+                "applicationId": "e9fdb985-9173-4e01-9d73-ac2d60d1dc8e",
+                "roles": [
+                    "Administrator"
+                ]
+            }
+        ],
+        "tenantId": "d7d09513-a3f5-401c-9685-34ab6c552453",
+        "data": {
+            "fronteggMetadata": null,
+            "mfaEnrolled": false
+        }
+    }
+]
