@@ -159,6 +159,10 @@ Please see https://fusionauth.io/docs/v1/tech/migration-guide/cognito for full i
 
 Please see https://fusionauth.io/docs/lifecycle/migrate-users/provider-specific/stytch for full instructions.
 
+### Custom Authentication System
+
+Please see https://fusionauth.io/docs/lifecycle/migrate-users/genericmigration for full instructions.
+
 ### Ping Identity
 
 Please see https://fusionauth.io/docs/lifecycle/migrate-users/provider-specific/pingone for full instructions
