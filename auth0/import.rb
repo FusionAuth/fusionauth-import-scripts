@@ -93,7 +93,13 @@ def map_user(id, auth_secret, auth_user, options)
   if is_auth0_user
     # Optionally convert Auth0 user_id to a UUID for FusionAuth
     if $map_auth0_user_id
-      _id = id.ljust(32, '0')
+      id_to_turn_to_uuid = id
+      if id.length != 24
+        # We have an alternate id, loaded from a non Auth0 datasource
+        id_to_turn_to_uuid = auth_secret['_id']['$oid']
+      end
+
+      _id = id_to_turn_to_uuid.ljust(32, '0')
       user['id'] = "#{_id[0, 8]}-#{_id[8, 4]}-#{_id[12, 4]}-#{_id[16, 4]}-#{_id[20, 12]}"
     end
   end
@@ -218,6 +224,12 @@ f1.each_line { |line|
   s_hash = JSON.parse(line)
   id = s_hash['_id']['$oid']
   auth0_secrets[id] = s_hash
+
+  # if user was imported to auth0, they will have a non uuid in the users file and an alt_id in the secrets file.
+  alt_id = s_hash['alt_id']
+  if alt_id
+    auth0_secrets[alt_id] = s_hash
+  end
 }
 f1.close
 

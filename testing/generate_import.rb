@@ -178,7 +178,7 @@ while count < total
     http.verify_mode = OpenSSL::SSL::VERIFY_NONE
   end
 
-  req = Net::HTTP::Post.new(url + "/api/user/import")
+  req = Net::HTTP::Post.new("/api/user/import")
   req['Content-Type'] = 'application/json'
   req['Authorization'] = api_key
   req['X-FusionAuth-TenantId'] = tenant_id
@@ -196,7 +196,7 @@ while count < total
   res = http.request(req)
   if res.code.to_i != 200
     puts " > Failed. Response code [#{res.code}]\n"
-    if res.code.to_i == 400
+    if res.code.to_i >= 400
       puts JSON.pretty_generate(JSON.parse(res.body))
     end
     exit 1
