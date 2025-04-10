@@ -5,6 +5,7 @@ require 'json'
 require 'net/http'
 require 'getoptlong'
 require 'openssl'
+load './uuid_util.rb'
 
 opts = GetoptLong.new(
   [ '--help', '-h', GetoptLong::NO_ARGUMENT ],
@@ -112,12 +113,7 @@ while count < total
     http.verify_mode = OpenSSL::SSL::VERIFY_NONE
   end
 
-  tenant_id = "%016x%016x" % [tenant_prefix, count]
-  tenant_id.insert(20, '-')
-  tenant_id.insert(16, '-')
-  tenant_id.insert(12, '-')
-  tenant_id.insert(8, '-')
-  req = Net::HTTP::Post.new(url + "/api/tenant/" + tenant_id)
+  req = Net::HTTP::Post.new(url + "/api/tenant/" + print_uuid(tenant_prefix, count))
   req['Content-Type'] = 'application/json'
   req['Authorization'] = api_key
 
