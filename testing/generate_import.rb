@@ -5,6 +5,7 @@ require 'json'
 require 'net/http'
 require 'getoptlong'
 require 'openssl'
+load './uuid_util.rb'
 
 opts = GetoptLong.new(
   [ '--help', '-h', GetoptLong::NO_ARGUMENT ],
@@ -12,6 +13,8 @@ opts = GetoptLong.new(
   [ '--applicationId', GetoptLong::REQUIRED_ARGUMENT ],
   [ '--tenantId', GetoptLong::REQUIRED_ARGUMENT ],
   [ '--url', GetoptLong::REQUIRED_ARGUMENT ],
+  [ '--apt', GetoptLong::OPTIONAL_ARGUMENT ],
+  [ '--usersPerApp', GetoptLong::OPTIONAL_ARGUMENT ],
   [ '--batch', GetoptLong::OPTIONAL_ARGUMENT ],
   [ '--offset', GetoptLong::OPTIONAL_ARGUMENT ],
   [ '--total', GetoptLong::OPTIONAL_ARGUMENT ]
@@ -24,6 +27,8 @@ tenant_id = nil
 url = nil
 batch = 10_000
 offset = 0
+applications_per_tenant = 1
+users_per_application = nil
 total = 1_000_000
 
 opts.each do |opt, arg|
@@ -42,12 +47,22 @@ opts.each do |opt, arg|
 --applicationId [applicationId]:
    The unique Id of the application used for the import request.
 
-   Required.
+   Optional.
 
 --tenantId [tenantId]:
    The unique Id of the tenant used for the import request.
 
-   Required.
+   Optional.
+
+--apt [applicationsPerTenant]:
+   The number of applications created per tenant. Required when --tenantId is not provided.
+
+   Optional.
+
+--usersPerApp [usersPerApplication]:
+   The number of users to create per application. If provided, this will be used as the batch size and a total of
+      applicationsPerTenant * usersPerApplication
+    Users will be created, override the total.
 
 --url [url]:
   The base URL to reach FusionAuth/
@@ -95,6 +110,16 @@ opts.each do |opt, arg|
       if arg != ''
         offset = arg.to_i
       end
+    # The number of applications per tenant
+    when '--apt'
+      if arg != ''
+        applications_per_tenant = arg.to_i
+      end
+    # The number of users to create per application
+    when '--usersPerApp'
+      if arg != ''
+        users_per_application = arg.to_i
+      end
     # The total number of users to import
     when '--total'
       if arg != ''
@@ -115,6 +140,14 @@ end
 
 # The total number of users processed so far towards the total
 count = 0
+i_application = 0
+i_tenant = 0
+
+# If we are creating a number of users per application, override the batch size and total
+if !(users_per_application.nil?)
+  batch = users_per_application
+  total = applications_per_tenant * users_per_application
+end
 
 # The expected number of iterations to reach the total count
 total_iterations = [1, (total / batch)].max.to_i
@@ -146,8 +179,10 @@ while count < total
 
     # This user can be customized to better replicate your production configuration.
     user = {}
+    user['id'] = print_uuid($user_prefix, index)
     user['active'] = true
     user['email'] = "imported-user-#{index}@fusionauth.io"
+    user['username'] = "imported-username#{index}"
     user['verified'] = true
 
     # Password is 'password', using the default FusionAuth hashing scheme
@@ -159,7 +194,7 @@ while count < total
     # Add a single registration with the 'user' role.
     user['registrations'] = []
     user['registrations'][0] = {}
-    user['registrations'][0]['applicationId'] = application_id
+    user['registrations'][0]['applicationId'] = application_id.nil? ? print_uuid($application_prefix, i_application) : application_id
     user['registrations'][0]['roles'] = ['user','admin','manager','supervisor','nobody','anonymous','abc','def','ghi','jkl']
     users[i] = user
   end
@@ -181,7 +216,7 @@ while count < total
   req = Net::HTTP::Post.new("/api/user/import")
   req['Content-Type'] = 'application/json'
   req['Authorization'] = api_key
-  req['X-FusionAuth-TenantId'] = tenant_id
+  req['X-FusionAuth-TenantId'] = tenant_id.nil? ? print_uuid($tenant_prefix, i_tenant) : tenant_id
 
   # If you want to perform Db constraint validation, un-comment the second
   # line of the request body. This will dramatically slow down the import
@@ -200,6 +235,11 @@ while count < total
       puts JSON.pretty_generate(JSON.parse(res.body))
     end
     exit 1
+  end
+
+  i_application += 1
+  if i_application % applications_per_tenant == 0
+    i_tenant += 1
   end
 
   # Increment our counter
