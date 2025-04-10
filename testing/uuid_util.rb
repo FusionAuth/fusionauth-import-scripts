@@ -1,5 +1,6 @@
 $tenant_prefix = 0
 $application_prefix = 1
+$user_prefix = 2
 
 def print_uuid(prefix, value)
   uuid_str = "%016x%016x" % [prefix, value]
