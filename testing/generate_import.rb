@@ -15,6 +15,7 @@ opts = GetoptLong.new(
   [ '--url', GetoptLong::REQUIRED_ARGUMENT ],
   [ '--apt', GetoptLong::OPTIONAL_ARGUMENT ],
   [ '--usersPerApp', GetoptLong::OPTIONAL_ARGUMENT ],
+  [ '--appCount', GetoptLong::OPTIONAL_ARGUMENT ],
   [ '--batch', GetoptLong::OPTIONAL_ARGUMENT ],
   [ '--offset', GetoptLong::OPTIONAL_ARGUMENT ],
   [ '--total', GetoptLong::OPTIONAL_ARGUMENT ]
@@ -28,6 +29,7 @@ url = nil
 batch = 10_000
 offset = 0
 applications_per_tenant = 1
+app_count = 1
 users_per_application = nil
 total = 1_000_000
 
@@ -60,9 +62,12 @@ opts.each do |opt, arg|
    Optional.
 
 --usersPerApp [usersPerApplication]:
-   The number of users to create per application. If provided, this will be used as the batch size and a total of
-      applicationsPerTenant * usersPerApplication
-    Users will be created, override the total.
+   The number of users to create per application. If provided, this will be used as the batch size. Required when --appCount is specified
+
+--appCount [appCount]:
+   The number of applications. Required when --usersPerApp is specified. Total will be
+      appCount * usersPerApplication
+    Users will be created, overriding the total.
 
 --url [url]:
   The base URL to reach FusionAuth/
@@ -120,6 +125,11 @@ opts.each do |opt, arg|
       if arg != ''
         users_per_application = arg.to_i
       end
+    # The number of applications
+    when '--appCount'
+      if arg != ''
+        app_count = arg.to_i
+      end
     # The total number of users to import
     when '--total'
       if arg != ''
@@ -146,7 +156,7 @@ i_tenant = 0
 # If we are creating a number of users per application, override the batch size and total
 if !(users_per_application.nil?)
   batch = users_per_application
-  total = applications_per_tenant * users_per_application
+  total = app_count * users_per_application
 end
 
 # The expected number of iterations to reach the total count
