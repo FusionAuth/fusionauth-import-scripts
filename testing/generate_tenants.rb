@@ -20,7 +20,6 @@ api_key = nil
 url = nil
 offset = 0
 total = 10
-tenant_prefix = 0
 
 opts.each do |opt, arg|
   case opt
@@ -113,7 +112,7 @@ while count < total
     http.verify_mode = OpenSSL::SSL::VERIFY_NONE
   end
 
-  req = Net::HTTP::Post.new(url + "/api/tenant/" + print_uuid(tenant_prefix, count))
+  req = Net::HTTP::Post.new(url + "/api/tenant/" + print_uuid($tenant_prefix, count))
   req['Content-Type'] = 'application/json'
   req['Authorization'] = api_key
 

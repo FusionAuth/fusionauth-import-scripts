@@ -1,5 +1,5 @@
-tenant_prefix = 0
-application_prefix = 1
+$tenant_prefix = 0
+$application_prefix = 1
 
 def print_uuid(prefix, value)
   uuid_str = "%016x%016x" % [prefix, value]
