@@ -19,7 +19,7 @@ argv_length = ARGV.length
 api_key = nil
 url = nil
 offset = 0
-total = 100
+total = 10
 tenant_prefix = 0
 
 opts.each do |opt, arg|
@@ -50,7 +50,7 @@ opts.each do |opt, arg|
 --total [total]:
   The total number of tenants to generate.
 
-  Default value is 100.
+  Default value is 10.
 
       EOF
     when '--apiKey'
