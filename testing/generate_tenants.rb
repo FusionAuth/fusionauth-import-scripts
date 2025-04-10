@@ -97,9 +97,6 @@ while count < total
   # This user can be customized to better replicate your production configuration.
   tenant = {}
   tenant['name'] = "Generated Tenant [#{count}]"
-  tenant['passwordEncryptionConfiguration'] = {}
-  tenant['passwordEncryptionConfiguration']['encryptionScheme'] = "salted-md5"
-  tenant['passwordEncryptionConfiguration']['encryptionSchemeFactor'] = 1
 
   # Perform the create request
   uri = URI(url)
