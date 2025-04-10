@@ -160,7 +160,7 @@ while count < total
     user['registrations'] = []
     user['registrations'][0] = {}
     user['registrations'][0]['applicationId'] = application_id
-    user['registrations'][0]['roles'] = ['user']
+    user['registrations'][0]['roles'] = ['user','admin','manager','supervisor','nobody','anonymous','abc','def','ghi','jkl']
     users[i] = user
   end
 
