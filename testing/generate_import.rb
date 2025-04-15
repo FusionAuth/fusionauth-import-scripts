@@ -13,7 +13,7 @@ opts = GetoptLong.new(
   [ '--applicationId', GetoptLong::REQUIRED_ARGUMENT ],
   [ '--tenantId', GetoptLong::REQUIRED_ARGUMENT ],
   [ '--url', GetoptLong::REQUIRED_ARGUMENT ],
-  [ '--apt', GetoptLong::OPTIONAL_ARGUMENT ],
+  [ '--appsPerTenant', GetoptLong::OPTIONAL_ARGUMENT ],
   [ '--usersPerApp', GetoptLong::OPTIONAL_ARGUMENT ],
   [ '--appCount', GetoptLong::OPTIONAL_ARGUMENT ],
   [ '--batch', GetoptLong::OPTIONAL_ARGUMENT ],
@@ -56,7 +56,7 @@ opts.each do |opt, arg|
 
    Optional.
 
---apt [applicationsPerTenant]:
+--appsPerTenant [applicationsPerTenant]:
    The number of applications created per tenant. Required when --tenantId is not provided.
 
    Optional.
@@ -116,7 +116,7 @@ opts.each do |opt, arg|
         offset = arg.to_i
       end
     # The number of applications per tenant
-    when '--apt'
+    when '--appsPerTenant'
       if arg != ''
         applications_per_tenant = arg.to_i
       end
