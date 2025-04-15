@@ -40,9 +40,8 @@ opts.each do |opt, arg|
   Required.
 
 --offset [offset]:
-  The offset to use when generating unique email addresses for the import. Use
-  this value when importing more than once to the same tenant with this script
-  to avoid email collisions.
+  The offset to use when generating tenant Ids. Use this value when importing more
+  than once to the same tenant with this script to avoid Id collisions.
 
   Default value is 0.
 
@@ -56,6 +55,7 @@ opts.each do |opt, arg|
       api_key = arg
     when '--url'
       url = arg
+    # The offset for tenant Ids
     when '--offset'
       if arg != ''
         offset = arg.to_i
@@ -73,8 +73,8 @@ if argv_length == 0
   exit 0
 end
 
-if argv_length < 3
-  puts "Usage: generate_tenants.rb --apiKey <API Key> --tenantId <Tenant Id> --url <URL>"
+if argv_length < 2
+  puts "Usage: generate_tenants.rb --apiKey <API Key> --url <URL>"
   exit 0
 end
 
@@ -89,12 +89,12 @@ puts "FusionAuth : Generate Test Tenants"
 puts " > Total tenants: #{total}"
 puts ""
 
-# Iterate in batch sizes until we reach the total
+# Loop over tenant creation
 while count < total
 
   puts "[#{count} of #{total}] [#{Time.new.strftime("%a %m/%d %y %H:%M:%S")}] Generate Tenant request."
 
-  # This user can be customized to better replicate your production configuration.
+  # This tenant can be customized to better replicate your production configuration.
   tenant = {}
   tenant['name'] = "Generated Tenant [#{count}]"
 
@@ -112,6 +112,7 @@ while count < total
     http.verify_mode = OpenSSL::SSL::VERIFY_NONE
   end
 
+  # Create tenants with a known prefix
   req = Net::HTTP::Post.new(url + "/api/tenant/" + print_uuid($tenant_prefix, count))
   req['Content-Type'] = 'application/json'
   req['Authorization'] = api_key
