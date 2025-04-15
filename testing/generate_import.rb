@@ -204,7 +204,7 @@ while count < total
     # Add a single registration with the 'user' role.
     user['registrations'] = []
     user['registrations'][0] = {}
-    user['registrations'][0]['applicationId'] = application_id.nil? ? print_uuid($application_prefix, i_application) : application_id
+    user['registrations'][0]['applicationId'] = application_id || print_uuid($application_prefix, i_application)
     user['registrations'][0]['roles'] = ['user','admin','manager','supervisor','nobody','anonymous','abc','def','ghi','jkl']
     users[i] = user
   end
@@ -226,7 +226,7 @@ while count < total
   req = Net::HTTP::Post.new("/api/user/import")
   req['Content-Type'] = 'application/json'
   req['Authorization'] = api_key
-  req['X-FusionAuth-TenantId'] = tenant_id.nil? ? print_uuid($tenant_prefix, i_tenant) : tenant_id
+  req['X-FusionAuth-TenantId'] = tenant_id || print_uuid($tenant_prefix, i_tenant)
 
   # If you want to perform Db constraint validation, un-comment the second
   # line of the request body. This will dramatically slow down the import

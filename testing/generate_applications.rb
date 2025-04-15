@@ -154,7 +154,7 @@ while count < total
     http.verify_mode = OpenSSL::SSL::VERIFY_NONE
   end
 
-  request_tenant = tenant_id.nil? ? print_uuid($tenant_prefix, i_tenant) : tenant_id
+  request_tenant = tenant_id || print_uuid($tenant_prefix, i_tenant)
   req = Net::HTTP::Post.new(url + "/api/application/" + print_uuid($application_prefix, count))
   req['Content-Type'] = 'application/json'
   req['Authorization'] = api_key
