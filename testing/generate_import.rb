@@ -47,17 +47,17 @@ opts.each do |opt, arg|
    Required.
 
 --applicationId [applicationId]:
-   The unique Id of the application used for the import request.
+   The unique Id of the application used for the import request. If specified, all users will be registered for the given application.
 
    Optional.
 
 --tenantId [tenantId]:
-   The unique Id of the tenant used for the import request.
+   The unique Id of the tenant used for the import request. If specified, all users will be created for the given tenant.
 
    Optional.
 
 --appsPerTenant [applicationsPerTenant]:
-   The number of applications created per tenant. Required when --tenantId is not provided.
+   The number of applications created per tenant. Required when --tenantId is not provided. This value should match the --perTenant value used with the generate_applications script.
 
    Optional.
 
@@ -65,12 +65,12 @@ opts.each do |opt, arg|
    The number of users to create per application. If provided, this will be used as the batch size. Required when --appCount is specified
 
 --appCount [appCount]:
-   The number of applications. Required when --usersPerApp is specified. Total will be
+   The number of applications. Required when --usersPerApp is specified. This value should match the --total value used with the generate_applications script. Total will be
       appCount * usersPerApplication
     Users will be created, overriding the total.
 
 --url [url]:
-  The base URL to reach FusionAuth/
+  The base URL to reach FusionAuth
 
   Required.
 
@@ -144,7 +144,7 @@ if argv_length == 0
 end
 
 if argv_length < 3
-  puts "Usage: generate_import.rb --apiKey <API Key> --applicationId <Application Id> --tenantId <Tenant Id> --url <URL>"
+  puts "Usage: generate_import.rb --apiKey <API Key> --url <URL> --applicationId <Application Id> --tenantId <Tenant Id>"
   exit 0
 end
 
