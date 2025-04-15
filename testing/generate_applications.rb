@@ -63,6 +63,7 @@ opts.each do |opt, arg|
       url = arg
     when '--tenantId'
       tenant_id = arg
+    # The number of applications to create per tenant
     when '--perTenant'
       per_tenant = arg.to_i
     # The total number of applications to generate
@@ -79,7 +80,7 @@ if argv_length == 0
 end
 
 if argv_length < 2
-  puts "Usage: generate_applications.rb --apiKey <API Key> --tenantId <Tenant Id> --url <URL>"
+  puts "Usage: generate_applications.rb --apiKey <API Key> --url <URL> [--tenantId <Tenant Id>] [--perTenant <Apps per tenant>]"
   exit 0
 end
 
@@ -101,9 +102,6 @@ puts ""
 
 # Iterate in batch sizes until we reach the total
 while count < total
-  if !(per_tenant.nil?) && count > 0 && count % per_tenant == 0
-    i_tenant += 1
-  end
   puts "[#{count} of #{total} (#{i_tenant})] [#{Time.new.strftime("%a %m/%d %y %H:%M:%S")}] Generate Application request."
 
   # This user can be customized to better replicate your production configuration.
@@ -178,6 +176,11 @@ while count < total
 
   # Increment our counter
   count = count + 1
+
+  # If creating per tenant, move to the next tenant when reaching a 
+  if !(per_tenant.nil?) && count % per_tenant == 0
+    i_tenant += 1
+  end
 end
 
 puts ""
