@@ -5,18 +5,21 @@ require 'json'
 require 'net/http'
 require 'getoptlong'
 require 'openssl'
+load './uuid_util.rb'
 
 opts = GetoptLong.new(
   [ '--help', '-h', GetoptLong::NO_ARGUMENT ],
   [ '--apiKey', '-k', GetoptLong::REQUIRED_ARGUMENT ],
-  [ '--tenantId', GetoptLong::REQUIRED_ARGUMENT ],
   [ '--url', GetoptLong::REQUIRED_ARGUMENT ],
+  [ '--tenantId', GetoptLong::OPTIONAL_ARGUMENT ],
+  [ '--perTenant', GetoptLong::OPTIONAL_ARGUMENT ],
   [ '--total', GetoptLong::OPTIONAL_ARGUMENT ]
 )
 
 argv_length = ARGV.length
 api_key = nil
 tenant_id = nil
+per_tenant = nil
 url = nil
 total = 100
 
@@ -33,15 +36,20 @@ opts.each do |opt, arg|
 
    Required.
 
---tenantId [tenantId]:
-   The unique Id of the tenant used for the import request.
-
-   Required.
-
 --url [url]:
-  The base URL to reach FusionAuth/
+  The base URL to reach FusionAuth
 
   Required.
+
+--tenantId [tenantId]:
+   The unique Id of the tenant used for the import request. If provided, all applications are created for the speccified tenant.
+
+   Optional.
+
+--perTenant [tenantId]:
+   The number of applications to create per tenant. Required when --tenantId is not provided.
+
+   Optional.
 
 --total [total]:
   The total number of applications to generate.
@@ -51,10 +59,13 @@ opts.each do |opt, arg|
       EOF
     when '--apiKey'
       api_key = arg
-    when '--tenantId'
-      tenant_id = arg
     when '--url'
       url = arg
+    when '--tenantId'
+      tenant_id = arg
+    # The number of applications to create per tenant
+    when '--perTenant'
+      per_tenant = arg.to_i
     # The total number of applications to generate
     when '--total'
       if arg != ''
@@ -68,13 +79,19 @@ if argv_length == 0
   exit 0
 end
 
-if argv_length < 3
-  puts "Usage: generate_applications.rb --apiKey <API Key> --tenantId <Tenant Id> --url <URL>"
+if argv_length < 2
+  puts "Usage: generate_applications.rb --apiKey <API Key> --url <URL> [--tenantId <Tenant Id>] [--perTenant <Apps per tenant>]"
+  exit 0
+end
+
+if tenant_id.nil? && per_tenant.nil?
+  puts "One of --tenantId or --perTenant must be provided."
   exit 0
 end
 
 # The total number of applications processed so far towards the total
 count = 0
+i_tenant = 0
 
 # The start of this request
 start = Time.new
@@ -85,8 +102,7 @@ puts ""
 
 # Iterate in batch sizes until we reach the total
 while count < total
-
-  puts "[#{count} of #{total}] [#{Time.new.strftime("%a %m/%d %y %H:%M:%S")}] Generate Application request."
+  puts "[#{count} of #{total} (#{i_tenant})] [#{Time.new.strftime("%a %m/%d %y %H:%M:%S")}] Generate Application request."
 
   # This user can be customized to better replicate your production configuration.
   application = {}
@@ -109,6 +125,18 @@ while count < total
     },
     {
       'name': 'anonymous'
+    },
+    {
+      'name': 'abc'
+    },
+    {
+      'name': 'def'
+    },
+    {
+      'name': 'ghi'
+    },
+    {
+      'name': 'jkl'
     }
   ]
 
@@ -126,10 +154,11 @@ while count < total
     http.verify_mode = OpenSSL::SSL::VERIFY_NONE
   end
 
-  req = Net::HTTP::Post.new(url + "/api/application")
+  request_tenant = tenant_id || print_uuid($tenant_prefix, i_tenant)
+  req = Net::HTTP::Post.new(url + "/api/application/" + print_uuid($application_prefix, count))
   req['Content-Type'] = 'application/json'
   req['Authorization'] = api_key
-  req['X-FusionAuth-TenantId'] = tenant_id
+  req['X-FusionAuth-TenantId'] = request_tenant
 
   request = {
       'application' => application
@@ -147,6 +176,11 @@ while count < total
 
   # Increment our counter
   count = count + 1
+
+  # If creating per tenant, move to the next tenant when reaching a 
+  if !(per_tenant.nil?) && count % per_tenant == 0
+    i_tenant += 1
+  end
 end
 
 puts ""

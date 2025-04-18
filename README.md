@@ -189,7 +189,7 @@ require 'getoptlong'
 require 'openssl'
 ```
 
-Make sure you set up an application with a `user` role into which to import users. The FusionAuth URL must have no trailing slash. The API key must have at least the `POST` permissions on the `/api/user/import` endpoint. Users will be imported with a password of `password`.
+Make sure you set up an application with a `user` role into which to import users. The FusionAuth URL must have no trailing slash. The API key must have at least the `POST` permissions on the `/api/user/import` endpoint. Users will be imported with a password of `password`. Run the script from its directory.
 
 Example usage:
 
@@ -210,7 +210,7 @@ ruby generate_import.rb --apiKey <API Key> --applicationId <Application Id> --te
 
 ### Generate Applications
 
-This script will use the Application API to create applications.
+This script will use the Application API to create applications. Run the script from its directory.
 
 The following gems are required to run this import script.
 
