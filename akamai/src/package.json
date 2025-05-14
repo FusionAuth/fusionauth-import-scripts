@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "@fusionauth/typescript-client": "^1.57.0",
+    "stream-json": "^1.9.1",
+    "util": "^0.12.5",
+    "uuid": "^9.0.1"
+  }
+}
