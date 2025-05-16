@@ -22,7 +22,7 @@ console.log('Service running');
 
 async function isLoginValid(email, password) {
     try {
-      const response = await fetch('https://ritza-test-env.us-dev.janraincapture.com/oauth/auth_native_traditional', {
+      const response = await fetch('https://test-env.us-dev.janraincapture.com/oauth/auth_native_traditional', {
         method: 'POST',
         headers: { 'accept': 'application/json', 'content-type': 'application/x-www-form-urlencoded'},
         body: new URLSearchParams({
