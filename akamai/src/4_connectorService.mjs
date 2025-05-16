@@ -62,7 +62,7 @@ function getFaUserFromUser(user) {
     if (user.lastLogin)
       faUser.lastLoginInstant = new Date(user.lastLogin).getTime();
     // faUser.factor = user.password?.value.split('$')[2];
-    faUser.password = user.password?.value.split('$')[3].substring(22);
+    // faUser.password = user.password?.value.split('$')[3].substring(22);
     faUser.passwordChangeRequired = false;
     //faUser.passwordChangeReason = "Administrative";
     // faUser.passwordLastUpdateInstant = number;
