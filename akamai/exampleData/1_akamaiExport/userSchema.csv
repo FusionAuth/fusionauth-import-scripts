@@ -1,0 +1,66 @@
+Name,Type,Description,Length,Required,Unique,Case Sensitive,Searchable,Primary Key,Default Value,Write Once,Transformations,Legacy Validations
+id,id,simple identifier for this entity,,false,globally,,true,false,,true,,0
+uuid,uuid,globally unique identifier for this entity,,false,globally,,true,false,,true,,0
+created,dateTime,when this entity was created,,false,,,true,false,,true,,0
+lastUpdated,dateTime,when this entity was last updated,,false,,,true,false,,false,,0
+accountDataRequestTime,dateTime,,,false,,,false,false,,false,,0
+accountDeleteRequestTime,dateTime,,,false,,,false,false,,false,,0
+birthday,date,End-User's birthday. Returned by the `birthdate` claim.,,false,,,true,false,,false,,0
+clients,plural,,,false,,,false,false,,false,,0
+clients.id,id,simple identifier for this sub-entity,,false,,,false,false,,false,,0
+clients.clientId,string,,,true,locally,true,true,true,,false,,0
+clients.firstLogin,dateTime,,,false,,,false,false,,false,,0
+clients.lastLogin,dateTime,,,false,,,false,false,,false,,0
+clients.name,string,,1000,false,,false,false,false,,false,,0
+consents,object,,,false,,,false,false,,false,,0
+consents.marketing,object,,,false,,,false,false,,false,,0
+consents.marketing.clientId,string,Client ID used to modify the consent.,32,false,,true,false,false,,false,,0
+consents.marketing.context,string,Context in which the consent was changed.,100,false,,true,false,false,,false,,0
+consents.marketing.granted,boolean,Whether or not the consent is granted.,,false,,,false,false,,false,,0
+consents.marketing.oidcClientId,string,OIDC Client ID used to modify the consent.,36,false,,true,false,false,,false,,0
+consents.marketing.type,string,"Type of consent, 'implicit' or 'explicit'.",8,false,,true,false,false,,false,,0
+consents.marketing.updated,dateTime,Date and time of the last change to the consent.,,false,,,false,false,,false,,0
+deactivateAccount,dateTime,Time when the account was deactivated.,,false,,,false,false,,false,,0
+display,json,Placeholder for public data. Referenced as 'public_display' in the flow.,,false,,,false,false,,false,,0
+displayName,string,"Shorthand name by which the End-User wishes to be referred to at the RP, such as janedoe or j.doe. Returned by the `preferred_username` claim.",1000,false,,false,true,false,,false,,0
+email,string,End-User's preferred e-mail address. Returned by the `email` claim.,256,false,globally,false,true,false,,false,,0
+emailVerified,dateTime,Time when the email address was verified. Returned as boolean by the `email_verified` claim.,,false,,,false,false,,false,,0
+externalId,string,,1000,false,,false,false,false,,false,,0
+familyName,string,Surname(s) or last name(s) of the End-User. Returned by the `family_name` claim.,1000,false,,false,true,false,,false,,0
+fullName,string,"End-User's full name in displayable form including all name parts, possibly including titles and suffixes, ordered according to the End-User's locale and preferences. Returned by the `name` claim.",1000,false,,false,true,false,,false,,0
+gender,string,End-User's gender. Returned by the `gender` claim.,100,false,,false,false,false,,false,,0
+givenName,string,Given name(s) or first name(s) of the End-User. Returned by the `given_name` claim.,1000,false,,false,true,false,,false,,0
+lastLogin,dateTime,Time of the last authentication.,,false,,,false,false,,false,,0
+legalAcceptances,plural,,,false,,,false,false,,false,,0
+legalAcceptances.id,id,simple identifier for this sub-entity,,false,,,false,false,,false,,0
+legalAcceptances.clientId,string,,32,false,,true,false,false,,false,,0
+legalAcceptances.dateAccepted,dateTime,,,false,,,false,false,,false,,0
+legalAcceptances.legalAcceptanceId,string,,1000,true,locally,false,true,true,,false,,0
+middleName,string,Middle name(s) of the End-User. Returned by the `middle_name` claim.,1000,false,,false,false,false,,false,,0
+mobileNumber,string,,256,false,globally,false,true,false,,false,,0
+mobileNumberVerified,dateTime,,,false,,,false,false,,false,,0
+password,password-bcrypt,End-User's password.,,false,,,false,false,,false,,0
+photos,plural,Primary user profile photos.,,false,,,false,false,,false,,0
+photos.id,id,simple identifier for this sub-entity,,false,,,false,false,,false,,0
+photos.type,string,,,false,,true,false,false,,false,,0
+photos.value,string,,,false,,true,false,false,,false,,0
+primaryAddress,object,End-User's preferred postal address. Returned by the `address` claim.,,false,,,false,false,,false,,0
+primaryAddress.address1,string,,1000,false,,false,false,false,,false,,0
+primaryAddress.address2,string,,1000,false,,false,false,false,,false,,0
+primaryAddress.city,string,,1000,false,,false,false,false,,false,,0
+primaryAddress.company,string,,1000,false,,false,false,false,,false,,0
+primaryAddress.country,string,,1000,false,,false,false,false,,false,,0
+primaryAddress.phone,string,,100,false,,false,true,false,,false,,0
+primaryAddress.stateAbbreviation,string,,100,false,,false,false,false,,false,,0
+primaryAddress.zip,string,,100,false,,false,false,false,,false,,0
+primaryAddress.zipPlus4,string,,100,false,,false,false,false,,false,,0
+profiles,plural,,,false,,,false,false,,false,,0
+profiles.id,id,simple identifier for this sub-entity,,false,,,false,false,,false,,0
+profiles.domain,string,,1000,false,,false,false,false,,false,,0
+profiles.identifier,string,Profile provider unique identifier,1000,true,globally,false,true,false,,false,,0
+profiles.photo,string,URL of a photo of this contact.,,false,,true,false,false,,false,,0
+profiles.providerSpecifier,string,Internal text field for identifying the provider in a unique and normalized manner.,,false,,true,false,false,,false,,0
+roles,plural,"A list of roles for the User that collectively represent who the User is, e.g., 'Student', 'Faculty'.",,false,,,false,false,,false,,0
+roles.id,id,simple identifier for this sub-entity,,false,,,false,false,,false,,0
+roles.display,string,"A human-readable name, primarily used for display purposes.",1000,false,,true,false,false,,false,,0
+roles.value,string,The value of a role.,256,true,locally,false,true,true,,false,,0

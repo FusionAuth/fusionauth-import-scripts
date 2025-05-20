@@ -1,0 +1,357 @@
+{
+  "variables": {
+    "apiKey": "33052c8a-c283-4e96-9d2a-eb1215c69f8f-not-for-prod",
+    "asymmetricKeyId": "#{UUID()}",
+    "newThemeId": "#{UUID()}",
+    "applicationId": "e9fdb985-9173-4e01-9d73-ac2d60d1dc8e",
+    "clientSecret": "super-secret-secret-that-should-be-regenerated-for-production",
+    "defaultTenantId": "d7d09513-a3f5-401c-9685-34ab6c552453",
+    "adminEmail": "admin@example.com",
+    "adminPassword": "password",
+    "adminUserId": "00000000-0000-0000-0000-000000000001",
+    "userEmail": "richard@example.com",
+    "userPassword": "password",
+    "userUserId": "00000000-0000-0000-0000-111111111111"
+  },
+  "apiKeys": [
+    {
+      "key": "#{apiKey}",
+      "description": "Unrestricted API key"
+    }
+  ],
+  "requests": [
+    {
+      "method": "POST",
+      "url": "/api/key/generate/#{asymmetricKeyId}",
+      "tenantId": "#{defaultTenantId}",
+      "body": {
+        "key": {
+          "algorithm": "RS256",
+          "name": "For example app",
+          "length": 2048
+        }
+      }
+    },
+    {
+        "method": "PATCH",
+        "url": "api/system-configuration",
+        "body": {
+            "systemConfiguration": {
+                "corsConfiguration": {
+                    "allowCredentials": true,
+                    "allowedMethods": [
+                        "GET",
+                        "POST",
+                        "OPTIONS"
+                    ],
+                    "allowedOrigins": [ "http://localhost:3000" ],
+                    "debug": false,
+                    "enabled": true,
+                    "preflightMaxAgeInSeconds": 0
+                }
+            }
+        }
+    },
+    {
+        "method": "POST",
+        "url": "/api/application/#{applicationId}",
+        "tenantId": "#{defaultTenantId}",
+        "body": {
+          "application": {
+            "name": "Example app",
+            "oauthConfiguration" : {
+                "authorizedRedirectURLs": ["http://localhost:3000/auth/callback"],
+                "authorizedOriginURLs": ["http://localhost:3000", "http://app:3000"],
+                "clientSecret": "super-secret-secret-that-should-be-regenerated-for-production",
+                "logoutURL": "http://localhost:3000/logout",
+                "enabledGrants": ["authorization_code","refresh_token"],
+                "debug": true,
+                "generateRefreshTokens": true
+            },
+            "jwtConfiguration": {
+              "enabled": true,
+              "accessTokenKeyId": "#{asymmetricKeyId}",
+              "idTokenKeyId": "#{asymmetricKeyId}"
+            },
+            "registrationConfiguration": {
+              "enabled": true
+            }
+          }
+        }
+    },
+    {
+      "method": "POST",
+      "url": "/api/user/registration/#{adminUserId}",
+      "body": {
+        "registration": {
+          "applicationId": "#{FUSIONAUTH_APPLICATION_ID}",
+          "roles": [
+            "admin"
+          ]
+        },
+        "roles": [
+          "admin"
+        ],
+        "skipRegistrationVerification": true,
+        "user": {
+          "birthDate": "1981-06-04",
+          "data": {
+            "favoriteColor": "chartreuse"
+          },
+          "email": "#{adminEmail}",
+          "firstName": "Erlich",
+          "lastName": "Bachman",
+          "password": "#{adminPassword}",
+          "imageUrl": "//www.gravatar.com/avatar/5e7d99e498980b4759650d07fb0f44e2"
+        }
+      }
+    },
+    {
+      "method": "POST",
+      "url": "/api/user/registration/#{userUserId}",
+      "body": {
+        "user": {
+          "birthDate": "1985-11-23",
+          "email": "#{userEmail}",
+          "firstName": "Richard",
+          "lastName": "Flintstone",
+          "password": "#{userPassword}"
+        },
+        "registration": {
+          "applicationId": "#{applicationId}",
+          "data": {
+            "favoriteColor": "turquoise"
+          }
+        }
+      }
+    },
+    {
+        "method": "POST",
+        "url": "/api/theme/#{newThemeId}",
+        "body": {
+            "sourceThemeId": "75a068fd-e94b-451a-9aeb-3ddb9a3b5987",
+            "theme": {
+                "name": "React theme"
+            }
+        }
+    },
+    {
+        "method": "PATCH",
+        "url": "/api/theme/#{newThemeId}",
+        "body": {
+            "theme": {
+                "stylesheet": "@{css/styles.css}"
+            }
+        }
+    },
+    {
+        "method": "PATCH",
+        "url": "/api/tenant/#{defaultTenantId}",
+        "body": {
+            "tenant": {
+                "themeId": "#{newThemeId}"
+            }
+        }
+    },
+
+
+
+
+
+
+    {
+      "method": "POST",
+      "url": "/api/email/template/0502df1e-4010-4b43-b571-d423fce978b2",
+      "body": {
+        "emailTemplate": {
+          "defaultFromName": "FusionAuth Development",
+          "defaultSubject": "Reset your password",
+          "defaultHtmlTemplate": "@{emails/change-password.html.ftl}",
+          "defaultTextTemplate": "@{emails/change-password.txt.ftl}",
+          "fromEmail": "dev@fusionauth.io",
+          "name": "Forgot Password"
+        }
+      }
+    },
+    {
+      "method": "PATCH",
+      "url": "/api/tenant/#{defaultTenantId}",
+      "body": {
+        "tenant": {
+          "emailConfiguration": {
+            "forgotPasswordEmailTemplateId": "0502df1e-4010-4b43-b571-d423fce978b2"
+          }
+        }
+      }
+    },
+
+    {
+      "method": "POST",
+      "url": "/api/email/template/e160cc59-a73e-4d95-8287-f82e5c541a5c",
+      "body": {
+        "emailTemplate": {
+          "defaultFromName": "FusionAuth Development",
+          "defaultSubject": "Setup your password",
+          "defaultHtmlTemplate": "@{emails/setup-password.html.ftl}",
+          "defaultTextTemplate": "@{emails/setup-password.txt.ftl}",
+          "fromEmail": "dev@fusionauth.io",
+          "name": "Setup Password"
+        }
+      }
+    },
+    {
+      "method": "PATCH",
+      "url": "/api/tenant/#{defaultTenantId}",
+      "body": {
+        "tenant": {
+          "emailConfiguration": {
+            "setPasswordEmailTemplateId": "e160cc59-a73e-4d95-8287-f82e5c541a5c"
+          }
+        }
+      }
+    },
+
+    {
+      "method": "POST",
+      "url": "/api/email/template/7fa81426-42a9-4eb2-ac09-73c044d410b1",
+      "body": {
+        "emailTemplate": {
+          "defaultFromName": "FusionAuth Development",
+          "defaultSubject": "Verify your FusionAuth email address",
+          "defaultHtmlTemplate": "@{emails/email-verification.html.ftl}",
+          "defaultTextTemplate": "@{emails/email-verification.txt.ftl}",
+          "fromEmail": "dev@fusionauth.io",
+          "name": "Email Verification"
+        }
+      }
+    },
+    {
+      "method": "PATCH",
+      "url": "/api/tenant/#{defaultTenantId}",
+      "body": {
+        "tenant": {
+          "emailConfiguration": {
+            "verificationEmailTemplateId": "7fa81426-42a9-4eb2-ac09-73c044d410b1"
+          }
+        }
+      }
+    },
+
+    {
+      "method": "POST",
+      "url": "/api/email/template/c16b65a5-e6e9-4499-a7ac-ae228f8d9864",
+      "body": {
+        "emailTemplate": {
+          "defaultFromName": "FusionAuth Development",
+          "defaultSubject": "Verify your Registration",
+          "defaultHtmlTemplate": "@{emails/registration-verification.html.ftl}",
+          "defaultTextTemplate": "@{emails/registration-verification.txt.ftl}",
+          "fromEmail": "dev@fusionauth.io",
+          "name": "Registration Verification"
+        }
+      }
+    },
+
+    {
+      "method": "POST",
+      "url": "/api/email/template/fa6668cb-8569-44df-b0a2-8fcd996df915",
+      "body": {
+        "emailTemplate": {
+          "defaultFromName": "FusionAuth Development",
+          "defaultSubject": "Log into FusionAuth",
+          "defaultHtmlTemplate": "@{emails/passwordless-login.html.ftl}",
+          "defaultTextTemplate": "@{emails/passwordless-login.txt.ftl}",
+          "fromEmail": "dev@fusionauth.io",
+          "name": "Passwordless Login"
+        }
+      }
+    },
+    {
+      "method": "PATCH",
+      "url": "/api/tenant/#{defaultTenantId}",
+      "body": {
+        "tenant": {
+          "emailConfiguration": {
+            "passwordlessEmailTemplateId": "fa6668cb-8569-44df-b0a2-8fcd996df915"
+          }
+        }
+      }
+    },
+
+    {
+      "method": "POST",
+      "url": "/api/email/template/162b3719-3d71-4638-b9bf-f3e2093f7fe1",
+      "body": {
+        "emailTemplate": {
+          "defaultFromName": "FusionAuth Development",
+          "defaultSubject": "Notice of your consent",
+          "defaultHtmlTemplate": "@{emails/coppa-notice.html.ftl}",
+          "defaultTextTemplate": "@{emails/coppa-notice.txt.ftl}",
+          "fromEmail": "dev@fusionauth.io",
+          "name": "COPPA Notice"
+        }
+      }
+    },
+
+
+    {
+      "method": "POST",
+      "url": "/api/email/template/f0e9d738-c98d-45ee-b869-8636342c5158",
+      "body": {
+        "emailTemplate": {
+          "defaultFromName": "FusionAuth Development",
+          "defaultSubject": "Reminder: Notice of your consent",
+          "defaultHtmlTemplate": "@{emails/coppa-email-plus-notice.html.ftl}",
+          "defaultTextTemplate": "@{emails/coppa-email-plus-notice.txt.ftl}",
+          "fromEmail": "dev@fusionauth.io",
+          "name": "COPPA Notice Reminder"
+        }
+      }
+    },
+
+
+    {
+      "method": "POST",
+      "url": "/api/email/template/e6c74b53-d43d-471e-ae7e-906456d0f341",
+      "body": {
+        "emailTemplate": {
+          "defaultFromName": "FusionAuth Development",
+          "defaultSubject": "Your password is not secure",
+          "defaultHtmlTemplate": "@{emails/breached-password.html.ftl}",
+          "defaultTextTemplate": "@{emails/breached-password.txt.ftl}",
+          "fromEmail": "dev@fusionauth.io",
+          "name": "Breached Password Notification"
+        }
+      }
+    },
+
+    {
+      "method": "POST",
+      "url": "/api/email/template/95392509-e501-4efa-a237-5aa2617965f6",
+      "body": {
+        "emailTemplate": {
+          "defaultFromName": "FusionAuth Development",
+          "defaultSubject": "Your second factor code",
+          "defaultHtmlTemplate": "@{emails/2fa.html.ftl}",
+          "defaultTextTemplate": "@{emails/2fa.txt.ftl}",
+          "fromEmail": "dev@fusionauth.io",
+          "name": "Two Factor Authentication"
+        }
+      }
+    },
+    {
+      "method": "PATCH",
+      "url": "/api/tenant/#{defaultTenantId}",
+      "body": {
+        "tenant": {
+          "emailConfiguration": {},
+          "multiFactorConfiguration": {
+            "email": {
+              "templateId": "95392509-e501-4efa-a237-5aa2617965f6"}
+          }
+        }
+      }
+    }
+
+  ]
+}
