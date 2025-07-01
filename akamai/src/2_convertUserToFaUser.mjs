@@ -122,8 +122,6 @@ function getFaUserFromUser(user) {
     }
   }
 
-  //photos not imported
-
   if (user.primaryAddress?.length > 0) {
     faUser.data.addresses = [];
     for (let item of user.primaryAddress){
