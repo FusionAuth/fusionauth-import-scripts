@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "express": "^5.1.0",
+    "stream-json": "^1.9.1",
+    "util": "^0.12.5",
+    "uuid": "^9.0.1"
+  }
+}

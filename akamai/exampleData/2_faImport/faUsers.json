@@ -1,0 +1,112 @@
+[
+  {
+    "email": "janesmith@example.com",
+    "encryptionScheme": "bcrypt",
+    "id": "36cdc8af-909f-48d3-909d-313a9fdfe6c1",
+    "lastLoginInstant": 1746696922000,
+    "factor": "10",
+    "password": "j9Fb5rNQTXkrCcidzQqR061kc6e5VBu",
+    "passwordChangeRequired": false,
+    "salt": "fGr0/0QnnDkv9VG0BtyaiO",
+    "uniqueUsername": "janesmith@example.com",
+    "username": "Jane Smith",
+    "verified": true,
+    "active": true,
+    "birthDate": "1980-05-01",
+    "firstName": "Jane",
+    "lastName": "Smith",
+    "middleName": null,
+    "mobilePhone": "+12 345 6789",
+    "registrations": [
+      {
+        "applicationId": "e9fdb985-9173-4e01-9d73-ac2d60d1dc8e",
+        "roles": ["manager"]
+      }
+    ],
+    "tenantId": "d7d09513-a3f5-401c-9685-34ab6c552453",
+    "data": {
+      "akamaiId": 129,
+      "createdAt": "2025-05-08 09:35:22.556125 +0000",
+      "lastUpdatedAt": "2025-05-08 10:06:58.321921 +0000",
+      "accountDataRequestTime": null,
+      "accountDeleteRequestTime": null,
+      "birthday": "1980-05-01",
+      "accountDeactivatedAt": null,
+      "display": null,
+      "emailVerifiedAt": "2025-05-08 10:06:56 +0000",
+      "externalId": null,
+      "fullName": "Jane Smith",
+      "gender": "Female",
+      "mobileNumberVerified": "2025-05-06 10:06:56 +0000",
+      "legalAcceptances": [
+        {
+          "id": 131,
+          "clientId": "9a55jnetfgjf8mzdmjbugdmyr55tc2j9",
+          "dateAccepted": "2025-05-08 09:35:22 +0000",
+          "legalAcceptanceID": "termsOfService-v1"
+        },
+        {
+          "id": 132,
+          "clientId": "9a55jnetfgjf8mzdmjbugdmyr55tc2j9",
+          "dateAccepted": "2025-05-08 09:35:22 +0000",
+          "legalAcceptanceID": "privacyPolicy-v1"
+        }
+      ]
+    }
+  },
+  {
+    "email": "johndoe@example.com",
+    "encryptionScheme": "bcrypt",
+    "id": "1e3a957f-be82-4dd1-b46a-a96a45233eef",
+    "lastLoginInstant": 1746698910000,
+    "factor": "10",
+    "password": "LS7DwepOS7sgmM/8adQ8BlzYrwX/T1.",
+    "passwordChangeRequired": false,
+    "salt": "E.FMZSb32qkZJJqnZT/RUu",
+    "uniqueUsername": "johndoe@example.com",
+    "username": "John Doe",
+    "verified": false,
+    "active": true,
+    "birthDate": "1990-05-20",
+    "firstName": "John",
+    "lastName": "Doe",
+    "middleName": "Montgomery",
+    "mobilePhone": null,
+    "registrations": [
+      {
+        "applicationId": "e9fdb985-9173-4e01-9d73-ac2d60d1dc8e",
+        "roles": ["cust"]
+      }
+    ],
+    "tenantId": "d7d09513-a3f5-401c-9685-34ab6c552453",
+    "data": {
+      "akamaiId": 385,
+      "createdAt": "2025-05-08 10:08:30.544839 +0000",
+      "lastUpdatedAt": "2025-05-08 10:19:23.129255 +0000",
+      "accountDataRequestTime": null,
+      "accountDeleteRequestTime": null,
+      "birthday": "1990-05-20",
+      "accountDeactivatedAt": null,
+      "display": null,
+      "emailVerifiedAt": null,
+      "externalId": null,
+      "fullName": "Johnathan Montgomery Doe",
+      "gender": "Male",
+      "mobileNumberVerified": null,
+      "legalAcceptances": [
+        {
+          "id": 387,
+          "clientId": "9a55jnetfgjf8mzdmjbugdmyr55tc2j9",
+          "dateAccepted": "2025-05-08 10:08:30 +0000",
+          "legalAcceptanceID": "termsOfService-v1"
+        },
+        {
+          "id": 388,
+          "clientId": "9a55jnetfgjf8mzdmjbugdmyr55tc2j9",
+          "dateAccepted": "2025-05-08 10:08:30 +0000",
+          "legalAcceptanceID": "privacyPolicy-v1"
+        }
+      ]
+    }
+  }
+]
