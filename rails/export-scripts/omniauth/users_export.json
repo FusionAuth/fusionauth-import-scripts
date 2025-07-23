@@ -1,0 +1,256 @@
+{
+  "users": [
+    {
+      "email": "alexandra.kim@techventures.com",
+      "username": "alexandra.kim@techventures.com",
+      "fullName": "Alexandra Kim",
+      "verified": true,
+      "active": true,
+      "imageUrl": "https://via.placeholder.com/80/667eea/ffffff?text=AK",
+      "registrations": [
+        {
+          "id": "77af93d8-dd28-4a75-83c9-a0577963f846",
+          "applicationId": "e9fdb985-9173-4e01-9d73-ac2d60d1dc8e",
+          "verified": true,
+          "roles": [
+            "user"
+          ]
+        }
+      ],
+      "data": {
+        "source_system": "omniauth",
+        "original_user_id": 1,
+        "oauth_provider": "google_oauth2",
+        "oauth_uid": "108234567890123456789",
+        "locked_at": null,
+        "confirmation_token": null,
+        "last_sign_in_ip": null,
+        "current_sign_in_ip": null
+      }
+    },
+    {
+      "email": "marcus.johnson@creativestudio.net",
+      "username": "marcus.johnson@creativestudio.net",
+      "fullName": "Marcus Johnson",
+      "verified": true,
+      "active": true,
+      "imageUrl": "https://via.placeholder.com/80/764ba2/ffffff?text=MJ",
+      "registrations": [
+        {
+          "id": "f5e01422-5269-4351-ba95-73eae37d1eda",
+          "applicationId": "e9fdb985-9173-4e01-9d73-ac2d60d1dc8e",
+          "verified": true,
+          "roles": [
+            "user"
+          ]
+        }
+      ],
+      "data": {
+        "source_system": "omniauth",
+        "original_user_id": 2,
+        "oauth_provider": "google_oauth2",
+        "oauth_uid": "109876543210987654321",
+        "locked_at": null,
+        "confirmation_token": null,
+        "last_sign_in_ip": null,
+        "current_sign_in_ip": null
+      }
+    },
+    {
+      "email": "sofia.rodriguez@datainsights.io",
+      "username": "sofia.rodriguez@datainsights.io",
+      "fullName": "Sofia Rodriguez",
+      "verified": true,
+      "active": true,
+      "imageUrl": "https://via.placeholder.com/80/f093fb/ffffff?text=SR",
+      "registrations": [
+        {
+          "id": "9e81ae71-1c9b-4765-8e48-c9ceabc8d0d4",
+          "applicationId": "e9fdb985-9173-4e01-9d73-ac2d60d1dc8e",
+          "verified": true,
+          "roles": [
+            "user"
+          ]
+        }
+      ],
+      "data": {
+        "source_system": "omniauth",
+        "original_user_id": 3,
+        "oauth_provider": "google_oauth2",
+        "oauth_uid": "107123456789012345678",
+        "locked_at": null,
+        "confirmation_token": null,
+        "last_sign_in_ip": null,
+        "current_sign_in_ip": null
+      }
+    },
+    {
+      "email": "chen.wei@startupaccel.cn",
+      "username": "chen.wei@startupaccel.cn",
+      "fullName": "Chen Wei",
+      "verified": true,
+      "active": true,
+      "imageUrl": "https://via.placeholder.com/80/4facfe/ffffff?text=CW",
+      "registrations": [
+        {
+          "id": "495ef475-5265-4aed-b649-2b40afc78d89",
+          "applicationId": "e9fdb985-9173-4e01-9d73-ac2d60d1dc8e",
+          "verified": true,
+          "roles": [
+            "user"
+          ]
+        }
+      ],
+      "data": {
+        "source_system": "omniauth",
+        "original_user_id": 4,
+        "oauth_provider": "google_oauth2",
+        "oauth_uid": "106789012345678901234",
+        "locked_at": null,
+        "confirmation_token": null,
+        "last_sign_in_ip": null,
+        "current_sign_in_ip": null
+      }
+    },
+    {
+      "email": "emma.thompson@freelancedesign.co.uk",
+      "username": "emma.thompson@freelancedesign.co.uk",
+      "fullName": "Emma Thompson",
+      "verified": true,
+      "active": true,
+      "imageUrl": "https://via.placeholder.com/80/43e97b/ffffff?text=ET",
+      "registrations": [
+        {
+          "id": "37483b05-4db6-4db8-8dc6-74b2af480a9c",
+          "applicationId": "e9fdb985-9173-4e01-9d73-ac2d60d1dc8e",
+          "verified": true,
+          "roles": [
+            "user"
+          ]
+        }
+      ],
+      "data": {
+        "source_system": "omniauth",
+        "original_user_id": 5,
+        "oauth_provider": "google_oauth2",
+        "oauth_uid": "105456789012345678901",
+        "locked_at": null,
+        "confirmation_token": null,
+        "last_sign_in_ip": null,
+        "current_sign_in_ip": null
+      }
+    },
+    {
+      "email": "raj.patel@consultingfirm.in",
+      "username": "raj.patel@consultingfirm.in",
+      "fullName": "Raj Patel",
+      "verified": true,
+      "active": true,
+      "imageUrl": "https://via.placeholder.com/80/f6ad55/ffffff?text=RP",
+      "registrations": [
+        {
+          "id": "14d2519a-34fa-4ffd-8f58-090b0224cdbb",
+          "applicationId": "e9fdb985-9173-4e01-9d73-ac2d60d1dc8e",
+          "verified": true,
+          "roles": [
+            "user"
+          ]
+        }
+      ],
+      "data": {
+        "source_system": "omniauth",
+        "original_user_id": 6,
+        "oauth_provider": "google_oauth2",
+        "oauth_uid": "104321098765432109876",
+        "locked_at": null,
+        "confirmation_token": null,
+        "last_sign_in_ip": null,
+        "current_sign_in_ip": null
+      }
+    },
+    {
+      "email": "inactive.oauth@oldaccount.com",
+      "username": "inactive.oauth@oldaccount.com",
+      "fullName": "Inactive OAuth User",
+      "verified": true,
+      "active": false,
+      "imageUrl": "https://via.placeholder.com/80/6c757d/ffffff?text=IO",
+      "registrations": [
+        {
+          "id": "242c38e0-ebbc-4510-b5b5-046acf42aaf3",
+          "applicationId": "e9fdb985-9173-4e01-9d73-ac2d60d1dc8e",
+          "verified": true,
+          "roles": [
+            "user"
+          ]
+        }
+      ],
+      "data": {
+        "source_system": "omniauth",
+        "original_user_id": 7,
+        "oauth_provider": "google_oauth2",
+        "oauth_uid": "103987654321098765432",
+        "locked_at": null,
+        "confirmation_token": null,
+        "last_sign_in_ip": null,
+        "current_sign_in_ip": null
+      }
+    },
+    {
+      "email": "dev.tester@localhost.dev",
+      "username": "dev.tester@localhost.dev",
+      "fullName": "Development Tester",
+      "verified": true,
+      "active": true,
+      "imageUrl": "https://via.placeholder.com/80/28a745/ffffff?text=DEV",
+      "registrations": [
+        {
+          "id": "d9f060d5-23de-4baf-846e-3ada2fb93fd9",
+          "applicationId": "e9fdb985-9173-4e01-9d73-ac2d60d1dc8e",
+          "verified": true,
+          "roles": [
+            "user"
+          ]
+        }
+      ],
+      "data": {
+        "source_system": "omniauth",
+        "original_user_id": 8,
+        "oauth_provider": "developer",
+        "oauth_uid": "dev.tester@localhost.dev",
+        "locked_at": null,
+        "confirmation_token": null,
+        "last_sign_in_ip": null,
+        "current_sign_in_ip": null
+      }
+    },
+    {
+      "email": "qa.engineer@testingteam.local",
+      "username": "qa.engineer@testingteam.local",
+      "fullName": "QA Engineer",
+      "verified": true,
+      "active": true,
+      "imageUrl": "https://via.placeholder.com/80/17a2b8/ffffff?text=QA",
+      "registrations": [
+        {
+          "id": "a877b73e-e123-49c5-a73e-a4687f0f6055",
+          "applicationId": "e9fdb985-9173-4e01-9d73-ac2d60d1dc8e",
+          "verified": true,
+          "roles": [
+            "user"
+          ]
+        }
+      ],
+      "data": {
+        "source_system": "omniauth",
+        "original_user_id": 9,
+        "oauth_provider": "developer",
+        "oauth_uid": "qa.engineer@testingteam.local",
+        "locked_at": null,
+        "confirmation_token": null,
+        "last_sign_in_ip": null,
+        "current_sign_in_ip": null
+      }
+    }
+  ]
+}
