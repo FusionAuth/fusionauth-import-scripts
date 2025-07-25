@@ -7,9 +7,10 @@ import util from 'util'
 
 const apiKey = '33052c8a-c283-4e96-9d2a-eb1215c69f8f-not-for-prod';
 const fusionauthUrl = 'http://localhost:9011';
+const tenantId = 'd7d09513-a3f5-401c-9685-34ab6c552453';
 const filename = 'faUsers.json';
 const batchSize = 100; // Import in batches
-const fa = new FusionAuthClient(apiKey, fusionauthUrl);
+const fa = new FusionAuthClient(apiKey, fusionauthUrl, tenantId);
 
 console.log('Starting bulk import with streaming...');
 
