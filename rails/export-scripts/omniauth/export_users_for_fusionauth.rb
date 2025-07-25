@@ -17,6 +17,7 @@ users_data = User.all.map do |user|
     email: user.email,
     username: user.email,
     fullName: user.name,
+    password: SecureRandom.alphanumeric(12) + "!",
     verified: true,
     active: user.active,
     imageUrl: user.image_url,

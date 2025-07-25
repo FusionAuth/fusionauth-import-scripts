@@ -76,7 +76,7 @@ puts ""
 # Identity Provider mappings for social accounts 
 # # ids pulled from https://github.com/FusionAuth/fusionauth-java-client/blob/master/src/main/java/io/fusionauth/domain/provider/IdentityProviderType.java
 IDP_MAPPINGS = {
-  "google-oauth2" => "82339786-3dff-42a6-aac6-1f1ceecb6c46", # Google
+  "google_oauth2" => "82339786-3dff-42a6-aac6-1f1ceecb6c46", # Google
 }
 
 def detect_source_system(user_data)
@@ -159,24 +159,9 @@ def import_users(users)
   end
 end
 
-def find_user_by_email(client, email)
-  results = client.search_users_by_query({search: {queryString: email}})
-  
-  if results && results.success_response
-    users = results.success_response.users
-    if users.length == 1
-      return users[0].id
-    elsif users.length > 1
-      puts " > Warning: Multiple users found for #{email}. Skipping link."
-      return nil
-    end
-  end
-  
-  puts " > Warning: User #{email} not found in FusionAuth. Skipping link."
-  return nil
-end
 
-def link_social_accounts(social_users)
+
+def link_social_accounts(social_users, user_id_mapping)
   return if social_users.empty?
   
   puts " > Linking #{social_users.length} social accounts..."
@@ -200,15 +185,19 @@ def link_social_accounts(social_users)
       next
     end
     
-    # Find the user in FusionAuth
-    fusionauth_user_id = find_user_by_email(client, email)
-    next unless fusionauth_user_id
+    # Get the user ID from our mapping
+    fusionauth_user_id = user_id_mapping[email]
+    unless fusionauth_user_id
+      puts " > Warning: User ID not found for #{email}. Skipping link."
+      next
+    end
     
     # Create the link
     link_request = {
       'identityProviderId' => identity_provider_id,
       'identityProviderUserId' => oauth_uid,
-      'userId' => fusionauth_user_id
+      'userId' => fusionauth_user_id,
+      'displayName' => email
     }
     
     log_verbose("Linking #{email} (#{provider}) to FusionAuth user #{fusionauth_user_id}")
@@ -219,7 +208,10 @@ def link_social_accounts(social_users)
       log_verbose("Successfully linked #{email}")
       linked_count += 1
     else
-      puts " > Failed to link #{email}: #{response.error_response}"
+      puts " > Failed to link #{email}:"
+      puts "   Status: #{response.status}"
+      puts "   Error: #{response.error_response}" if response.error_response
+      log_verbose("Link request: #{link_request.to_json}")
     end
   end
   
@@ -266,6 +258,9 @@ begin
     end
     emails_seen.add(email)
     
+    # Generate user ID if not present
+    user['id'] ||= SecureRandom.uuid
+    
     # Collect social users for later linking
     if source_system == 'omniauth' && user['data'] && user['data']['oauth_provider']
       social_users << user
@@ -282,6 +277,12 @@ begin
   end
 
   puts " > Processing #{valid_users.length} valid users"
+  
+  # Build user ID mapping for social account linking
+  user_id_mapping = {}
+  valid_users.each do |user|
+    user_id_mapping[user['email']] = user['id']
+  end
   
   # Add additional application registrations if specified
   if options[:appids]
@@ -308,7 +309,7 @@ begin
   # Link social accounts if requested and applicable
   if options[:linksocial] && source_system == 'omniauth' && social_users.any?
     puts ""
-    link_social_accounts(social_users)
+    link_social_accounts(social_users, user_id_mapping)
   end
 
   puts ""

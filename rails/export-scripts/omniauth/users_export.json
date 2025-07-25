@@ -4,12 +4,13 @@
       "email": "alexandra.kim@techventures.com",
       "username": "alexandra.kim@techventures.com",
       "fullName": "Alexandra Kim",
+      "password": "oceghPW47j1f!",
       "verified": true,
       "active": true,
       "imageUrl": "https://via.placeholder.com/80/667eea/ffffff?text=AK",
       "registrations": [
         {
-          "id": "77af93d8-dd28-4a75-83c9-a0577963f846",
+          "id": "d068cd77-4c94-470f-bc83-399b1b63023a",
           "applicationId": "e9fdb985-9173-4e01-9d73-ac2d60d1dc8e",
           "verified": true,
           "roles": [
@@ -32,12 +33,13 @@
       "email": "marcus.johnson@creativestudio.net",
       "username": "marcus.johnson@creativestudio.net",
       "fullName": "Marcus Johnson",
+      "password": "8yuwWM680qlB!",
       "verified": true,
       "active": true,
       "imageUrl": "https://via.placeholder.com/80/764ba2/ffffff?text=MJ",
       "registrations": [
         {
-          "id": "f5e01422-5269-4351-ba95-73eae37d1eda",
+          "id": "1f2980fc-7ac4-49a4-8686-33fec97dd757",
           "applicationId": "e9fdb985-9173-4e01-9d73-ac2d60d1dc8e",
           "verified": true,
           "roles": [
@@ -60,12 +62,13 @@
       "email": "sofia.rodriguez@datainsights.io",
       "username": "sofia.rodriguez@datainsights.io",
       "fullName": "Sofia Rodriguez",
+      "password": "lgPNgTIGYzt6!",
       "verified": true,
       "active": true,
       "imageUrl": "https://via.placeholder.com/80/f093fb/ffffff?text=SR",
       "registrations": [
         {
-          "id": "9e81ae71-1c9b-4765-8e48-c9ceabc8d0d4",
+          "id": "8c6d8346-fe5d-4542-9211-f0e471866d33",
           "applicationId": "e9fdb985-9173-4e01-9d73-ac2d60d1dc8e",
           "verified": true,
           "roles": [
@@ -88,12 +91,13 @@
       "email": "chen.wei@startupaccel.cn",
       "username": "chen.wei@startupaccel.cn",
       "fullName": "Chen Wei",
+      "password": "7ARgRrd1zryN!",
       "verified": true,
       "active": true,
       "imageUrl": "https://via.placeholder.com/80/4facfe/ffffff?text=CW",
       "registrations": [
         {
-          "id": "495ef475-5265-4aed-b649-2b40afc78d89",
+          "id": "fd92c192-428c-45a0-90ac-ef8cbf516978",
           "applicationId": "e9fdb985-9173-4e01-9d73-ac2d60d1dc8e",
           "verified": true,
           "roles": [
@@ -116,12 +120,13 @@
       "email": "emma.thompson@freelancedesign.co.uk",
       "username": "emma.thompson@freelancedesign.co.uk",
       "fullName": "Emma Thompson",
+      "password": "yikMeaYPs9Q6!",
       "verified": true,
       "active": true,
       "imageUrl": "https://via.placeholder.com/80/43e97b/ffffff?text=ET",
       "registrations": [
         {
-          "id": "37483b05-4db6-4db8-8dc6-74b2af480a9c",
+          "id": "47cd443f-e0cc-465c-93a9-4cb0f5008206",
           "applicationId": "e9fdb985-9173-4e01-9d73-ac2d60d1dc8e",
           "verified": true,
           "roles": [
@@ -144,12 +149,13 @@
       "email": "raj.patel@consultingfirm.in",
       "username": "raj.patel@consultingfirm.in",
       "fullName": "Raj Patel",
+      "password": "Unq8sPOZJtFV!",
       "verified": true,
       "active": true,
       "imageUrl": "https://via.placeholder.com/80/f6ad55/ffffff?text=RP",
       "registrations": [
         {
-          "id": "14d2519a-34fa-4ffd-8f58-090b0224cdbb",
+          "id": "d14eb917-d98b-460a-b6ca-662fb327b77f",
           "applicationId": "e9fdb985-9173-4e01-9d73-ac2d60d1dc8e",
           "verified": true,
           "roles": [
@@ -172,12 +178,13 @@
       "email": "inactive.oauth@oldaccount.com",
       "username": "inactive.oauth@oldaccount.com",
       "fullName": "Inactive OAuth User",
+      "password": "RsNPbaBVUwR9!",
       "verified": true,
       "active": false,
       "imageUrl": "https://via.placeholder.com/80/6c757d/ffffff?text=IO",
       "registrations": [
         {
-          "id": "242c38e0-ebbc-4510-b5b5-046acf42aaf3",
+          "id": "e2696e20-1216-458b-991f-4b9c881eb4bb",
           "applicationId": "e9fdb985-9173-4e01-9d73-ac2d60d1dc8e",
           "verified": true,
           "roles": [
@@ -200,12 +207,13 @@
       "email": "dev.tester@localhost.dev",
       "username": "dev.tester@localhost.dev",
       "fullName": "Development Tester",
+      "password": "6bIv8xDX67uV!",
       "verified": true,
       "active": true,
       "imageUrl": "https://via.placeholder.com/80/28a745/ffffff?text=DEV",
       "registrations": [
         {
-          "id": "d9f060d5-23de-4baf-846e-3ada2fb93fd9",
+          "id": "815b74f9-e3f5-47d3-b7de-68300273de2e",
           "applicationId": "e9fdb985-9173-4e01-9d73-ac2d60d1dc8e",
           "verified": true,
           "roles": [
@@ -228,12 +236,13 @@
       "email": "qa.engineer@testingteam.local",
       "username": "qa.engineer@testingteam.local",
       "fullName": "QA Engineer",
+      "password": "7zioKbQLhYs6!",
       "verified": true,
       "active": true,
       "imageUrl": "https://via.placeholder.com/80/17a2b8/ffffff?text=QA",
       "registrations": [
         {
-          "id": "a877b73e-e123-49c5-a73e-a4687f0f6055",
+          "id": "ea0f348a-1803-475a-987d-7f062f087825",
           "applicationId": "e9fdb985-9173-4e01-9d73-ac2d60d1dc8e",
           "verified": true,
           "roles": [
