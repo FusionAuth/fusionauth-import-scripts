@@ -1,0 +1,295 @@
+[
+    {
+        "active": true,
+        "data": {
+            "ImportedFromExpressPassport": true,
+            "original_user_id": 5,
+            "provider": "local",
+            "source_system": "express_passport"
+        },
+        "email": "sarah.johnson@techcorp.com",
+        "encryptionScheme": "bcrypt",
+        "factor": 10,
+        "firstName": "Sarah",
+        "id": "281d1784-d7a5-4e93-901d-ef1348580c25",
+        "insertInstant": 1753413898000,
+        "lastName": "Johnson",
+        "lastUpdateInstant": 1753413898000,
+        "password": "U544NuZb4GX8bXIMds5jR6tXReLnQhK",
+        "passwordChangeRequired": false,
+        "registrations": [
+            {
+                "applicationId": "e9fdb985-9173-4e01-9d73-ac2d60d1dc8e",
+                "roles": [
+                    "user"
+                ]
+            }
+        ],
+        "salt": "TlFbuG62ZB29BQCRA2R6Ie",
+        "tenantId": "d7d09513-a3f5-401c-9685-34ab6c552453",
+        "uniqueUsername": "sarah.johnson@techcorp.com",
+        "username": "sarah.johnson@techcorp.com",
+        "verified": true
+    },
+    {
+        "active": true,
+        "data": {
+            "ImportedFromExpressPassport": true,
+            "original_user_id": 6,
+            "provider": "local",
+            "source_system": "express_passport"
+        },
+        "email": "mike.chen@startup.io",
+        "encryptionScheme": "bcrypt",
+        "factor": 10,
+        "firstName": "Mike",
+        "id": "1cf93814-942f-4e08-9e7c-feeb62ce0456",
+        "insertInstant": 1753413898000,
+        "lastName": "Chen",
+        "lastUpdateInstant": 1753413898000,
+        "password": "swrWrd4/J7oWTDOsZbcH49vyWDpCO5y",
+        "passwordChangeRequired": false,
+        "registrations": [
+            {
+                "applicationId": "e9fdb985-9173-4e01-9d73-ac2d60d1dc8e",
+                "roles": [
+                    "user"
+                ]
+            }
+        ],
+        "salt": "0XpI9/68xrEv7yGND4jdUu",
+        "tenantId": "d7d09513-a3f5-401c-9685-34ab6c552453",
+        "uniqueUsername": "mike.chen@startup.io",
+        "username": "mike.chen@startup.io",
+        "verified": true
+    },
+    {
+        "active": true,
+        "data": {
+            "ImportedFromExpressPassport": true,
+            "original_user_id": 7,
+            "provider": "local",
+            "source_system": "express_passport"
+        },
+        "email": "emma.wilson@freelancer.com",
+        "encryptionScheme": "bcrypt",
+        "factor": 10,
+        "firstName": "Emma",
+        "id": "746809da-6056-46fa-9853-f8130a14ecb4",
+        "insertInstant": 1753413898000,
+        "lastName": "Wilson",
+        "lastUpdateInstant": 1753413898000,
+        "password": "yoSuOBelYtub9lgBNTxUEgcwXxNC/0S",
+        "passwordChangeRequired": false,
+        "registrations": [
+            {
+                "applicationId": "e9fdb985-9173-4e01-9d73-ac2d60d1dc8e",
+                "roles": [
+                    "user"
+                ]
+            }
+        ],
+        "salt": "p2DG.0nj7Jmt1uUf.YnBle",
+        "tenantId": "d7d09513-a3f5-401c-9685-34ab6c552453",
+        "uniqueUsername": "emma.wilson@freelancer.com",
+        "username": "emma.wilson@freelancer.com",
+        "verified": false
+    },
+    {
+        "active": true,
+        "data": {
+            "google_id": "108234567890123456789",
+            "ImportedFromExpressPassport": true,
+            "oauth_provider": "google",
+            "original_user_id": 8,
+            "provider": "google_oauth2",
+            "source_system": "express_passport"
+        },
+        "email": "alex.rodriguez@gmail.com",
+        "encryptionScheme": "bcrypt",
+        "factor": 10,
+        "firstName": "Alex",
+        "id": "bbec029b-f2ac-4078-abed-553c5bff7bbc",
+        "insertInstant": 1753413898000,
+        "lastName": "Rodriguez",
+        "lastUpdateInstant": 1753413898000,
+        "password": "b36559fe-231b-4b7e-8b25-495abb17f9b4",
+        "passwordChangeRequired": false,
+        "registrations": [
+            {
+                "applicationId": "e9fdb985-9173-4e01-9d73-ac2d60d1dc8e",
+                "roles": [
+                    "user"
+                ]
+            }
+        ],
+        "salt": "",
+        "tenantId": "d7d09513-a3f5-401c-9685-34ab6c552453",
+        "uniqueUsername": "alex.rodriguez@gmail.com",
+        "username": "alex.rodriguez@gmail.com",
+        "verified": true
+    },
+    {
+        "active": true,
+        "data": {
+            "google_id": "987654321098765432109",
+            "ImportedFromExpressPassport": true,
+            "oauth_provider": "google",
+            "original_user_id": 9,
+            "provider": "google_oauth2",
+            "source_system": "express_passport"
+        },
+        "email": "jessica.taylor@outlook.com",
+        "encryptionScheme": "bcrypt",
+        "factor": 10,
+        "firstName": "Jessica",
+        "id": "ae1c1f2c-48c7-44a2-91d2-b1cdf99ee101",
+        "insertInstant": 1753413898000,
+        "lastName": "Taylor",
+        "lastUpdateInstant": 1753413898000,
+        "password": "477712aa-0ef6-4f37-9a1d-663ce56036fe",
+        "passwordChangeRequired": false,
+        "registrations": [
+            {
+                "applicationId": "e9fdb985-9173-4e01-9d73-ac2d60d1dc8e",
+                "roles": [
+                    "user"
+                ]
+            }
+        ],
+        "salt": "",
+        "tenantId": "d7d09513-a3f5-401c-9685-34ab6c552453",
+        "uniqueUsername": "jessica.taylor@outlook.com",
+        "username": "jessica.taylor@outlook.com",
+        "verified": true
+    },
+    {
+        "active": true,
+        "data": {
+            "ImportedFromExpressPassport": true,
+            "original_user_id": 1,
+            "provider": "local",
+            "source_system": "express_passport"
+        },
+        "email": "admin@example.com",
+        "encryptionScheme": "bcrypt",
+        "factor": 10,
+        "firstName": "Admin",
+        "id": "f2085a6f-3f3b-4130-aeea-479fc8418bf7",
+        "insertInstant": 1753169145000,
+        "lastName": "User",
+        "lastUpdateInstant": 1753169145000,
+        "password": "40EwEdGbsOcaX9J/vzUV0utE.O/Y3EK",
+        "passwordChangeRequired": false,
+        "registrations": [
+            {
+                "applicationId": "e9fdb985-9173-4e01-9d73-ac2d60d1dc8e",
+                "roles": [
+                    "user"
+                ]
+            }
+        ],
+        "salt": "t7t7eG0u.VPJOgg.XlxHVO",
+        "tenantId": "d7d09513-a3f5-401c-9685-34ab6c552453",
+        "uniqueUsername": "admin@example.com",
+        "username": "admin@example.com",
+        "verified": true
+    },
+    {
+        "active": true,
+        "data": {
+            "ImportedFromExpressPassport": true,
+            "original_user_id": 2,
+            "provider": "local",
+            "source_system": "express_passport"
+        },
+        "email": "user@example.com",
+        "encryptionScheme": "bcrypt",
+        "factor": 10,
+        "firstName": "Regular",
+        "id": "d7231a06-ec6e-43db-9603-568e81a20e5a",
+        "insertInstant": 1753169145000,
+        "lastLoginInstant": 1753173323697,
+        "lastName": "User",
+        "lastUpdateInstant": 1753173323697,
+        "password": "/c.ogvhgJ6E3lmFF6aOuN0oBkE.K0li",
+        "passwordChangeRequired": false,
+        "registrations": [
+            {
+                "applicationId": "e9fdb985-9173-4e01-9d73-ac2d60d1dc8e",
+                "roles": [
+                    "user"
+                ]
+            }
+        ],
+        "salt": "4dxOxdfSRHVFsdU9HCRRUe",
+        "tenantId": "d7d09513-a3f5-401c-9685-34ab6c552453",
+        "uniqueUsername": "user@example.com",
+        "username": "user@example.com",
+        "verified": true
+    },
+    {
+        "active": true,
+        "data": {
+            "ImportedFromExpressPassport": true,
+            "original_user_id": 3,
+            "provider": "local",
+            "source_system": "express_passport"
+        },
+        "email": "test@example.com",
+        "encryptionScheme": "bcrypt",
+        "factor": 10,
+        "firstName": "Test",
+        "id": "c7f022a3-b33b-46a0-a3fe-f65cc07d73b4",
+        "insertInstant": 1753169145000,
+        "lastName": "User",
+        "lastUpdateInstant": 1753169145000,
+        "password": "ps4BtxTECH50QK.mb78p9dHYQaZ4tbe",
+        "passwordChangeRequired": false,
+        "registrations": [
+            {
+                "applicationId": "e9fdb985-9173-4e01-9d73-ac2d60d1dc8e",
+                "roles": [
+                    "user"
+                ]
+            }
+        ],
+        "salt": "rJtZUWv8m8PncRVjCIxQ6e",
+        "tenantId": "d7d09513-a3f5-401c-9685-34ab6c552453",
+        "uniqueUsername": "test@example.com",
+        "username": "test@example.com",
+        "verified": true
+    },
+    {
+        "active": false,
+        "data": {
+            "ImportedFromExpressPassport": true,
+            "original_user_id": 4,
+            "provider": "local",
+            "source_system": "express_passport"
+        },
+        "email": "unconfirmed@example.com",
+        "encryptionScheme": "bcrypt",
+        "factor": 10,
+        "firstName": "Unconfirmed",
+        "id": "23981559-7e40-437e-92f3-a245d4405081",
+        "insertInstant": 1753169145000,
+        "lastName": "User",
+        "lastUpdateInstant": 1753169145000,
+        "password": "qNGYisNpiz0I6RTjTm3dqObisTcujRi",
+        "passwordChangeRequired": false,
+        "registrations": [
+            {
+                "applicationId": "e9fdb985-9173-4e01-9d73-ac2d60d1dc8e",
+                "roles": [
+                    "user"
+                ]
+            }
+        ],
+        "salt": "EQx8k.DNxorO7x5Ob5bEfe",
+        "tenantId": "d7d09513-a3f5-401c-9685-34ab6c552453",
+        "uniqueUsername": "unconfirmed@example.com",
+        "username": "unconfirmed@example.com",
+        "verified": false
+    }
+]
