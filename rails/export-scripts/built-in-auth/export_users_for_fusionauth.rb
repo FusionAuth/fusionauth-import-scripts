@@ -1,8 +1,5 @@
 #!/usr/bin/env ruby
 
-# Simple User Export Script for Rails Authentication
-# Exports users as plain JSON
-
 require_relative '../config/environment'
 require 'json'
 require 'securerandom'
@@ -28,9 +25,7 @@ users_data = User.all.map do |user|
     bcrypt_factor = $1.to_i
     salt_and_hash = $2
     
-    # According to the user, salt is first 22 characters
     bcrypt_salt = salt_and_hash[0, 22]
-    # Password is the remaining characters
     bcrypt_password = salt_and_hash[22..-1]
   end
   
@@ -42,7 +37,7 @@ users_data = User.all.map do |user|
     encryptionScheme: "bcrypt",
     factor: bcrypt_factor,
     salt: bcrypt_salt,
-    passwordChangeRequired: false,  # Add this field like in Akamai example
+    passwordChangeRequired: false,
     verified: user.confirmed?,
     active: user.confirmed?,
     registrations: [
