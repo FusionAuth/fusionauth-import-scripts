@@ -11,19 +11,19 @@ A script to import user data from Rails-based authentication systems into Fusion
 
 ## Installation
 
-1. Install dependencies:
+1. Install dependencies.
 
    ```bash
    bundle install
    ```
 
-2. Make the script executable:
+2. Make the script executable.
 
    ```bash
    chmod +x import.rb
    ```
 
-3. (Optional) Make the wrapper script executable:
+3. (Optional) Make the wrapper script executable.
 
    ```bash
    chmod +x import.sh
