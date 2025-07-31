@@ -1,6 +1,6 @@
 // FusionAuth Connector API for Progressive Migration
 router.post('/fusionauth/connector', async (req, res) => {
-    const APPLICATION_ID = 'e9fdb985-9173-4e01-9d73-ac2d60d1dc8e';
+    
     
     try {
       console.log(`FusionAuth connector request received for ${req.body.loginId}`);
@@ -46,6 +46,8 @@ router.post('/fusionauth/connector', async (req, res) => {
   
   async function buildFusionAuthUser(user, password) {
     const crypto = require('crypto');
+
+    const APPLICATION_ID = 'e9fdb985-9173-4e01-9d73-ac2d60d1dc8e';
     
     // Generate consistent UUID based on user ID
     const userUuid = generateConsistentUuid(user.id);
