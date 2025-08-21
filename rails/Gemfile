@@ -1,0 +1,6 @@
+source 'https://rubygems.org'
+
+gem 'fusionauth_client', '~> 1.51'
+gem 'json', '~> 2.6'
+gem 'optparse', '~> 0.4'
+gem 'base64', '~> 0.2' 
