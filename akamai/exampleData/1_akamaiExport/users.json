@@ -1,0 +1,156 @@
+{
+  "result_count": 2,
+  "results": [
+    {
+      "accountDataRequestTime": null,
+      "accountDeleteRequestTime": null,
+      "birthday": "1980-05-01",
+      "clients": [
+        {
+          "clientId": "9a55jnetfgjf8mzdmjbugdmyr55tc2j9",
+          "firstLogin": "2025-05-08 09:35:22 +0000",
+          "id": 130,
+          "lastLogin": "2025-05-08 09:35:22 +0000",
+          "name": null
+        }
+      ],
+      "consents": {
+        "marketing": {
+          "clientId": null,
+          "context": null,
+          "granted": null,
+          "oidcClientId": null,
+          "type": null,
+          "updated": null
+        }
+      },
+      "created": "2025-05-08 09:35:22.556125 +0000",
+      "deactivateAccount": null,
+      "display": null,
+      "displayName": "Jane Smith",
+      "email": "janesmith@example.com",
+      "emailVerified": "2025-05-08 10:06:56 +0000",
+      "externalId": null,
+      "familyName": "Smith",
+      "fullName": "Jane Smith",
+      "gender": "Female",
+      "givenName": "Jane",
+      "id": 129,
+      "lastLogin": "2025-05-08 09:35:22 +0000",
+      "lastUpdated": "2025-05-08 10:06:58.321921 +0000",
+      "legalAcceptances": [
+        {
+          "clientId": "9a55jnetfgjf8mzdmjbugdmyr55tc2j9",
+          "dateAccepted": "2025-05-08 09:35:22 +0000",
+          "id": 131,
+          "legalAcceptanceId": "termsOfService-v1"
+        },
+        {
+          "clientId": "9a55jnetfgjf8mzdmjbugdmyr55tc2j9",
+          "dateAccepted": "2025-05-08 09:35:22 +0000",
+          "id": 132,
+          "legalAcceptanceId": "privacyPolicy-v1"
+        }
+      ],
+      "middleName": null,
+      "mobileNumber": "+12 345 6789",
+      "mobileNumberVerified": "2025-05-06 10:06:56 +0000",
+      "password": {
+        "created": "2025-05-08 09:35:22.555420794 +0000",
+        "type": "password-bcrypt",
+        "value": "$2b$10$fGr0/0QnnDkv9VG0BtyaiOj9Fb5rNQTXkrCcidzQqR061kc6e5VBu"
+      },
+      "photos": [],
+      "primaryAddress": {
+        "address1": "1 Evergreen way",
+        "address2": null,
+        "city": "Sunnydale",
+        "company": "First Bank",
+        "country": "NZ",
+        "phone": null,
+        "stateAbbreviation": null,
+        "zip": "9876",
+        "zipPlus4": null
+      },
+      "profiles": [],
+      "roles": [{ "display": "manager", "id": 257, "value": "manager" }],
+      "uuid": "36cdc8af-909f-48d3-909d-313a9fdfe6c1"
+    },
+    {
+      "accountDataRequestTime": null,
+      "accountDeleteRequestTime": null,
+      "birthday": "1990-05-20",
+      "clients": [
+        {
+          "clientId": "9a55jnetfgjf8mzdmjbugdmyr55tc2j9",
+          "firstLogin": "2025-05-08 10:08:30 +0000",
+          "id": 386,
+          "lastLogin": "2025-05-08 10:08:30 +0000",
+          "name": null
+        }
+      ],
+      "consents": {
+        "marketing": {
+          "clientId": null,
+          "context": null,
+          "granted": null,
+          "oidcClientId": null,
+          "type": null,
+          "updated": null
+        }
+      },
+      "created": "2025-05-08 10:08:30.544839 +0000",
+      "deactivateAccount": null,
+      "display": null,
+      "displayName": "John Doe",
+      "email": "johndoe@example.com",
+      "emailVerified": null,
+      "externalId": null,
+      "familyName": "Doe",
+      "fullName": "Johnathan Montgomery Doe",
+      "gender": "Male",
+      "givenName": "John",
+      "id": 385,
+      "lastLogin": "2025-05-08 10:08:30 +0000",
+      "lastUpdated": "2025-05-08 10:19:23.129255 +0000",
+      "legalAcceptances": [
+        {
+          "clientId": "9a55jnetfgjf8mzdmjbugdmyr55tc2j9",
+          "dateAccepted": "2025-05-08 10:08:30 +0000",
+          "id": 387,
+          "legalAcceptanceId": "termsOfService-v1"
+        },
+        {
+          "clientId": "9a55jnetfgjf8mzdmjbugdmyr55tc2j9",
+          "dateAccepted": "2025-05-08 10:08:30 +0000",
+          "id": 388,
+          "legalAcceptanceId": "privacyPolicy-v1"
+        }
+      ],
+      "middleName": "Montgomery",
+      "mobileNumber": null,
+      "mobileNumberVerified": null,
+      "password": {
+        "created": "2025-05-08 10:08:30.544094645 +0000",
+        "type": "password-bcrypt",
+        "value": "$2b$10$E.FMZSb32qkZJJqnZT/RUuLS7DwepOS7sgmM/8adQ8BlzYrwX/T1."
+      },
+      "photos": [],
+      "primaryAddress": {
+        "address1": "2",
+        "address2": "North Way",
+        "city": "Barcelona",
+        "company": null,
+        "country": "Zimbabwe",
+        "phone": "987 6542",
+        "stateAbbreviation": "xuio",
+        "zip": "1235",
+        "zipPlus4": null
+      },
+      "profiles": [],
+      "roles": [{ "display": "Customer", "id": 513, "value": "cust" }],
+      "uuid": "1e3a957f-be82-4dd1-b46a-a96a45233eef"
+    }
+  ],
+  "stat": "ok"
+}
