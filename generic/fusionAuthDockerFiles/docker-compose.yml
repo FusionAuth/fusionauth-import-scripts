@@ -36,6 +36,7 @@ services:
       FUSIONAUTH_APP_URL: http://fusionauth:9011
       SEARCH_TYPE: database
       FUSIONAUTH_APP_KICKSTART_FILE: ${FUSIONAUTH_APP_KICKSTART_FILE}
+      FUSIONAUTH_APP_INSTALLATION_SOURCE: fusionauth-import-scripts/generic
     networks:
       - db_net
     ports:
