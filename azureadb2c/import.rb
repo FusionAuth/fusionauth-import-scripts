@@ -105,7 +105,7 @@ def map_user(id, azure_user, options)
   end
 
   # Incoming format is in ISO string, need to convert to epoch milliseconds for FusionAuth
-  user["insertInstant"] = Time.parse(azure_user["createdDateTime"]).to_i;
+  user["insertInstant"] = Time.parse(azure_user["createdDateTime"]).to_i * 1000;
 
   # Preserve all Azure identities for future reference
   user["data"] = {}
