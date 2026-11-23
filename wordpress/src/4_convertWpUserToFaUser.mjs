@@ -4,6 +4,8 @@ import parser from 'stream-json';
 import StreamArray from 'stream-json/streamers/StreamArray.js';
 import Chain from 'stream-chain';
 import phpunserialize from 'phpunserialize';
+import {fileURLToPath} from 'node:url';
+import {resolve} from 'node:path';
 
 const inputFilename = 'users.json';
 const outputFilename = 'faUsers.json';
@@ -12,7 +14,8 @@ const applicationId = 'e9fdb985-9173-4e01-9d73-ac2d60d1dc8e';
 const subscriberRoleName = 'Subscriber';
 const administratorRoleName = 'Administrator';
 
-processUsers();
+if (process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1]))
+  await processUsers();
 
 async function processUsers() {
   await fsp.writeFile(outputFilename, '[\n', 'utf8');
@@ -28,16 +31,19 @@ async function processUsers() {
   await fsp.appendFile(outputFilename, '\n]', 'utf8');
 }
 
-function getFaUserFromUser(user) {
+export function getFaUserFromUser(user) {
   const faUser = {};
 
   // SecureIdentity fields ------
-  if (!user.user_pass.startsWith('$P'))
-    throw new Error("Handle hash algorithms other than Phpass by searching for this error message and adding a new encryptionScheme.");
+  const legacyPhpass = typeof user.user_pass === 'string' && user.user_pass.startsWith('$P');
+  const wordpressBcrypt = typeof user.user_pass === 'string' && /^\$wp\$2y\$(0[4-9]|[12][0-9]|30)\$[./A-Za-z0-9]{53}$/.test(user.user_pass);
+  if (!legacyPhpass && !wordpressBcrypt)
+    throw new Error('Unsupported WordPress password hash. This importer supports phpass and WordPress 6.8+ bcrypt; other formats require a matching password plugin.');
   // faUser.breachedPasswordLastCheckedInstant = number;
   // faUser.breachedPasswordStatus = BreachedPasswordStatus;
   // faUser.connectorId = UUID;
   faUser.email = user.user_email;
+  // The scheme name is retained for compatibility; the updated plugin handles both formats.
   faUser.encryptionScheme = 'example-wordpress-phpass';
   faUser.factor = 8;
   //faUser.id =  UUID; wordpress uses an int

@@ -5,7 +5,7 @@ import Chain from 'stream-chain';
 import * as fs from "fs";
 import util from 'util'
 
-const apiKey = '33052c8a-c283-4e96-9d2a-eb1215c69f8f-not-for-prod';
+const apiKey = 'this_really_should_be_a_long_random_alphanumeric_value_but_this_still_works';
 const fusionauthUrl = 'http://localhost:9011';
 const filename = 'faUsers.json';
 const fa = new FusionAuthClient(apiKey, fusionauthUrl);
